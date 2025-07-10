@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nocvla/utils/my_audios.dart';
+import 'package:nocvla/views/dashboard_page.dart';
 
 import '../../views/home_page.dart';
 import '../base_controller.dart';
@@ -18,12 +19,6 @@ class DashboardController extends BaseController {
   final AudioPlayer _player = AudioPlayer();
 
   @override
-  void onInit() {
-    super.onInit();
-    _initAudio();
-  }
-
-  @override
   void dispose() {
     _player.dispose();
     super.dispose();
@@ -34,11 +29,12 @@ class DashboardController extends BaseController {
     await _player.play(AssetSource(MyAudios.audBG), volume: 1);
   }
 
-  Future<void> playMusic() async {
-    final state = _player.state;
-    if (state != PlayerState.playing && state != PlayerState.paused) {
-      await _initAudio();
-    }
+  void enterSite() async {
+    await _initAudio();
+    Get.offAll(
+      DashboardPage(currentIndex: 0),
+      transition: Transition.fadeIn,
+    );
   }
 
   void changeMenuSelected({required int idx}) => currentIndex.value = idx;
