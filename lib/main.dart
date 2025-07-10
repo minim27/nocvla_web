@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nocvla/utils/my_colors.dart';
 import 'package:nocvla/views/dashboard_page.dart';
 
 void main() {
@@ -10,6 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: DashboardPage(currentIndex: 0));
+    return MaterialApp(
+      theme: ThemeData(scaffoldBackgroundColor: MyColors.primary),
+      home: DashboardPage(currentIndex: 0),
+    );
   }
 }
