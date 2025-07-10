@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nocvla/controllers/controller/dashboard_controller.dart';
 import 'package:nocvla/controllers/controller/home_controller.dart';
 import 'package:nocvla/utils/my_colors.dart';
 import 'package:nocvla/widgets/my_scaffold.dart';
@@ -18,6 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final controller = Get.put(HomeController());
+  final dashController = Get.find<DashboardController>();
 
   late AnimationController _animController;
   late Animation<Color?> _colorAnimation;
@@ -65,35 +67,39 @@ class _HomePageState extends State<HomePage>
     final screenSize = MediaQuery.of(context).size;
 
     return MyScaffold(
-      body: Container(
-        width: screenSize.width,
-        height: screenSize.height,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          spacing: 16,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedBuilder(
-              animation: _colorAnimation,
-              builder: (context, child) => ColorFiltered(
-                colorFilter: ColorFilter.mode(
-                  _colorAnimation.value ?? Colors.white,
-                  BlendMode.modulate,
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () async => await dashController.playMusic(),
+        child: Container(
+          width: screenSize.width,
+          height: screenSize.height,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            spacing: 16,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedBuilder(
+                animation: _colorAnimation,
+                builder: (context, child) => ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    _colorAnimation.value ?? Colors.white,
+                    BlendMode.modulate,
+                  ),
+                  child: child,
                 ),
-                child: child,
+                child: MyImageAssets(assets: MyImages.imgNocvla),
               ),
-              child: MyImageAssets(assets: MyImages.imgNocvla),
-            ),
-            Row(
-              spacing: 8,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(width: 20, height: 1, color: MyColors.secondary),
-                const MyText(text: "COMING SOON"),
-                Container(width: 20, height: 1, color: MyColors.secondary),
-              ],
-            ),
-          ],
+              Row(
+                spacing: 8,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(width: 20, height: 1, color: MyColors.secondary),
+                  const MyText(text: "COMING SOON"),
+                  Container(width: 20, height: 1, color: MyColors.secondary),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
