@@ -57474,7 +57474,7 @@ while(true)switch(s){case 0:p=q.fr
 s=2
 return A.G(p.oo(B.hg),$async$mc)
 case 2:s=3
-return A.G(p.ls(new A.y6("audios/aud_bg.wav",null),1),$async$mc)
+return A.G(p.ls(new A.y6("audios/aud_bg.mp3",null),1),$async$mc)
 case 3:return A.B(null,r)}})
 return A.C($async$mc,r)},
 qk(){var s=0,r=A.D(t.H),q=this
