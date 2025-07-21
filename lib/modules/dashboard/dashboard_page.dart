@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla/utils/my_icons.dart';
-import 'package:nocvla/utils/my_images.dart';
-import 'package:nocvla/widgets/my_text.dart';
-import '../controllers/controller/dashboard_controller.dart';
-import '../utils/my_colors.dart';
-import '../widgets/my_image.dart';
-import '../widgets/my_scaffold.dart';
+import 'package:nocvla/shared/utils/my_icons.dart';
+import 'package:nocvla/shared/utils/my_images.dart';
+import 'package:nocvla/shared/widgets/my_text.dart';
+import 'dashboard_controller.dart';
+import '../../shared/utils/my_colors.dart';
+import '../../shared/widgets/my_image.dart';
+import '../../shared/widgets/my_scaffold.dart';
 
-class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key, required this.currentIndex});
-
-  final int currentIndex;
-
-  @override
-  State<DashboardPage> createState() => _DashboardPageState();
-}
-
-class _DashboardPageState extends State<DashboardPage> {
-  var controller = Get.find<DashboardController>();
-
-  @override
-  void initState() {
-    controller.currentIndex.value = widget.currentIndex;
-    super.initState();
-  }
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<DashboardController>();
+
     return MyScaffold(
       appBar: AppBar(
         backgroundColor: MyColors.primary,
@@ -80,7 +67,7 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: Obx(
         () => IndexedStack(
-          index: controller.currentIndex.value!,
+          index: controller.currentIndex.value,
           children: controller.pageList,
         ),
       ),

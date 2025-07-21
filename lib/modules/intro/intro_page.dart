@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla/widgets/my_text.dart';
+import 'package:nocvla/shared/widgets/my_text.dart';
 
-import '../controllers/controller/dashboard_controller.dart';
-import '../utils/my_colors.dart';
-import '../utils/my_images.dart';
-import '../widgets/my_image.dart';
-import '../widgets/my_scaffold.dart';
+import '../dashboard/dashboard_controller.dart';
+import '../../shared/utils/my_colors.dart';
+import '../../shared/utils/my_images.dart';
+import '../../shared/widgets/my_image.dart';
+import '../../shared/widgets/my_scaffold.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});

@@ -1,6 +1,6 @@
 import 'package:get_storage/get_storage.dart';
 
-import '../services/my_config.dart';
+import '../../app/services/my_config.dart';
 
 class MyGetStorage {
   static final GetStorage _storage = GetStorage();

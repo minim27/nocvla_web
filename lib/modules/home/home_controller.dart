@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla/utils/my_colors.dart';
+import 'package:nocvla/shared/utils/my_colors.dart';
 
-import '../base_controller.dart';
+import '../../app/core/base_controller.dart';
 
 class HomeController extends BaseController {
   final List<Color> listColors = [

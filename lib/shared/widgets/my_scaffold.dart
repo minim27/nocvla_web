@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nocvla/utils/my_colors.dart';
+import 'package:nocvla/shared/utils/my_colors.dart';
 
 class MyScaffold extends StatelessWidget {
   const MyScaffold({

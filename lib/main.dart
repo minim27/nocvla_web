@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla/utils/my_colors.dart';
-import 'package:nocvla/views/intro_page.dart';
+import 'package:nocvla/app/routes/my_pages.dart';
+import 'package:nocvla/app/routes/my_routes.dart';
+import 'package:nocvla/shared/utils/my_colors.dart';
+
+import 'app/services/my_config.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +17,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(scaffoldBackgroundColor: MyColors.primary),
-      home: IntroPage(),
+      initialRoute: (MyConfig.isCommingSoon)
+          ? MyRoutes.intro
+          : MyRoutes.dashboard,
+      getPages: MyPages.routes,
     );
   }
 }
