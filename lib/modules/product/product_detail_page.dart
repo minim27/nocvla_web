@@ -12,13 +12,11 @@ import 'widget/pd_images.dart';
 import 'widget/pd_size_color_print.dart';
 import 'widget/pd_title_price.dart';
 
-class ProductDetailPage extends StatelessWidget {
+class ProductDetailPage extends GetView<ProductDetailController> {
   const ProductDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProductDetailController>();
-
     return MyScaffold(
       body: (controller.isLoading.value)
           ? MyLoading()
@@ -34,7 +32,7 @@ class ProductDetailPage extends StatelessWidget {
                     children: [
                       PDTitlePrice(controller: controller),
                       SizedBox(height: 24),
-                      PDDesc(controller: controller),
+                      PDDesc(),
                       SizedBox(height: 24),
                       PDSizeColorPrint(controller: controller),
                       SizedBox(height: 24),

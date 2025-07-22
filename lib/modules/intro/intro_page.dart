@@ -8,15 +8,8 @@ import '../../shared/utils/my_images.dart';
 import '../../shared/widgets/my_image.dart';
 import '../../shared/widgets/my_scaffold.dart';
 
-class IntroPage extends StatefulWidget {
+class IntroPage extends GetView<DashboardController> {
   const IntroPage({super.key});
-
-  @override
-  State<IntroPage> createState() => _IntroPageState();
-}
-
-class _IntroPageState extends State<IntroPage> {
-  var controller = Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {

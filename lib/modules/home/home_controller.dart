@@ -13,6 +13,7 @@ class HomeController extends BaseController {
     "success": true,
     "message": "OK",
     "data": {
+      "availableDate": "2025-07-31T17:00:00Z",
       "product1": {
         "image": {
           "id": 1,
@@ -148,6 +149,10 @@ class HomeController extends BaseController {
   var currentColorIndex = 0.obs;
   late Timer timer;
 
+  var availableDate = Rxn<DateTime>();
+  var remaining = Duration.zero.obs;
+  late Timer timerAvailable;
+
   @override
   void onInit() {
     super.onInit();
@@ -161,13 +166,45 @@ class HomeController extends BaseController {
   @override
   void dispose() {
     timer.cancel();
+    timerAvailable.cancel();
     super.dispose();
+  }
+
+  void startCountdown(DateTime targetDate) {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      final now = DateTime.now();
+      final diff = targetDate.difference(now);
+
+      if (diff.isNegative) {
+        timer.cancel();
+        remaining.value = Duration.zero;
+      } else {
+        remaining.value = diff;
+      }
+
+      update(); // pakai GetX update
+    });
+  }
+
+  void startCountdownAvailable(DateTime target) {
+    timerAvailable = Timer.periodic(Duration(seconds: 1), (_) {
+      final now = DateTime.now();
+      final diff = target.difference(now);
+
+      remaining.value = diff.isNegative ? Duration.zero : diff;
+    });
   }
 
   fetchApi() async {
     isLoading.value = true;
 
     res.add(HomeModel.fromJson(json["data"]));
+
+    availableDate.value = DateTime.parse(res[0].availableDate).toLocal();
+
+    if (DateTime.now().isBefore(availableDate.value!)) {
+      startCountdownAvailable(availableDate.value!);
+    }
 
     isLoading.value = false;
   }

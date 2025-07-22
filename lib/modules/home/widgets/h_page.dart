@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nocvla/modules/home/home_controller.dart';
 import 'package:nocvla/shared/utils/my_colors.dart';
+import 'package:nocvla/shared/utils/my_fonts.dart';
 import 'package:nocvla/shared/utils/my_input_formatters.dart';
 import 'package:nocvla/shared/widgets/my_button.dart';
 import 'package:nocvla/shared/widgets/my_image.dart';
 import 'package:nocvla/shared/widgets/my_loading.dart';
 import 'package:nocvla/shared/widgets/my_text_form_field.dart';
 
+import '../../../shared/utils/my_utility.dart';
 import '../../../shared/widgets/my_content.dart';
 import '../../../shared/widgets/my_text.dart';
 
@@ -134,7 +136,7 @@ class HPageProd1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 46),
+        SizedBox(height: 32),
         (controller.res[0].product1["image"] == null)
             ? SizedBox()
             : Column(
@@ -179,53 +181,168 @@ class HPageNotifyForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          MyTextFormField(
-            hintText: "Phone Number (For Get Notification)",
-            inputFormatters: [
-              NoLeadingZeroTextInputFormatter(),
-              FilteringTextInputFormatter.digitsOnly,
-              No62TextInputFormatter(),
-            ],
-            textInputAction: TextInputAction.next,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.only(top: 11, left: 12),
-              child: MyText(text: "+62", color: MyColors.primary),
+    return Visibility(
+      visible: DateTime.now().isBefore(
+        DateTime.parse(controller.res[0].availableDate).toLocal(),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyTextFormField(
+              hintText: "Phone Number (For Get Notification)",
+              inputFormatters: [
+                NoLeadingZeroTextInputFormatter(),
+                FilteringTextInputFormatter.digitsOnly,
+                No62TextInputFormatter(),
+              ],
+              textInputAction: TextInputAction.next,
+              prefixIcon: const Padding(
+                padding: EdgeInsets.only(top: 15, left: 12),
+                child: MyText(text: "+62", color: MyColors.primary),
+              ),
             ),
-          ),
-          SizedBox(height: 32),
-          MyButton(text: "Notify Me", onTap: () => controller.notifyMe()),
-          SizedBox(height: 12),
-          RichText(
-            text: TextSpan(
+            SizedBox(height: 32),
+            MyButton(text: "Notify Me", onTap: () => controller.notifyMe()),
+            SizedBox(height: 12),
+            RichText(
+              text: TextSpan(
+                children: [
+                  myTextSpan(
+                    text:
+                        "By signing up via text you agree to receive recurring automated marketing messages and shopping cart reminders at the phone number provided. Consent is not a condition of purchase. Reply STOP to unsubscribe. HELP for help. Msg frequency varies. Msg & Data rates may apply. View ",
+                    fontSize: 8,
+                    color: MyColors.primary80,
+                  ),
+                  myTextSpan(
+                    text: "Privacy Policy",
+                    fontSize: 8,
+                    color: MyColors.primary80,
+                    decoration: TextDecoration.underline,
+                  ),
+                  myTextSpan(
+                    text: " & ",
+                    fontSize: 8,
+                    color: MyColors.primary80,
+                  ),
+                  myTextSpan(
+                    text: "Terms & Condition",
+                    fontSize: 8,
+                    color: MyColors.primary80,
+                    decoration: TextDecoration.underline,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                myTextSpan(
-                  text:
-                      "By signing up via text you agree to receive recurring automated marketing messages and shopping cart reminders at the phone number provided. Consent is not a condition of purchase. Reply STOP to unsubscribe. HELP for help. Msg frequency varies. Msg & Data rates may apply. View ",
-                  fontSize: 8,
-                  color: MyColors.primary80,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Obx(
+                          () => MyText(
+                            text: twoDigits(controller.remaining.value.inDays),
+                            fontSize: 40,
+                            fontFamily: MyFonts.libreBaskerville,
+                          ),
+                        ),
+                        MyText(
+                          text: "Days",
+                          fontFamily: MyFonts.libreBaskerville,
+                        ),
+                      ],
+                    ),
+                    MyText(
+                      text: " : ",
+                      fontSize: 35,
+                      fontFamily: MyFonts.libreBaskerville,
+                    ),
+                  ],
                 ),
-                myTextSpan(
-                  text: "Privacy Policy",
-                  fontSize: 8,
-                  color: MyColors.primary80,
-                  decoration: TextDecoration.underline,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Obx(
+                          () => MyText(
+                            text: twoDigits(
+                              controller.remaining.value.inHours.remainder(24),
+                            ),
+                            fontSize: 40,
+                            fontFamily: MyFonts.libreBaskerville,
+                          ),
+                        ),
+                        MyText(
+                          text: "Hours",
+                          fontFamily: MyFonts.libreBaskerville,
+                        ),
+                      ],
+                    ),
+                    MyText(
+                      text: " : ",
+                      fontSize: 35,
+                      fontFamily: MyFonts.libreBaskerville,
+                    ),
+                  ],
                 ),
-                myTextSpan(text: " & ", fontSize: 8, color: MyColors.primary80),
-                myTextSpan(
-                  text: "Terms & Condition",
-                  fontSize: 8,
-                  color: MyColors.primary80,
-                  decoration: TextDecoration.underline,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Obx(
+                          () => MyText(
+                            text: twoDigits(
+                              controller.remaining.value.inMinutes.remainder(
+                                60,
+                              ),
+                            ),
+                            fontSize: 40,
+                            fontFamily: MyFonts.libreBaskerville,
+                          ),
+                        ),
+                        MyText(
+                          text: "Minutes",
+                          fontFamily: MyFonts.libreBaskerville,
+                        ),
+                      ],
+                    ),
+                    MyText(
+                      text: " : ",
+                      fontSize: 35,
+                      fontFamily: MyFonts.libreBaskerville,
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Obx(
+                      () => MyText(
+                        text: twoDigits(
+                          controller.remaining.value.inSeconds.remainder(
+                            60,
+                          ),
+                        ),
+                        fontSize: 40,
+                        fontFamily: MyFonts.libreBaskerville,
+                      ),
+                    ),
+                    MyText(
+                      text: "Seconds",
+                      fontFamily: MyFonts.libreBaskerville,
+                    ),
+                  ],
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
