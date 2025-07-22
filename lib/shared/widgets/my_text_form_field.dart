@@ -71,7 +71,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                       text: (widget.label == null) ? "" : widget.label!.tr,
                       style: TextStyle(
                         color: widget.labelColor,
-                        fontFamily: MyFonts.roboto,
+                        fontFamily: MyFonts.montserrat,
                         fontSize: widget.labelFontSize,
                         fontWeight: widget.labelFontWeight,
                       ),
@@ -80,7 +80,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                       text: (widget.required) ? " *" : "",
                       style: TextStyle(
                         color: MyColors.red,
-                        fontFamily: MyFonts.roboto,
+                        fontFamily: MyFonts.montserrat,
                         fontSize: widget.labelFontSize,
                         fontWeight: widget.labelFontWeight,
                       ),
@@ -114,7 +114,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
               textInputAction: widget.textInputAction,
               style: TextStyle(
                 fontSize: 14,
-                fontFamily: MyFonts.roboto,
+                fontFamily: MyFonts.montserrat,
                 color: widget.textColor,
               ),
               decoration: InputDecoration(
@@ -133,7 +133,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                     : "".tr,
                 hintStyle: const TextStyle(
                   fontSize: 14,
-                  fontFamily: MyFonts.roboto,
+                  fontFamily: MyFonts.montserrat,
                   color: MyColors.primary60,
                 ),
                 border: InputBorder.none,
@@ -165,6 +165,51 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
   }
 }
 
+class MyTextFormFieldNoBorder extends StatelessWidget {
+  const MyTextFormFieldNoBorder({
+    super.key,
+    required this.controller,
+    this.textAlign = TextAlign.center,
+    this.textColor = MyColors.primary,
+    this.keyboardType,
+    this.textInputAction,
+    this.onChanged,
+    this.fontSize = 14,
+    this.fontWeight = FontWeight.w400,
+  });
+
+  final TextEditingController controller;
+  final TextAlign textAlign;
+  final Color textColor;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final Function(String)? onChanged;
+  final double fontSize;
+  final FontWeight fontWeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      textAlign: textAlign,
+      style: TextStyle(
+        fontSize: fontSize,
+        fontFamily: MyFonts.montserrat,
+        color: textColor,
+        fontWeight: fontWeight,
+      ),
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
+      ),
+      onChanged: onChanged,
+    );
+  }
+}
+
 // class MyTextFormField2 extends StatefulWidget {
 //   const MyTextFormField2({
 //     super.key,
@@ -177,8 +222,8 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
 //     this.textInputAction,
 //     this.labelFontSize = 14,
 //     this.labelFontWeight = FontWeight.w400,
-//     this.textColor = MyColors.bwWhite,
-//     this.labelColor = MyColors.bwWhite,
+//     this.textColor = MyColors.primary,
+//     this.labelColor = MyColors.secondary,
 //     this.isPassword = false,
 //     this.obscureText = true,
 //     this.required = true,
@@ -230,7 +275,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
 //                       text: (widget.label == null) ? "" : widget.label!.tr,
 //                       style: TextStyle(
 //                         color: widget.labelColor,
-//                         fontFamily: MyFonts.roboto,
+//                         fontFamily: MyFonts.montserrat,
 //                         fontSize: widget.labelFontSize,
 //                         fontWeight: widget.labelFontWeight,
 //                       ),
@@ -239,7 +284,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
 //                       text: (widget.required) ? " *" : "",
 //                       style: TextStyle(
 //                         color: MyColors.red,
-//                         fontFamily: MyFonts.roboto,
+//                         fontFamily: MyFonts.montserrat,
 //                         fontSize: widget.labelFontSize,
 //                         fontWeight: widget.labelFontWeight,
 //                       ),
@@ -247,7 +292,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
 //                   ],
 //                 ),
 //               ),
-//               SizedBox(height: 8)
+//               SizedBox(height: 8),
 //             ],
 //           ),
 //         ),
@@ -272,21 +317,23 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
 //               textInputAction: widget.textInputAction,
 //               style: TextStyle(
 //                 fontSize: 14,
-//                 fontFamily: MyFonts.roboto,
+//                 fontFamily: MyFonts.montserrat,
 //                 color: widget.textColor,
 //               ),
 //               decoration: InputDecoration(
 //                 contentPadding: EdgeInsets.only(
-//                     left: 14,
-//                     top: (widget.isPassword || widget.suffixIcon != null)
-//                         ? 12
-//                         : 0),
+//                   left: 14,
+//                   top: (widget.isPassword || widget.suffixIcon != null)
+//                       ? 12
+//                       : 0,
+//                 ),
 //                 floatingLabelBehavior: FloatingLabelBehavior.always,
-//                 hintText:
-//                     (widget.hintText != null) ? widget.hintText!.tr : "".tr,
+//                 hintText: (widget.hintText != null)
+//                     ? widget.hintText!.tr
+//                     : "".tr,
 //                 hintStyle: const TextStyle(
 //                   fontSize: 14,
-//                   fontFamily: MyFonts.roboto,
+//                   fontFamily: MyFonts.montserrat,
 //                   color: MyColors.bwGray,
 //                 ),
 //                 border: InputBorder.none,

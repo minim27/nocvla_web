@@ -9,6 +9,7 @@ import 'package:nocvla/shared/widgets/my_image.dart';
 import 'package:nocvla/shared/widgets/my_loading.dart';
 import 'package:nocvla/shared/widgets/my_text_form_field.dart';
 
+import '../../../shared/widgets/my_content.dart';
 import '../../../shared/widgets/my_text.dart';
 
 class HPage extends GetView<HomeController> {
@@ -61,12 +62,14 @@ class HPageProd3 extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 1 / 1.2,
-            mainAxisSpacing: 6,
-            crossAxisSpacing: 6,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
           ),
-          itemBuilder: (context, index) => MyImage(
-            image: controller.res[0].product3["products"][index]["src"],
-            alignment: Alignment.topCenter,
+          itemBuilder: (context, index) => MyProduct(
+            image: controller.res[0].product3["products"][index]["image"],
+            onTap: () => controller.openDetail(
+              slug: controller.res[0].product3["products"][index]["slug"],
+            ),
           ),
           itemCount: controller.res[0].product3["products"].length,
         ),
@@ -106,12 +109,14 @@ class HPageProd2 extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 1 / 1.2,
-            mainAxisSpacing: 6,
-            crossAxisSpacing: 6,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
           ),
-          itemBuilder: (context, index) => MyImage(
-            image: controller.res[0].product2["products"][index]["src"],
-            alignment: Alignment.topCenter,
+          itemBuilder: (context, index) => MyProduct(
+            image: controller.res[0].product2["products"][index]["image"],
+            onTap: () => controller.openDetail(
+              slug: controller.res[0].product2["products"][index]["slug"],
+            ),
           ),
           itemCount: controller.res[0].product2["products"].length,
         ),
@@ -151,12 +156,14 @@ class HPageProd1 extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 1 / 1.2,
-            mainAxisSpacing: 6,
-            crossAxisSpacing: 6,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
           ),
-          itemBuilder: (context, index) => MyImage(
-            image: controller.res[0].product1["products"][index]["src"],
-            alignment: Alignment.topCenter,
+          itemBuilder: (context, index) => MyProduct(
+            image: controller.res[0].product1["products"][index]["image"],
+            onTap: () => controller.openDetail(
+              slug: controller.res[0].product1["products"][index]["slug"],
+            ),
           ),
           itemCount: controller.res[0].product1["products"].length,
         ),
@@ -175,6 +182,7 @@ class HPageNotifyForm extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 36),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MyTextFormField(
             hintText: "Phone Number (For Get Notification)",
@@ -189,7 +197,7 @@ class HPageNotifyForm extends StatelessWidget {
               child: MyText(text: "+62", color: MyColors.primary),
             ),
           ),
-          SizedBox(height: 52),
+          SizedBox(height: 32),
           MyButton(text: "Notify Me", onTap: () => controller.notifyMe()),
           SizedBox(height: 12),
           RichText(

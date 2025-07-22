@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla/modules/dashboard/dashboard_args.dart';
+import 'package:nocvla/modules/dashboard/dashboard_params.dart';
 import 'package:nocvla/shared/utils/my_audios.dart';
 
 import '../../app/routes/my_routes.dart';
@@ -21,13 +21,14 @@ class DashboardController extends BaseController {
 
   @override
   void onInit() {
+    super.onInit();
+
     if (Get.arguments == null) {
       currentIndex.value = 0;
     } else {
-      final args = Get.arguments as DashboardArgs;
-      currentIndex.value = args.index;
+      final DashboardParams params = DashboardParams.fromMap(Get.parameters);
+      currentIndex.value = params.index;
     }
-    super.onInit();
   }
 
   @override
@@ -43,7 +44,7 @@ class DashboardController extends BaseController {
 
   void enterSite() async {
     await _initAudio();
-    Get.offAllNamed(MyRoutes.dashboard, arguments: DashboardArgs(index: 0));
+    Get.offAllNamed(MyRoutes.dashboard, parameters: {"index": "0"});
   }
 
   void changeMenuSelected({required int idx}) => currentIndex.value = idx;

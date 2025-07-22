@@ -9,7 +9,7 @@ class MyText extends StatelessWidget {
   const MyText({
     super.key,
     required this.text,
-    this.fontFamily = MyFonts.roboto,
+    this.fontFamily = MyFonts.montserrat,
     this.textAlign,
     this.color = MyColors.secondary,
     this.fontSize = 14,
@@ -62,7 +62,7 @@ TextSpan myTextSpan({
   double fontSize = 14,
   FontWeight fontWeight = FontWeight.w400,
   double? letterSpacing,
-  String fontFamily = MyFonts.roboto,
+  String fontFamily = MyFonts.montserrat,
   TextDecoration? decoration,
   FontStyle? fontStyle,
   Map<String, String>? namedArgs,

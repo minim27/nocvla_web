@@ -6,6 +6,8 @@ import 'package:nocvla/modules/home/home_binding.dart';
 import 'package:nocvla/modules/home/home_page.dart';
 import 'package:nocvla/modules/intro/intro_binding.dart';
 import 'package:nocvla/modules/intro/intro_page.dart';
+import 'package:nocvla/modules/product/product_detail_binding.dart';
+import 'package:nocvla/modules/product/product_detail_page.dart';
 
 class MyPages {
   static final routes = [
@@ -23,6 +25,11 @@ class MyPages {
       name: MyRoutes.home,
       page: () => HomePage(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: MyRoutes.productDetail,
+      page: () => ProductDetailPage(),
+      binding: ProductDetailBinding(),
     ),
   ];
 }
