@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +12,7 @@ class MyText extends StatelessWidget {
     this.fontFamily = MyFonts.roboto,
     this.textAlign,
     this.color = MyColors.secondary,
-    this.fontSize = 12,
+    this.fontSize = 14,
     this.fontWeight = FontWeight.w400,
     this.letterSpacing,
     this.maxLines,
@@ -53,4 +54,32 @@ class MyText extends StatelessWidget {
       ),
     );
   }
+}
+
+TextSpan myTextSpan({
+  required String text,
+  Color color = MyColors.secondary,
+  double fontSize = 14,
+  FontWeight fontWeight = FontWeight.w400,
+  double? letterSpacing,
+  String fontFamily = MyFonts.roboto,
+  TextDecoration? decoration,
+  FontStyle? fontStyle,
+  Map<String, String>? namedArgs,
+  void Function()? onTap,
+}) {
+  return TextSpan(
+    text: (namedArgs == null) ? text.tr : text.trParams(namedArgs),
+    style: TextStyle(
+      color: color,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      letterSpacing: letterSpacing,
+      fontFamily: fontFamily,
+      decoration: decoration,
+      fontStyle: fontStyle,
+      decorationColor: color,
+    ),
+    recognizer: onTap != null ? (TapGestureRecognizer()..onTap = onTap) : null,
+  );
 }

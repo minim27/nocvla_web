@@ -33,7 +33,7 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return GestureDetector(
+//     return InkWell(
 //       behavior: HitTestBehavior.translucent,
 //       onTap: openDetail,
 //       child: Column(
@@ -183,7 +183,7 @@
 //           Row(
 //             spacing: 6,
 //             children: [
-//               GestureDetector(
+//               InkWell(
 //                 onTap: addToWishlist,
 //                 child: Container(
 //                   width: 32,

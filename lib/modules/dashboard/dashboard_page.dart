@@ -29,7 +29,7 @@ class DashboardPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
                   controller.menuDashboard.length,
-                  (index) => GestureDetector(
+                  (index) => InkWell(
                     onTap: () => controller.changeMenuSelected(idx: index),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),

@@ -1,60 +1,59 @@
-// import 'package:beauty_verse/widgets/my_image_assets.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-// import '../utils/my_colors.dart';
-// import 'my_text.dart';
+import '../utils/my_colors.dart';
+import 'my_text.dart';
 
-// class MyButton extends StatelessWidget {
-//   const MyButton({
-//     super.key,
-//     this.width,
-//     this.height = 40,
-//     required this.text,
-//     this.color = MyColors.primaryDefault,
-//     this.textColor = MyColors.bwWhite,
-//     this.fontSize = 14,
-//     this.borderRadius = 6,
-//     this.fontWeight = FontWeight.w600,
-//     this.namedArgs,
-//     this.enable = true,
-//     required this.onTap,
-//   });
+class MyButton extends StatelessWidget {
+  const MyButton({
+    super.key,
+    this.width,
+    this.height = 40,
+    required this.text,
+    this.color = MyColors.secondary,
+    this.textColor = MyColors.primary,
+    this.fontSize = 14,
+    this.borderRadius = 6,
+    this.fontWeight = FontWeight.w600,
+    this.namedArgs,
+    this.enable = true,
+    required this.onTap,
+  });
 
-//   final bool enable;
-//   final double? width;
-//   final double height, fontSize, borderRadius;
-//   final String text;
-//   final Color color, textColor;
-//   final FontWeight fontWeight;
-//   final Map<String, String>? namedArgs;
-//   final VoidCallback onTap;
+  final bool enable;
+  final double? width;
+  final double height, fontSize, borderRadius;
+  final String text;
+  final Color color, textColor;
+  final FontWeight fontWeight;
+  final Map<String, String>? namedArgs;
+  final VoidCallback onTap;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: enable ? onTap : null,
-//       child: Container(
-//         width: width,
-//         height: height,
-//         decoration: BoxDecoration(
-//           color: enable ? color : MyColors.bwGrayDark,
-//           borderRadius: BorderRadius.circular(borderRadius),
-//         ),
-//         child: Center(
-//           child: MyText(
-//             textAlign: TextAlign.center,
-//             text: text.tr,
-//             color: textColor,
-//             fontSize: fontSize,
-//             fontWeight: fontWeight,
-//             namedArgs: namedArgs,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: enable ? onTap : null,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: enable ? color : MyColors.primary80,
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        child: Center(
+          child: MyText(
+            textAlign: TextAlign.center,
+            text: text.tr,
+            color: textColor,
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+            namedArgs: namedArgs,
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 // class MyIconButton extends StatelessWidget {
 //   const MyIconButton({
@@ -84,7 +83,7 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return GestureDetector(
+//     return InkWell(
 //       onTap: enable ? onTap : null,
 //       child: Container(
 //         width: width,
@@ -134,7 +133,7 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return GestureDetector(
+//     return InkWell(
 //       onTap: onTap,
 //       child: Container(
 //         height: height,

@@ -10,11 +10,13 @@ class MyImage extends StatelessWidget {
     required this.image,
     this.fit = BoxFit.cover,
     this.errorWidget,
+    this.alignment = Alignment.center,
     this.onTap,
   });
 
   final double scale;
   final String image;
+  final Alignment alignment;
   final BoxFit fit;
   final Widget? errorWidget;
   final VoidCallback? onTap;
@@ -27,6 +29,7 @@ class MyImage extends StatelessWidget {
         imageUrl: image,
         fit: fit,
         scale: scale,
+        alignment: alignment,
         placeholder: (context, url) => MyLoading(),
         errorWidget: (context, url, error) =>
             errorWidget ??
