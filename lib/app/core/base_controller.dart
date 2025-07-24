@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../../data/repositories/home_repo.dart';
+
 class BaseController extends GetxController {
-  // late ProductRepo productRepo = ProductRepo();
+  late HomeRepository homeRepo = HomeRepository();
 }

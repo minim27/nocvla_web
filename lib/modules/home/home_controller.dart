@@ -5,136 +5,13 @@ import 'package:get/get.dart';
 import 'package:nocvla/app/routes/my_routes.dart';
 import 'package:nocvla/data/models/home_model.dart';
 import 'package:nocvla/shared/utils/my_colors.dart';
+import 'package:nocvla/shared/utils/my_utility.dart';
 
 import '../../app/core/base_controller.dart';
 
 class HomeController extends BaseController {
-  dynamic json = {
-    "success": true,
-    "message": "OK",
-    "data": {
-      "availableDate": "2025-07-31T17:00:00Z",
-      "product1": {
-        "image": {
-          "id": 1,
-          "name": "ArchMage Compressed Premium",
-          "slug": "archmage-compressed-premium",
-          "src":
-              "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-        },
-        "products": [
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-          },
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-          },
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-          },
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-          },
-        ],
-      },
-      "product2": {
-        "image": {
-          "id": 1,
-          "name": "ArchMage Compressed Premium",
-          "slug": "archmage-compressed-premium",
-          "src":
-              "https://i.scdn.co/image/ab67616d0000b27323a8321bd17fe693210812fe",
-        },
-        "products": [
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://i.scdn.co/image/ab67616d0000b27323a8321bd17fe693210812fe",
-          },
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://i.scdn.co/image/ab67616d0000b27323a8321bd17fe693210812fe",
-          },
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://i.scdn.co/image/ab67616d0000b27323a8321bd17fe693210812fe",
-          },
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://i.scdn.co/image/ab67616d0000b27323a8321bd17fe693210812fe",
-          },
-        ],
-      },
-      "product3": {
-        "image": {
-          "id": 1,
-          "name": "ArchMage Compressed Premium",
-          "slug": "archmage-compressed-premium",
-          "src":
-              "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-        },
-        "products": [
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-          },
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-          },
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-          },
-          {
-            "id": 1,
-            "name": "ArchMage Compressed Premium",
-            "slug": "archmage-compressed-premium",
-            "image":
-                "https://assets.mediamodifier.com/mockups/64e9a065c9d68217ad1458ba/back-view-of-t-shirt-mockup-on-african-american-male-model.jpg",
-          },
-        ],
-      },
-    },
-  };
-
-  var res = <HomeModel>[];
+  var resAD = <HomeADModel>[];
+  var resContent = <HomeContentModel>[];
 
   var isLoading = false.obs;
 
@@ -198,9 +75,21 @@ class HomeController extends BaseController {
   fetchApi() async {
     isLoading.value = true;
 
-    res.add(HomeModel.fromJson(json["data"]));
+    var req = await homeRepo.home();
+    await req.responseHandler(
+      res: (res) {
+        List<HomeContentModel> result = [];
+        for (Map<String, dynamic> data in res["data"]["content"]) {
+          result.add(HomeContentModel.fromJson(data));
+        }
 
-    availableDate.value = DateTime.parse(res[0].availableDate).toLocal();
+        resContent.assignAll(result);
+        resAD.add(HomeADModel.fromJson(res["data"]));
+      },
+      err: (err) => showErrSnackbar(msg: err["message"]),
+    );
+
+    availableDate.value = DateTime.parse(resAD[0].availableDate).toLocal();
 
     if (DateTime.now().isBefore(availableDate.value!)) {
       startCountdownAvailable(availableDate.value!);

@@ -1,4 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nocvla/shared/utils/my_colors.dart';
+import 'package:nocvla/shared/utils/my_fonts.dart';
+
+import '../widgets/my_text.dart';
+
+void showSnackbar({required String msg}) => Get.rawSnackbar(
+  backgroundColor: MyColors.primary80,
+  duration: const Duration(milliseconds: 2500),
+  messageText: MyText(
+    color: MyColors.secondary,
+    text: msg,
+    fontFamily: MyFonts.libreBaskerville,
+  ),
+);
+
+void showErrSnackbar({required String msg}) => Get.rawSnackbar(
+  backgroundColor: MyColors.red,
+  duration: const Duration(milliseconds: 2500),
+  messageText: MyText(
+    color: MyColors.secondary,
+    text: msg,
+    fontFamily: MyFonts.libreBaskerville,
+  ),
+);
 
 Color hexToColor({required String hex}) {
   hex = hex.replaceAll('#', '');

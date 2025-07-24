@@ -36,97 +36,24 @@ class ProductDetailController extends BaseController {
         "Made for intensity",
       ],
       "variations": [
-        {
-          "size": "S",
-          "colors": [
-            {
-              "id": 1,
-              "name": "Hitam",
-              "hex": "#111111",
-              "prints": [
-                {
-                  "id": 1,
-                  "primary": "#111111",
-                  "secondary": "#7E44C3",
-                  "stock": 10,
-                },
-                {
-                  "id": 1,
-                  "primary": "#111111",
-                  "secondary": "#8A0303",
-                  "stock": 10,
-                },
-                {
-                  "id": 1,
-                  "primary": "#111111",
-                  "secondary": "#5BCEFA",
-                  "stock": 10,
-                },
-              ],
-            },
-            {
-              "id": 1,
-              "name": "White",
-              "hex": "#f9f9f9",
-              "prints": [
-                {
-                  "id": 1,
-                  "primary": "#111111",
-                  "secondary": "#7E44C3",
-                  "stock": 10,
-                },
-              ],
-            },
-            {
-              "id": 1,
-              "name": "Red",
-              "hex": "#a10319",
-              "prints": [
-                {
-                  "id": 1,
-                  "primary": "#111111",
-                  "secondary": "#7E44C3",
-                  "stock": 10,
-                },
-              ],
-            },
-            {
-              "id": 1,
-              "name": "Army",
-              "hex": "#364934",
-              "prints": [
-                {
-                  "id": 1,
-                  "primary": "#111111",
-                  "secondary": "#7E44C3",
-                  "stock": 10,
-                },
-              ],
-            },
-          ],
-        },
-        {
+       {
           "size": "M",
           "colors": [
             {
-              "id": 1,
               "name": "Hitam",
               "hex": "#111111",
               "prints": [
                 {
-                  "id": 1,
                   "primary": "#111111",
                   "secondary": "#7E44C3",
                   "stock": 10,
                 },
                 {
-                  "id": 1,
                   "primary": "#111111",
                   "secondary": "#8A0303",
                   "stock": 10,
                 },
                 {
-                  "id": 1,
                   "primary": "#111111",
                   "secondary": "#5BCEFA",
                   "stock": 10,
@@ -175,6 +102,7 @@ class ProductDetailController extends BaseController {
           ],
         },
         {
+          "id": 1,
           "size": "L",
           "colors": [
             {

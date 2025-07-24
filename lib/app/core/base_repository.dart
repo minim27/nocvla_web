@@ -26,7 +26,6 @@ class BaseRepository {
     return {
       "Authorization": "Bearer $auth",
       "Accept-Language": locale.split("_")[0],
-      "origin": "mobile",
     };
   }
 
@@ -254,6 +253,7 @@ class ResponseHandler<T> {
       }
     } on DioException catch (e) {
       // done();
+
 
       print(e.response);
       print(e.response!.statusCode);

@@ -11,5 +11,6 @@ class MyColors {
   static const Color red = Color(0xFFa10319);
   static const Color purple = Color(0xFF8B55D6);
   static const Color yellow = Color(0xFFffc31a);
+  static const Color green = Color.fromARGB(255, 54, 201, 0);
   static const Color pink = Color(0xFFff91a4);
 }

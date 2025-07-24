@@ -1,4 +1,6 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:nocvla/app/routes/my_pages.dart';
 import 'package:nocvla/app/routes/my_routes.dart';
@@ -6,7 +8,10 @@ import 'package:nocvla/shared/utils/my_colors.dart';
 
 import 'app/services/my_config.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
   runApp(const MyApp());
 }
 
@@ -16,7 +21,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: MyColors.primary),
+      debugShowCheckedModeBanner: false,
+      navigatorObservers: [ChuckerFlutter.navigatorObserver],
+      theme: ThemeData(
+        scaffoldBackgroundColor: MyColors.primary,
+        appBarTheme: AppBarTheme(
+          backgroundColor: MyColors.primary,
+          surfaceTintColor: MyColors.primary,
+        ),
+      ),
       initialRoute: (MyConfig.isCommingSoon)
           ? MyRoutes.intro
           : MyRoutes.dashboard,

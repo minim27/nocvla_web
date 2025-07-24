@@ -19,87 +19,47 @@ class HPage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return (controller.isLoading.value)
-        ? MyLoading()
-        : ListView(
-            padding: EdgeInsets.symmetric(vertical: 24),
-            children: [
-              HPageNotifyForm(controller: controller),
-              HPageProd1(controller: controller),
-              HPageProd2(controller: controller),
-              HPageProd3(controller: controller),
-            ],
-          );
-  }
-}
-
-class HPageProd3 extends StatelessWidget {
-  const HPageProd3({super.key, required this.controller});
-
-  final HomeController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        (controller.res[0].product3["image"] == null)
-            ? SizedBox()
-            : Column(
-                children: [
-                  SizedBox(height: 52),
-                  SizedBox(
-                    width: Get.size.width,
-                    height: Get.size.height,
-                    child: MyImage(
-                      image: controller.res[0].product3["image"]["src"],
-                      alignment: Alignment.topCenter,
-                    ),
-                  ),
-                ],
-              ),
-        SizedBox(height: 52),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1 / 1.2,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-          ),
-          itemBuilder: (context, index) => MyProduct(
-            image: controller.res[0].product3["products"][index]["image"],
-            onTap: () => controller.openDetail(
-              slug: controller.res[0].product3["products"][index]["slug"],
+    return Obx(
+      () => (controller.isLoading.value)
+          ? MyLoading()
+          : ListView(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              children: [
+                HPageNotifyForm(controller: controller),
+                SizedBox(height: 32),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) =>
+                      HPageProd(controller: controller, index: index),
+                  separatorBuilder: (context, index) => SizedBox(height: 32),
+                  itemCount: controller.resContent.length,
+                ),
+              ],
             ),
-          ),
-          itemCount: controller.res[0].product3["products"].length,
-        ),
-      ],
     );
   }
 }
 
-class HPageProd2 extends StatelessWidget {
-  const HPageProd2({super.key, required this.controller});
+class HPageProd extends StatelessWidget {
+  const HPageProd({super.key, required this.controller, required this.index});
 
   final HomeController controller;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        (controller.res[0].product2["image"] == null)
+        (controller.resContent[index].gallery.isEmpty)
             ? SizedBox()
             : Column(
                 children: [
-                  SizedBox(height: 52),
                   SizedBox(
                     width: Get.size.width,
                     height: Get.size.height,
                     child: MyImage(
-                      image: controller.res[0].product2["image"]["src"],
-                      alignment: Alignment.topCenter,
+                      image: controller.resContent[index].gallery[0]
                     ),
                   ),
                 ],
@@ -110,64 +70,20 @@ class HPageProd2 extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 1 / 1.2,
+            childAspectRatio: 1 / 1.7,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
           ),
-          itemBuilder: (context, index) => MyProduct(
-            image: controller.res[0].product2["products"][index]["image"],
+          itemBuilder: (context, indexx) => MyProduct(
+            image: controller.resContent[index].products[indexx]["gallery"][0],
+            text: controller.resContent[index].products[indexx]["name"],
+            price: controller.resContent[index].products[indexx]["price"],
+            stock: controller.resContent[index].products[indexx]["stock"],
             onTap: () => controller.openDetail(
-              slug: controller.res[0].product2["products"][index]["slug"],
+              slug: controller.resContent[index].products[indexx]["slug"],
             ),
           ),
-          itemCount: controller.res[0].product2["products"].length,
-        ),
-      ],
-    );
-  }
-}
-
-class HPageProd1 extends StatelessWidget {
-  const HPageProd1({super.key, required this.controller});
-
-  final HomeController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 32),
-        (controller.res[0].product1["image"] == null)
-            ? SizedBox()
-            : Column(
-                children: [
-                  SizedBox(
-                    width: Get.size.width,
-                    height: Get.size.height,
-                    child: MyImage(
-                      image: controller.res[0].product1["image"]["src"],
-                      alignment: Alignment.topCenter,
-                    ),
-                  ),
-                ],
-              ),
-        SizedBox(height: 52),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1 / 1.2,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-          ),
-          itemBuilder: (context, index) => MyProduct(
-            image: controller.res[0].product1["products"][index]["image"],
-            onTap: () => controller.openDetail(
-              slug: controller.res[0].product1["products"][index]["slug"],
-            ),
-          ),
-          itemCount: controller.res[0].product1["products"].length,
+          itemCount: controller.resContent[index].products.length,
         ),
       ],
     );
@@ -183,7 +99,7 @@ class HPageNotifyForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Visibility(
       visible: DateTime.now().isBefore(
-        DateTime.parse(controller.res[0].availableDate).toLocal(),
+        DateTime.parse(controller.resAD[0].availableDate).toLocal(),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -325,9 +241,7 @@ class HPageNotifyForm extends StatelessWidget {
                     Obx(
                       () => MyText(
                         text: twoDigits(
-                          controller.remaining.value.inSeconds.remainder(
-                            60,
-                          ),
+                          controller.remaining.value.inSeconds.remainder(60),
                         ),
                         fontSize: 40,
                         fontFamily: MyFonts.libreBaskerville,

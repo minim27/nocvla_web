@@ -1,12 +1,22 @@
-class HomeModel {
-  dynamic availableDate, product1, product2, product3;
+class HomeADModel {
+  dynamic availableDate;
 
-  HomeModel({this.availableDate, this.product1, this.product2, this.product3});
+  HomeADModel({this.availableDate});
 
-  HomeModel.fromJson(Map<String, dynamic> json) {
-    availableDate = json["availableDate"];
-    product1 = json["product1"];
-    product2 = json["product2"];
-    product3 = json["product3"];
+  HomeADModel.fromJson(Map<String, dynamic> json) {
+    availableDate = json["available_date"];
+  }
+}
+
+class HomeContentModel {
+  dynamic title, description, gallery, products;
+
+  HomeContentModel({this.title, this.description, this.gallery, this.products});
+
+  HomeContentModel.fromJson(Map<String, dynamic> json) {
+    title = json["title"];
+    description = json["description"];
+    gallery = json["gallery"];
+    products = json["products"];
   }
 }
