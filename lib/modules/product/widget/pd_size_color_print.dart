@@ -28,7 +28,7 @@ class PDSizeColorPrint extends StatelessWidget {
           runSpacing: 8,
           children: [
             ...List.generate(
-              controller.res[0].variations.length,
+              controller.res[0].variation.length,
               (index) => GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () => controller.selectSize(index: index),
@@ -44,7 +44,7 @@ class PDSizeColorPrint extends StatelessWidget {
                     ),
                     child: Center(
                       child: MyText(
-                        text: controller.res[0].variations[index]["size"],
+                        text: controller.res[0].variation[index]["name"],
                         color: controller.selectedSize.value == index
                             ? MyColors.primary
                             : MyColors.secondary,
@@ -71,7 +71,7 @@ class PDSizeColorPrint extends StatelessWidget {
             ...List.generate(
               controller
                   .res[0]
-                  .variations[controller.selectedSize.value]["colors"]
+                  .variation[controller.selectedSize.value]["color"]
                   .length,
               (index) => GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -95,9 +95,9 @@ class PDSizeColorPrint extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: hexToColor(
                           hex:
-                              controller.res[0].variations[controller
+                              controller.res[0].variation[controller
                                   .selectedSize
-                                  .value]["colors"][index]["hex"],
+                                  .value]["color"][index]["hex"],
                         ),
                         shape: BoxShape.circle,
                       ),
@@ -108,95 +108,86 @@ class PDSizeColorPrint extends StatelessWidget {
             ),
           ],
         ),
-        Obx(
-          () => (controller.selectedColor.value == null)
-              ? SizedBox()
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 16),
-                    MyText(
-                      text: "Variation",
-                      fontFamily: MyFonts.libreBaskerville,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    SizedBox(height: 8),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        ...List.generate(
-                          controller
-                              .res[0]
-                              .variations[controller
-                                  .selectedSize
-                                  .value]["colors"][controller
-                                  .selectedColor
-                                  .value]["prints"]
-                              .length,
-                          (index) => GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () => controller.selectPrint(index: index),
-                            child: Obx(
-                              () => Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color:
-                                        controller.selectedPrint.value == index
-                                        ? MyColors.secondary
-                                        : MyColors.primary,
-                                    width: 2,
-                                    strokeAlign: BorderSide.strokeAlignOutside,
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: ClipOval(
-                                  child: SizedBox(
-                                    width: 32,
-                                    height: 32,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            color: hexToColor(
-                                              hex:
-                                                  controller
-                                                      .res[0]
-                                                      .variations[controller
-                                                      .selectedSize
-                                                      .value]["colors"][controller
-                                                      .selectedColor
-                                                      .value]["prints"][index]["primary"],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            color: hexToColor(
-                                              hex:
-                                                  controller
-                                                      .res[0]
-                                                      .variations[controller
-                                                      .selectedSize
-                                                      .value]["colors"][controller
-                                                      .selectedColor
-                                                      .value]["prints"][index]["secondary"],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 16),
+            MyText(
+              text: "Variation",
+              fontFamily: MyFonts.libreBaskerville,
+              fontWeight: FontWeight.w600,
+            ),
+            SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ...List.generate(
+                  controller
+                      .res[0]
+                      .variation[controller
+                          .selectedSize
+                          .value]["color"][controller
+                          .selectedColor
+                          .value]["print"]
+                      .length,
+                  (index) => GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () => controller.selectPrint(index: index),
+                    child: Obx(
+                      () => Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: controller.selectedPrint.value == index
+                                ? MyColors.secondary
+                                : MyColors.primary,
+                            width: 2,
+                            strokeAlign: BorderSide.strokeAlignOutside,
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                        child: ClipOval(
+                          child: SizedBox(
+                            width: 32,
+                            height: 32,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    color: hexToColor(
+                                      hex:
+                                          controller.res[0].variation[controller
+                                              .selectedSize
+                                              .value]["color"][controller
+                                              .selectedColor
+                                              .value]["print"][index]["primary_hex"],
                                     ),
                                   ),
                                 ),
-                              ),
+                                Expanded(
+                                  child: Container(
+                                    color: hexToColor(
+                                      hex:
+                                          controller.res[0].variation[controller
+                                              .selectedSize
+                                              .value]["color"][controller
+                                              .selectedColor
+                                              .value]["print"][index]["secondary_hex"],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
+              ],
+            ),
+          ],
         ),
       ],
     );

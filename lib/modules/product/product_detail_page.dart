@@ -18,111 +18,113 @@ class ProductDetailPage extends GetView<ProductDetailController> {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      body: (controller.isLoading.value)
-          ? MyLoading()
-          : ListView(
-              padding: EdgeInsets.only(bottom: 24),
-              children: [
-                PDImages(controller: controller),
-                SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      PDTitlePrice(controller: controller),
-                      SizedBox(height: 24),
-                      PDDesc(),
-                      SizedBox(height: 24),
-                      PDSizeColorPrint(controller: controller),
-                      SizedBox(height: 24),
-                      Wrap(
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 12,
-                        runSpacing: 12,
-                        children: [
-                          FittedBox(
-                            child: Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: MyColors.primary90,
-                                  width: 2,
+      body: Obx(
+        () => (controller.isLoading.value)
+            ? MyLoading()
+            : ListView(
+                padding: EdgeInsets.only(bottom: 24),
+                children: [
+                  PDImages(controller: controller),
+                  SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PDTitlePrice(controller: controller),
+                        SizedBox(height: 24),
+                        PDDesc(),
+                        SizedBox(height: 24),
+                        PDSizeColorPrint(controller: controller),
+                        SizedBox(height: 24),
+                        Wrap(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 12,
+                          runSpacing: 12,
+                          children: [
+                            FittedBox(
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: MyColors.primary90,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => controller.decreaseQty(),
+                                      child: Icon(
+                                        Icons.remove,
+                                        color: MyColors.secondary,
+                                      ),
+                                    ),
+                                    Container(
+                                      color: MyColors.primary90,
+                                      width: 3,
+                                      height: 40,
+                                    ),
+                                    SizedBox(
+                                      width: 40,
+                                      child: MyTextFormFieldNoBorder(
+                                        controller: controller.txtQty,
+                                        textColor: MyColors.secondary,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        onChanged: (value) {
+                                          if (value.isEmpty ||
+                                              int.tryParse(value) == null ||
+                                              int.parse(value) <= 0) {
+                                            controller.txtQty.text = '1';
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Container(
+                                      color: MyColors.primary90,
+                                      width: 3,
+                                      height: 40,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () => controller.increaseQty(),
+                                      child: Icon(
+                                        Icons.add,
+                                        color: MyColors.secondary,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () => controller.decreaseQty(),
-                                    child: Icon(
-                                      Icons.remove,
-                                      color: MyColors.secondary,
-                                    ),
-                                  ),
-                                  Container(
-                                    color: MyColors.primary90,
-                                    width: 3,
-                                    height: 40,
-                                  ),
-                                  SizedBox(
-                                    width: 40,
-                                    child: MyTextFormFieldNoBorder(
-                                      controller: controller.txtQty,
-                                      textColor: MyColors.secondary,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      onChanged: (value) {
-                                        if (value.isEmpty ||
-                                            int.tryParse(value) == null ||
-                                            int.parse(value) <= 0) {
-                                          controller.txtQty.text = '1';
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  Container(
-                                    color: MyColors.primary90,
-                                    width: 3,
-                                    height: 40,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () => controller.increaseQty(),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: MyColors.secondary,
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            spacing: 12,
-                            children: [
-                              MyButton(
-                                width: 120,
-                                color: MyColors.red,
-                                textColor: MyColors.secondary,
-                                text: "Add to Cart",
-                                onTap: () => controller.addToCart(),
-                              ),
-                              MyButton(
-                                width: 120,
-                                color: MyColors.primary90,
-                                textColor: MyColors.secondary,
-                                text: "Order Now",
-                                onTap: () => controller.orderNow(),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              spacing: 12,
+                              children: [
+                                MyButton(
+                                  width: 120,
+                                  color: MyColors.red,
+                                  textColor: MyColors.secondary,
+                                  text: "Add to Cart",
+                                  onTap: () => controller.addToCart(),
+                                ),
+                                MyButton(
+                                  width: 120,
+                                  color: MyColors.primary90,
+                                  textColor: MyColors.secondary,
+                                  text: "Order Now",
+                                  onTap: () => controller.orderNow(),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+      ),
     );
   }
 }

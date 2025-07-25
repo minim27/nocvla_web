@@ -254,7 +254,6 @@ class ResponseHandler<T> {
     } on DioException catch (e) {
       // done();
 
-
       print(e.response);
       print(e.response!.statusCode);
       print(e.response!.data);

@@ -13,11 +13,13 @@ class MyProduct extends StatelessWidget {
     required this.text,
     required this.price,
     required this.stock,
+    required this.isDisc,
     required this.onTap,
   });
 
   final String image, text;
   final int price, stock;
+  final bool isDisc;
   final VoidCallback onTap;
 
   @override
@@ -67,6 +69,22 @@ class MyProduct extends StatelessWidget {
                   ),
                 ),
               ),
+              Visibility(
+                visible: isDisc,
+                child: Positioned(
+                  bottom: 10,
+                  left: 10,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(6, 1, 6, 2),
+                    color: MyColors.red,
+                    child: MyText(
+                      text: "DISC",
+                      fontSize: 8,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
           Padding(
@@ -74,12 +92,18 @@ class MyProduct extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MyText(text: text, fontSize: 12, fontWeight: FontWeight.w600),
+                MyText(
+                  text: text.toUpperCase(),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
                 SizedBox(height: 8),
                 MyText(
                   text: parsingCurrency(price),
-                  fontFamily: MyFonts.libreBaskerville,
+                  color: MyColors.red,
                   fontSize: 12,
+                  fontFamily: MyFonts.libreBaskerville,
+                  fontWeight: FontWeight.w700,
                 ),
               ],
             ),

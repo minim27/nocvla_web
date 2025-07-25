@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 import '../../../shared/utils/my_colors.dart';
 import '../../../shared/utils/my_fonts.dart';
@@ -25,21 +26,53 @@ class PDTitlePrice extends StatelessWidget {
         SizedBox(height: 12),
         Row(
           children: [
-            Row(
-              children: [
-                MyText(
-                  text: parsingCurrency(controller.res[0].price["regular"]),
-                  color: MyColors.primary60,
-                  decoration: TextDecoration.lineThrough,
+            Obx(
+              () => Visibility(
+                visible:
+                    controller.res[0].variation[controller
+                        .selectedSize
+                        .value]["color"][controller
+                        .selectedColor
+                        .value]["print"][controller
+                        .selectedPrint
+                        .value]["price"]["regular"] >
+                    0,
+                child: Row(
+                  children: [
+                    MyText(
+                      text: parsingCurrency(
+                        controller.res[0].variation[controller
+                            .selectedSize
+                            .value]["color"][controller
+                            .selectedColor
+                            .value]["print"][controller
+                            .selectedPrint
+                            .value]["price"]["regular"],
+                      ),
+                      color: MyColors.primary60,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+
+                    SizedBox(width: 8),
+                  ],
                 ),
-                SizedBox(width: 8),
-              ],
+              ),
             ),
-            MyText(
-              text: parsingCurrency(controller.res[0].price["default"]),
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: MyColors.red,
+            Obx(
+              () => MyText(
+                text: parsingCurrency(
+                  controller.res[0].variation[controller
+                      .selectedSize
+                      .value]["color"][controller
+                      .selectedColor
+                      .value]["print"][controller
+                      .selectedPrint
+                      .value]["price"]["default"],
+                ),
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: MyColors.red,
+              ),
             ),
           ],
         ),

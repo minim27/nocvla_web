@@ -1,23 +1,21 @@
 class ProductDetailModel {
-  dynamic id, name, image, gallery, price, description, variations;
+  dynamic id, name, slug, description, gallery, variation;
 
   ProductDetailModel({
     this.id,
     this.name,
-    this.image,
-    this.gallery,
-    this.price,
+    this.slug,
     this.description,
-    this.variations,
+    this.gallery,
+    this.variation,
   });
 
   ProductDetailModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     name = json["name"];
-    image = json["image"];
-    gallery = json["gallery"];
-    price = json["price"];
+    slug = json["slug"];
     description = json["description"];
-    variations = json["variations"];
+    gallery = json["gallery"];
+    variation = json["variation"];
   }
 }

@@ -53,13 +53,40 @@ class HPageProd extends StatelessWidget {
       children: [
         (controller.resContent[index].gallery.isEmpty)
             ? SizedBox()
-            : Column(
+            : Stack(
+                alignment: Alignment.center,
                 children: [
                   SizedBox(
                     width: Get.size.width,
                     height: Get.size.height,
                     child: MyImage(
-                      image: controller.resContent[index].gallery[0]
+                      image: controller.resContent[index].gallery[0],
+                    ),
+                  ),
+                  Container(
+                    color: MyColors.primary.withValues(alpha: 0.4),
+                    width: Get.size.width,
+                    height: Get.size.height,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        MyText(
+                          text: controller.resContent[index].title,
+                          fontFamily: MyFonts.libreBaskerville,
+                          textAlign: TextAlign.center,
+                          fontSize: 18,
+                        ),
+                        Visibility(
+                          visible:
+                              controller.resContent[index].description != "",
+                          child: MyText(
+                            text: controller.resContent[index].description,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -79,6 +106,8 @@ class HPageProd extends StatelessWidget {
             text: controller.resContent[index].products[indexx]["name"],
             price: controller.resContent[index].products[indexx]["price"],
             stock: controller.resContent[index].products[indexx]["stock"],
+            isDisc:
+                controller.resContent[index].products[indexx]["is_discount"],
             onTap: () => controller.openDetail(
               slug: controller.resContent[index].products[indexx]["slug"],
             ),
