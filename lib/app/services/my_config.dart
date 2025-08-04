@@ -7,4 +7,5 @@ class MyConfig {
   static const String keyAccessToken = "accessToken";
   static const String keyRefreshToken = "refreshToken";
   static const String keyEmail = "email";
+  static const String keyUUID = "uuid";
 }

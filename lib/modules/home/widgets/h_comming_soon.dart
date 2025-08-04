@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../shared/utils/my_colors.dart';
 import '../../../shared/utils/my_images.dart';
 import '../../../shared/widgets/my_image.dart';
 import '../../../shared/widgets/my_text.dart';
+import '../home_controller.dart';
 
-class HCommingSoon extends StatelessWidget {
+class HCommingSoon extends GetView<HomeController> {
   const HCommingSoon({
     super.key,
     required this.screenSize,

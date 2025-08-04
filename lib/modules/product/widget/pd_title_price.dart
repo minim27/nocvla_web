@@ -7,10 +7,8 @@ import '../../../shared/utils/my_parsing_currency.dart';
 import '../../../shared/widgets/my_text.dart';
 import '../product_detail_controller.dart';
 
-class PDTitlePrice extends StatelessWidget {
-  const PDTitlePrice({super.key, required this.controller});
-
-  final ProductDetailController controller;
+class PDTitlePrice extends GetView<ProductDetailController> {
+  const PDTitlePrice({super.key});
 
   @override
   Widget build(BuildContext context) {

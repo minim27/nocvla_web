@@ -20,6 +20,7 @@ class MyTextFormField extends StatefulWidget {
     this.labelFontWeight = FontWeight.w400,
     this.textColor = MyColors.primary,
     this.labelColor = MyColors.secondary,
+    this.borderColor = MyColors.secondary,
     this.isPassword = false,
     this.obscureText = true,
     this.required = false,
@@ -39,7 +40,7 @@ class MyTextFormField extends StatefulWidget {
   final String? label, errorText, hintText;
   final double borderRadius, labelFontSize;
   final FontWeight labelFontWeight;
-  final Color textColor, labelColor;
+  final Color textColor, labelColor, borderColor;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final bool isPassword, obscureText;
@@ -143,16 +144,17 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                 errorBorder: InputBorder.none,
                 focusedErrorBorder: InputBorder.none,
                 prefixIcon: widget.prefixIcon,
-                // suffixIcon: (widget.isPassword)
-                //     ? InkWell(
-                //         onTap: widget.icPassOnTap,
-                //         child: MyImageAssets(
-                //           assets: (widget.obscureText)
-                //               ? MyIcons.icObscureTrue
-                //               : MyIcons.icObscureFalse,
-                //         ),
-                //       )
-                //     : widget.suffixIcon,
+                suffixIcon: (widget.isPassword)
+                    ? InkWell(
+                        onTap: widget.icPassOnTap,
+                        child: Icon(
+                          (widget.obscureText)
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: MyColors.primary,
+                        ),
+                      )
+                    : widget.suffixIcon,
               ),
               inputFormatters: widget.inputFormatters,
               onChanged: widget.onChanged,

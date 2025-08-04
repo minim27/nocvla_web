@@ -9,14 +9,15 @@ class MyScaffold extends StatelessWidget {
     this.drawer,
     this.endDrawer,
     this.drawerEnableOpenDragGesture = true,
-    this.body,
+    required this.body,
     this.bottomNavigationBar,
     this.extendBodyBehindAppBar = false,
   });
 
   final Color backgroundColor;
   final PreferredSizeWidget? appBar;
-  final Widget? body, bottomNavigationBar, drawer, endDrawer;
+  final Widget body;
+  final Widget? bottomNavigationBar, drawer, endDrawer;
   final bool drawerEnableOpenDragGesture, extendBodyBehindAppBar;
 
   @override
@@ -31,7 +32,7 @@ class MyScaffold extends StatelessWidget {
         endDrawer: endDrawer,
         drawerEnableOpenDragGesture: drawerEnableOpenDragGesture,
         extendBodyBehindAppBar: extendBodyBehindAppBar,
-        body: body,
+        body: SafeArea(child: body),
         bottomNavigationBar: bottomNavigationBar,
         resizeToAvoidBottomInset: true,
       ),

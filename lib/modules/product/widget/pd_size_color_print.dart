@@ -7,10 +7,9 @@ import '../../../shared/utils/my_fonts.dart';
 import '../../../shared/widgets/my_text.dart';
 import '../product_detail_controller.dart';
 
-class PDSizeColorPrint extends StatelessWidget {
-  const PDSizeColorPrint({super.key, required this.controller});
+class PDSizeColorPrint extends GetView<ProductDetailController> {
+  const PDSizeColorPrint({super.key});
 
-  final ProductDetailController controller;
 
   @override
   Widget build(BuildContext context) {

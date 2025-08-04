@@ -4,10 +4,9 @@ import 'package:get/get.dart';
 import '../../../shared/widgets/my_image.dart';
 import '../product_detail_controller.dart';
 
-class PDImages extends StatelessWidget {
-  const PDImages({super.key, required this.controller});
+class PDImages extends GetView<ProductDetailController> {
+  const PDImages({super.key});
 
-  final ProductDetailController controller;
 
   @override
   Widget build(BuildContext context) {

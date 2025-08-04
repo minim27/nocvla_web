@@ -4,8 +4,13 @@ import 'package:nocvla/modules/product/product_detail_controller.dart';
 import 'package:nocvla/shared/utils/my_colors.dart';
 import 'package:nocvla/shared/widgets/my_button.dart';
 import 'package:nocvla/shared/widgets/my_scaffold.dart';
+import 'package:nocvla/shared/widgets/my_text.dart';
 import 'package:nocvla/shared/widgets/my_text_form_field.dart';
 
+import '../../shared/utils/my_icons.dart';
+import '../../shared/utils/my_images.dart';
+import '../../shared/utils/my_utility.dart';
+import '../../shared/widgets/my_image.dart';
 import '../../shared/widgets/my_loading.dart';
 import 'widget/pd_desc.dart';
 import 'widget/pd_images.dart';
@@ -17,114 +22,177 @@ class ProductDetailPage extends GetView<ProductDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
-      body: Obx(
-        () => (controller.isLoading.value)
-            ? MyLoading()
-            : ListView(
-                padding: EdgeInsets.only(bottom: 24),
-                children: [
-                  PDImages(controller: controller),
-                  SizedBox(height: 24),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        PDTitlePrice(controller: controller),
-                        SizedBox(height: 24),
-                        PDDesc(),
-                        SizedBox(height: 24),
-                        PDSizeColorPrint(controller: controller),
-                        SizedBox(height: 24),
-                        Wrap(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 12,
-                          runSpacing: 12,
-                          children: [
-                            FittedBox(
-                              child: Container(
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: MyColors.primary90,
-                                    width: 2,
+    return Obx(() {
+      if (controller.isLoading.value) return MyLoading();
+
+      return Stack(
+        children: [
+          MyScaffold(
+            appBar: AppBar(
+              title: SizedBox(
+                width: 70,
+                child: MyImageAssets(assets: MyImages.imgNocvla),
+              ),
+              centerTitle: true,
+              actions: [
+                SizedBox(
+                  height: 18,
+                  width: 18,
+                  child: MyImageAssets(assets: MyIcons.icAccount),
+                ),
+                SizedBox(width: 16),
+                GestureDetector(
+                  onTap: () => openCart(),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: MyImageAssets(assets: MyIcons.icCart),
+                      ),
+                      Visibility(
+                        visible: controller.resCart.isNotEmpty,
+                        child: Positioned(
+                          right: -2,
+                          top: -2,
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: MyColors.red,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(width: 16),
+              ],
+            ),
+            body: ListView(
+              padding: EdgeInsets.only(bottom: 24),
+              children: [
+                PDImages(),
+                SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PDTitlePrice(),
+                      SizedBox(height: 24),
+                      PDDesc(),
+                      SizedBox(height: 24),
+                      PDSizeColorPrint(),
+                      SizedBox(height: 24),
+                      Row(
+                        spacing: 8,
+                        children: [
+                          MyText(text: "Quantity"),
+                          Wrap(
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 12,
+                            runSpacing: 12,
+                            children: [
+                              FittedBox(
+                                child: Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: MyColors.primary90,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => controller.decreaseQty(),
+                                        child: Icon(
+                                          Icons.remove,
+                                          color: MyColors.secondary,
+                                        ),
+                                      ),
+                                      Container(
+                                        color: MyColors.primary90,
+                                        width: 3,
+                                        height: 40,
+                                      ),
+                                      SizedBox(
+                                        width: 40,
+                                        child: MyTextFormFieldNoBorder(
+                                          controller: controller.txtQty,
+                                          textColor: MyColors.secondary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          onChanged: (value) {
+                                            if (value.isEmpty ||
+                                                int.tryParse(value) == null ||
+                                                int.parse(value) <= 0) {
+                                              controller.txtQty.text = '1';
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        color: MyColors.primary90,
+                                        width: 3,
+                                        height: 40,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => controller.increaseQty(),
+                                        child: Icon(
+                                          Icons.add,
+                                          color: MyColors.secondary,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                child: Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () => controller.decreaseQty(),
-                                      child: Icon(
-                                        Icons.remove,
-                                        color: MyColors.secondary,
-                                      ),
-                                    ),
-                                    Container(
-                                      color: MyColors.primary90,
-                                      width: 3,
-                                      height: 40,
-                                    ),
-                                    SizedBox(
-                                      width: 40,
-                                      child: MyTextFormFieldNoBorder(
-                                        controller: controller.txtQty,
-                                        textColor: MyColors.secondary,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        onChanged: (value) {
-                                          if (value.isEmpty ||
-                                              int.tryParse(value) == null ||
-                                              int.parse(value) <= 0) {
-                                            controller.txtQty.text = '1';
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                    Container(
-                                      color: MyColors.primary90,
-                                      width: 3,
-                                      height: 40,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () => controller.increaseQty(),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: MyColors.secondary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              spacing: 12,
-                              children: [
-                                MyButton(
-                                  width: 120,
-                                  color: MyColors.red,
-                                  textColor: MyColors.secondary,
-                                  text: "Add to Cart",
-                                  onTap: () => controller.addToCart(),
-                                ),
-                                MyButton(
-                                  width: 120,
-                                  color: MyColors.primary90,
-                                  textColor: MyColors.secondary,
-                                  text: "Order Now",
-                                  onTap: () => controller.orderNow(),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                spacing: 12,
+                                children: [
+                                  MyButton(
+                                    width: 120,
+                                    color: MyColors.red,
+                                    textColor: MyColors.secondary,
+                                    text: "Add to Cart",
+                                    onTap: () => controller.addToCart(
+                                      res: controller.res[0],
+                                    ),
+                                  ),
+                                  // MyButton(
+                                  //   width: 120,
+                                  //   color: MyColors.primary90,
+                                  //   textColor: MyColors.secondary,
+                                  //   text: "Order Now",
+                                  //   onTap: () => controller.orderNow(),
+                                  // ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-      ),
-    );
+                ),
+              ],
+            ),
+          ),
+          Obx(
+            () => Visibility(
+              visible: controller.isLoadingAction.value,
+              child: const MyLoading(isStack: true),
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

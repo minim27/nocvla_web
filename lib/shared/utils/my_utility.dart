@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:nocvla/app/routes/my_routes.dart';
 import 'package:nocvla/shared/utils/my_colors.dart';
 import 'package:nocvla/shared/utils/my_fonts.dart';
 
@@ -41,4 +43,13 @@ String formatDuration(Duration d) {
   final minutes = twoDigits(d.inMinutes.remainder(60));
   final seconds = twoDigits(d.inSeconds.remainder(60));
   return "$days:$hours:$minutes:$seconds";
+}
+
+void openCart() => Get.toNamed(MyRoutes.cart);
+
+changeStatusBool({required RxBool val}) => val.value = !val.value;
+
+copy({required String val}) {
+  Clipboard.setData(ClipboardData(text: val));
+  showSnackbar(msg: "Salin teks berhasil!");
 }

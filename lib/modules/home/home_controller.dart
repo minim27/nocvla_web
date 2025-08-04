@@ -76,6 +76,7 @@ class HomeController extends BaseController {
     isLoading.value = true;
 
     var req = await homeRepo.home();
+
     await req.responseHandler(
       res: (res) {
         List<HomeContentModel> result = [];

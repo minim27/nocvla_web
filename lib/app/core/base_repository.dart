@@ -1,6 +1,7 @@
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../shared/utils/my_getstorage.dart';
 import '../services/my_config.dart';
@@ -17,16 +18,35 @@ class BaseRepository {
   }
 
   static Future<Map<String, String>> get apiAuth async {
-    var auth = await MyGetStorage.getString(key: MyConfig.keyAccessToken);
-    print(auth);
-
     var locale =
         await MyGetStorage.getString(key: MyConfig.keyLocale) ?? "en_US";
 
-    return {
-      "Authorization": "Bearer $auth",
+    var accessToken = await MyGetStorage.getString(
+      key: MyConfig.keyAccessToken,
+    );
+
+    var existingUUID = await MyGetStorage.getString(key: MyConfig.keyUUID);
+    if (existingUUID == null || existingUUID.isEmpty) {
+      var newUUID = Uuid().v4();
+      await MyGetStorage.setValue(key: MyConfig.keyUUID, value: newUUID);
+      existingUUID = newUUID;
+      print("Generate New UUID: $newUUID");
+    } else {
+      print("Existing UUID: $existingUUID");
+    }
+
+    Map<String, String> authHeaders = {
       "Accept-Language": locale.split("_")[0],
+      "Cart-Token": existingUUID,
     };
+
+    if (accessToken != null && accessToken.isNotEmpty) {
+      authHeaders["Authorization"] = "Bearer $accessToken";
+    }
+
+    print("Header: $authHeaders");
+
+    return authHeaders;
   }
 
   static String get url {
