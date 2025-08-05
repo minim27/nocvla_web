@@ -1,8 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nocvla/app/services/my_config.dart';
 import 'package:nocvla/modules/dashboard/dashboard_params.dart';
 import 'package:nocvla/shared/utils/my_audios.dart';
+import 'package:nocvla/shared/utils/my_getstorage.dart';
+import 'package:nocvla/shared/widgets/my_text.dart';
 
 import '../../app/routes/my_routes.dart';
 import '../../data/models/order/cart_model.dart';
@@ -76,4 +79,49 @@ class DashboardController extends BaseController {
   }
 
   void changeMenuSelected({required int idx}) => currentIndex.value = idx;
+
+  Future<void> tapAccount(context, {required TapDownDetails details}) async {
+    var token = await MyGetStorage.getString(key: MyConfig.keyAccessToken);
+
+    if (token == null) return;
+
+    RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    final selected = await showMenu(
+      context: context,
+      position: RelativeRect.fromRect(
+        details.globalPosition & Size(40, 40),
+        Offset.zero & overlay.size,
+      ),
+      items: [
+        PopupMenuItem(
+          child: MyText(text: "Change Profile"),
+          onTap: () => Get.toNamed(MyRoutes.myProfile),
+        ),
+        PopupMenuItem(
+          child: MyText(text: "Change Password"),
+          onTap: () => Get.toNamed(MyRoutes.updatePassword),
+        ),
+        PopupMenuItem(
+          child: MyText(text: "Change Address"),
+          onTap: () => Get.toNamed(MyRoutes.myAddress),
+        ),
+        PopupMenuItem(
+          child: MyText(text: "My Order"),
+          onTap: () => Get.toNamed(MyRoutes.myOrder),
+        ),
+        PopupMenuItem(
+          child: MyText(text: "Logout"),
+          onTap: () => null,
+        ),
+      ],
+    );
+
+    if (selected == 'edit') {
+      // Aksi edit
+    } else if (selected == 'delete') {
+      // Aksi delete
+    }
+  }
 }

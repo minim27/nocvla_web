@@ -25,10 +25,14 @@ class DashboardPage extends GetView<DashboardController> {
           ),
           centerTitle: true,
           actions: [
-            SizedBox(
-              height: 18,
-              width: 18,
-              child: MyImageAssets(assets: MyIcons.icAccount),
+            GestureDetector(
+              onTapDown: (details) async =>
+                  await controller.tapAccount(context, details: details),
+              child: SizedBox(
+                height: 18,
+                width: 18,
+                child: MyImageAssets(assets: MyIcons.icAccount),
+              ),
             ),
             SizedBox(width: 16),
             GestureDetector(

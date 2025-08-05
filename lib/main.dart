@@ -27,15 +27,19 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [ChuckerFlutter.navigatorObserver],
       theme: ThemeData(
         scaffoldBackgroundColor: MyColors.primary,
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           backgroundColor: MyColors.primary,
           surfaceTintColor: MyColors.primary,
         ),
+        popupMenuTheme: PopupMenuThemeData(
+          color: MyColors.primary,
+          surfaceTintColor: MyColors.primary,
+        ),
       ),
-      // initialRoute: (MyConfig.isCommingSoon)
-      //     ? MyRoutes.intro
-      //     : MyRoutes.dashboard,
-      initialRoute: MyRoutes.myOrder,
+      initialRoute: (MyConfig.isCommingSoon)
+          ? MyRoutes.intro
+          : MyRoutes.dashboard,
+      // initialRoute: MyRoutes.myOrder,
       getPages: MyPages.routes,
       // home: const AgoraPage(),
     );

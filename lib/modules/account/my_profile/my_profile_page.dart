@@ -8,6 +8,8 @@ import 'package:nocvla/shared/widgets/my_loading.dart';
 import 'package:nocvla/shared/widgets/my_scaffold.dart';
 import 'package:nocvla/shared/widgets/my_text.dart';
 
+import '../../../shared/utils/my_images.dart';
+import '../../../shared/widgets/my_image.dart';
 import '../../../shared/widgets/my_text_form_field.dart';
 
 class MyProfilePage extends GetView<MyProfileController> {
@@ -18,6 +20,13 @@ class MyProfilePage extends GetView<MyProfileController> {
     return Stack(
       children: [
         MyScaffold(
+          appBar: AppBar(
+            title: SizedBox(
+              width: 70,
+              child: MyImageAssets(assets: MyImages.imgNocvla),
+            ),
+            centerTitle: true,
+          ),
           body: Obx(() {
             if (controller.isLoading.value) return MyLoading();
 

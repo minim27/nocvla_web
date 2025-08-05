@@ -10,7 +10,6 @@ class MyRoutes {
   static const myProfile = '/account/profile';
   static const updatePassword = '/account/update-password';
   static const myAddress = '/account/address';
-  static const updateMyAddress = '/account/address/update';
 
   static const myOrder = '/account/my-order/';
   static const myOrderDetail = '/account/my-order/detail';
