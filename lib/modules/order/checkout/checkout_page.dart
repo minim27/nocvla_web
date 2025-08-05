@@ -48,8 +48,12 @@ class CheckoutPage extends GetView<CheckoutController> {
                 return ListView(
                   padding: EdgeInsets.all(16),
                   children: [
-                    COBioAddress(),
-                    SizedBox(height: 32),
+                    Visibility(
+                      visible: !controller.isLogin.value,
+                      child: Column(
+                        children: [COBioAddress(), SizedBox(height: 32)],
+                      ),
+                    ),
                     COPayMethod(),
                   ],
                 );

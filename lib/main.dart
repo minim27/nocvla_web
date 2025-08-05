@@ -32,9 +32,10 @@ class MyApp extends StatelessWidget {
           surfaceTintColor: MyColors.primary,
         ),
       ),
-      initialRoute: (MyConfig.isCommingSoon)
-          ? MyRoutes.intro
-          : MyRoutes.dashboard,
+      // initialRoute: (MyConfig.isCommingSoon)
+      //     ? MyRoutes.intro
+      //     : MyRoutes.dashboard,
+      initialRoute: MyRoutes.myAddress,
       getPages: MyPages.routes,
       // home: const AgoraPage(),
     );

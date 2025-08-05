@@ -17,7 +17,7 @@ class CheckoutController extends BaseController {
   var isLoading = false.obs;
   var isLoadingAction = false.obs;
   var isLogin = false.obs;
-  var isObscure = false.obs;
+  var isObscure = true.obs;
 
   var txtFirstName = TextEditingController();
   var txtLastName = TextEditingController();
@@ -105,10 +105,6 @@ class CheckoutController extends BaseController {
       body = {
         "payment_method_code": selectedPayMet.value,
         "shipping_id": null,
-        "city": txtCity.text,
-        "district": txtDistrict.text,
-        "village": txtVillage.text,
-        "address": txtAddress.text,
         "note": txtNote.text,
         "items": items,
       };
@@ -125,6 +121,7 @@ class CheckoutController extends BaseController {
         "district": txtDistrict.text,
         "village": txtVillage.text,
         "address": txtAddress.text,
+        "postal_code": txtPostalCode.text,
         "note": txtNote.text,
         "items": items,
       };

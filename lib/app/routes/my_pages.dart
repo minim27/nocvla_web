@@ -1,5 +1,10 @@
 import 'package:get/get.dart';
 import 'package:nocvla/app/routes/my_routes.dart';
+import 'package:nocvla/modules/account/address/my_address_binding.dart';
+import 'package:nocvla/modules/account/address/my_address_page.dart';
+import 'package:nocvla/modules/account/my_profile/my_profile_binding.dart';
+import 'package:nocvla/modules/account/password/my_password_binding.dart';
+import 'package:nocvla/modules/account/password/my_password_page.dart';
 import 'package:nocvla/modules/dashboard/dashboard_binding.dart';
 import 'package:nocvla/modules/dashboard/dashboard_page.dart';
 import 'package:nocvla/modules/home/home_binding.dart';
@@ -12,6 +17,8 @@ import 'package:nocvla/modules/order/checkout/checkout_binding.dart';
 import 'package:nocvla/modules/order/checkout/checkout_page.dart';
 import 'package:nocvla/modules/product/product_detail_binding.dart';
 import 'package:nocvla/modules/product/product_detail_page.dart';
+
+import '../../modules/account/my_profile/my_profile_page.dart';
 
 class MyPages {
   static final routes = [
@@ -44,6 +51,21 @@ class MyPages {
       name: MyRoutes.checkout,
       page: () => CheckoutPage(),
       binding: CheckoutBinding(),
+    ),
+    GetPage(
+      name: MyRoutes.myProfile,
+      page: () => MyProfilePage(),
+      binding: MyProfileBinding(),
+    ),
+    GetPage(
+      name: MyRoutes.updatePassword,
+      page: () => MyPasswordPage(),
+      binding: MyPasswordBinding(),
+    ),
+    GetPage(
+      name: MyRoutes.myAddress,
+      page: () => MyAddressPage(),
+      binding: MyAddressBinding(),
     ),
   ];
 }

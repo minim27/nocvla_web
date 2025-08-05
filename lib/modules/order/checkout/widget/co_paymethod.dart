@@ -70,6 +70,38 @@ class COPayMethod extends GetView<CheckoutController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             MyText(
+              text: "Sub Total",
+              fontSize: 12,
+              fontFamily: MyFonts.libreBaskerville,
+            ),
+            MyText(
+              text: parsingCurrency(controller.totalPrice.value),
+              fontSize: 12,
+              fontFamily: MyFonts.libreBaskerville,
+            ),
+          ],
+        ),
+        Divider(height: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MyText(
+              text: "Shipping Fee",
+              fontSize: 12,
+              fontFamily: MyFonts.libreBaskerville,
+            ),
+            MyText(
+              text: "Shipping fee is paid by the customer",
+              fontSize: 12,
+              fontFamily: MyFonts.libreBaskerville,
+            ),
+          ],
+        ),
+        Divider(height: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MyText(
               text: "Total",
               fontFamily: MyFonts.libreBaskerville,
               fontWeight: FontWeight.w600,
@@ -82,7 +114,7 @@ class COPayMethod extends GetView<CheckoutController> {
           ],
         ),
         Divider(height: 24),
-        SizedBox(height: 32),
+        SizedBox(height: 12),
         MyText(
           text: "Payment Method",
           fontFamily: MyFonts.libreBaskerville,
@@ -134,12 +166,12 @@ class COPayMethod extends GetView<CheckoutController> {
         ),
         SizedBox(height: 32),
         MyButton(text: "CHECKOUT", onTap: () => controller.checkout()),
-        SizedBox(height: 6),
-        MyText(
-          text: "*Shipping fee is paid by the customer.",
-          fontSize: 10,
-          color: MyColors.primary80,
-        ),
+        // SizedBox(height: 6),
+        // MyText(
+        //   text: "*Shipping fee is paid by the customer.",
+        //   fontSize: 10,
+        //   color: MyColors.primary80,
+        // ),
       ],
     );
   }
