@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:nocvla/app/routes/my_routes.dart';
 import 'package:nocvla/shared/utils/my_colors.dart';
 import 'package:nocvla/shared/utils/my_fonts.dart';
@@ -53,3 +54,6 @@ copy({required String val}) {
   Clipboard.setData(ClipboardData(text: val));
   showSnackbar(msg: "Salin teks berhasil!");
 }
+
+formatDate({required dynamic val, bool isString = true}) =>
+    DateFormat("dd MMM yyyy").format((isString) ? DateTime.parse(val) : val);

@@ -102,12 +102,28 @@ class COPayMethod extends GetView<CheckoutController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             MyText(
+              text: "Admin Fee",
+              fontSize: 12,
+              fontFamily: MyFonts.libreBaskerville,
+            ),
+            MyText(
+              text: parsingCurrency(0),
+              fontFamily: MyFonts.libreBaskerville,
+              fontWeight: FontWeight.w600,
+            ),
+          ],
+        ),
+        Divider(height: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MyText(
               text: "Total",
               fontFamily: MyFonts.libreBaskerville,
               fontWeight: FontWeight.w600,
             ),
             MyText(
-              text: parsingCurrency(controller.totalPrice.value),
+              text: parsingCurrency(controller.totalPrice.value + 0),
               fontFamily: MyFonts.libreBaskerville,
               fontWeight: FontWeight.w600,
             ),

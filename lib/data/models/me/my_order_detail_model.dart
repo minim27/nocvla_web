@@ -5,12 +5,12 @@ class MyOrderDetailModel {
       statusName,
       invoiceNo,
       payment,
-      shippingId,
-      noResi,
+      shipping,
+      user,
       address,
       items,
       subTotal,
-      shippingFee,
+      adminFee,
       totalAmount;
 
   MyOrderDetailModel({
@@ -20,12 +20,12 @@ class MyOrderDetailModel {
     this.statusName,
     this.invoiceNo,
     this.payment,
-    this.shippingId,
-    this.noResi,
+    this.shipping,
     this.address,
+    this.user,
     this.items,
     this.subTotal,
-    this.shippingFee,
+    this.adminFee,
     this.totalAmount,
   });
 
@@ -36,12 +36,12 @@ class MyOrderDetailModel {
     statusName = json["status_name"];
     invoiceNo = json["invoice_no"];
     payment = json["payment"];
-    shippingId = json["shipping_id"];
-    noResi = json["no_resi"];
+    shipping = json["shipping"];
+    user = json["user"];
     address = json["address"];
     items = json["items"];
     subTotal = json["sub_total"];
-    shippingFee = json["shipping_fee"];
+    adminFee = json["admin_fee"];
     totalAmount = json["total_amount"];
   }
 }

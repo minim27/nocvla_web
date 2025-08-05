@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       // initialRoute: (MyConfig.isCommingSoon)
       //     ? MyRoutes.intro
       //     : MyRoutes.dashboard,
-      initialRoute: MyRoutes.myAddress,
+      initialRoute: MyRoutes.myOrder,
       getPages: MyPages.routes,
       // home: const AgoraPage(),
     );
