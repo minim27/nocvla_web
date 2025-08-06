@@ -1,10 +1,10 @@
 class LoginModel {
-  dynamic id, access_token;
+  dynamic id, accessToken;
 
-  LoginModel({this.id, this.access_token});
+  LoginModel({this.id, this.accessToken});
 
   LoginModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    access_token = json["access_token"];
+    accessToken = json["access_token"];
   }
 }

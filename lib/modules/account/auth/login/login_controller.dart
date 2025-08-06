@@ -32,7 +32,7 @@ class LoginController extends BaseController {
 
         await MyGetStorage.setValue(
           key: MyConfig.keyAccessToken,
-          value: result[0].access_token,
+          value: result[0].accessToken,
         );
 
         Get.offAllNamed(MyRoutes.dashboard);
