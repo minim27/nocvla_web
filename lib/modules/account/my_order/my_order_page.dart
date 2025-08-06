@@ -28,99 +28,109 @@ class MyOrderPage extends GetView<MyOrderController> {
       body: Obx(() {
         if (controller.isLoading.value) return MyLoading();
 
-        return Padding(
-          padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyText(
-                text: "My Order",
-                fontSize: 24,
-                fontFamily: MyFonts.libreBaskerville,
-              ),
-              SizedBox(height: 24),
-              ListView.separated(
-                shrinkWrap: true,
-                padding: EdgeInsets.only(bottom: 24),
-                itemBuilder: (context, index) => GestureDetector(
-                  onTap: () =>
-                      controller.openDetail(res: controller.res[index]),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: MyColors.secondary),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(color: MyColors.secondary),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              MyText(
-                                text: controller.res[index].invoiceNo,
-                                color: MyColors.primary,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              MyText(
-                                text: formatDate(
-                                  val: controller.res[index].date,
-                                ),
-                                color: MyColors.primary,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1200),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MyText(
+                    text: "My Order",
+                    fontSize: 24,
+                    fontFamily: MyFonts.libreBaskerville,
+                  ),
+                  SizedBox(height: 24),
+                  Expanded(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(bottom: 24),
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () =>
+                            controller.openDetail(res: controller.res[index]),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: MyColors.secondary),
                           ),
                           child: Column(
-                            spacing: 8,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  MyText(text: "Status"),
-                                  MyText(
-                                    text: controller.res[index].statusName,
-                                  ),
-                                ],
-                              ),
-                              Divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  MyText(
-                                    text: "Total",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  MyText(
-                                    text: parsingCurrency(
-                                      controller.res[index].totalAmount,
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: MyColors.secondary,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    MyText(
+                                      text: controller.res[index].invoiceNo,
+                                      color: MyColors.primary,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ],
+                                    MyText(
+                                      text: formatDate(
+                                        val: controller.res[index].date,
+                                      ),
+                                      color: MyColors.primary,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                child: Column(
+                                  spacing: 8,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        MyText(text: "Status"),
+                                        MyText(
+                                          text: controller.res[index].statusName,
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        MyText(
+                                          text: "Total",
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        MyText(
+                                          text: parsingCurrency(
+                                            controller.res[index].totalAmount,
+                                          ),
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ],
+                      ),
+                      separatorBuilder: (context, index) => SizedBox(height: 24),
+                      itemCount: controller.res.length,
                     ),
                   ),
-                ),
-                separatorBuilder: (context, index) => SizedBox(height: 24),
-                itemCount: controller.res.length,
+                ],
               ),
-            ],
+            ),
           ),
         );
       }),

@@ -25,6 +25,7 @@ class MyGetStorage {
     MyGetStorage.clearByKey(key: MyConfig.keyAccessToken);
     MyGetStorage.clearByKey(key: MyConfig.keyRefreshToken);
     MyGetStorage.clearByKey(key: MyConfig.keyEmail);
+    MyGetStorage.clearByKey(key: MyConfig.keyUUID);
   }
 
   static clearByKey({required String key}) async => _storage.remove(key);

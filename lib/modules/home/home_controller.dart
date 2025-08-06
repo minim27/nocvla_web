@@ -14,6 +14,9 @@ class HomeController extends BaseController {
   var resContent = <HomeContentModel>[];
 
   var isLoading = false.obs;
+  var isLoadingAction = false.obs;
+
+  var txtEmail = TextEditingController();
 
   final List<Color> listColors = [
     MyColors.secondary,
@@ -99,7 +102,11 @@ class HomeController extends BaseController {
     isLoading.value = false;
   }
 
-  void notifyMe() => null;
+  void notifyMe() async {
+    isLoadingAction.value = true;
+    
+    isLoadingAction.value = false;
+  }
 
   void openDetail({required String slug}) =>
       Get.toNamed(MyRoutes.productDetail, parameters: {"slug": slug});

@@ -30,57 +30,65 @@ class MyAddressPage extends GetView<MyAddressController> {
           body: Obx(() {
             if (controller.isLoading.value) return MyLoading();
 
-            return ListView(
-              padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-              children: [
-                MyText(
-                  text: "Address",
-                  fontSize: 24,
-                  fontFamily: MyFonts.libreBaskerville,
+            return Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 1200),
+                child: ListView(
+                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  children: [
+                    MyText(
+                      text: "Address",
+                      fontSize: 24,
+                      fontFamily: MyFonts.libreBaskerville,
+                    ),
+                    SizedBox(height: 24),
+                    MyTextFormField(
+                      controller: controller.txtCity,
+                      label: "Kota/Kabupaten",
+                      labelFontWeight: FontWeight.w500,
+                      keyboardType: TextInputType.streetAddress,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    SizedBox(height: 12),
+                    MyTextFormField(
+                      controller: controller.txtDistrict,
+                      label: "Kecamatan",
+                      labelFontWeight: FontWeight.w500,
+                      keyboardType: TextInputType.streetAddress,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    SizedBox(height: 12),
+                    MyTextFormField(
+                      controller: controller.txtVillage,
+                      label: "Kelurahan",
+                      labelFontWeight: FontWeight.w500,
+                      keyboardType: TextInputType.streetAddress,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    SizedBox(height: 12),
+                    MyTextFormField(
+                      controller: controller.txtAddress,
+                      label: "Alamat Lengkap",
+                      labelFontWeight: FontWeight.w500,
+                      keyboardType: TextInputType.streetAddress,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    SizedBox(height: 12),
+                    MyTextFormField(
+                      controller: controller.txtPostalCode,
+                      label: "Kode Pos",
+                      labelFontWeight: FontWeight.w500,
+                      keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
+                    ),
+                    SizedBox(height: 32),
+                    MyButton(
+                      text: "Update",
+                      onTap: () => controller.updateData(),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 24),
-                MyTextFormField(
-                  controller: controller.txtCity,
-                  label: "Kota/Kabupaten",
-                  labelFontWeight: FontWeight.w500,
-                  keyboardType: TextInputType.streetAddress,
-                  textInputAction: TextInputAction.next,
-                ),
-                SizedBox(height: 12),
-                MyTextFormField(
-                  controller: controller.txtDistrict,
-                  label: "Kecamatan",
-                  labelFontWeight: FontWeight.w500,
-                  keyboardType: TextInputType.streetAddress,
-                  textInputAction: TextInputAction.next,
-                ),
-                SizedBox(height: 12),
-                MyTextFormField(
-                  controller: controller.txtVillage,
-                  label: "Kelurahan",
-                  labelFontWeight: FontWeight.w500,
-                  keyboardType: TextInputType.streetAddress,
-                  textInputAction: TextInputAction.next,
-                ),
-                SizedBox(height: 12),
-                MyTextFormField(
-                  controller: controller.txtAddress,
-                  label: "Alamat Lengkap",
-                  labelFontWeight: FontWeight.w500,
-                  keyboardType: TextInputType.streetAddress,
-                  textInputAction: TextInputAction.next,
-                ),
-                SizedBox(height: 12),
-                MyTextFormField(
-                  controller: controller.txtPostalCode,
-                  label: "Kode Pos",
-                  labelFontWeight: FontWeight.w500,
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
-                ),
-                SizedBox(height: 32),
-                MyButton(text: "Update", onTap: () => controller.updateData()),
-              ],
+              ),
             );
           }),
         ),

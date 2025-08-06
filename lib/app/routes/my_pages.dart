@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:nocvla/app/routes/my_routes.dart';
 import 'package:nocvla/modules/account/address/my_address_binding.dart';
 import 'package:nocvla/modules/account/address/my_address_page.dart';
+import 'package:nocvla/modules/account/auth/login/login_binding.dart';
+import 'package:nocvla/modules/account/auth/login/login_page.dart';
 import 'package:nocvla/modules/account/my_order/detail/my_order_detail_binding.dart';
 import 'package:nocvla/modules/account/my_order/detail/my_order_detail_page.dart';
 import 'package:nocvla/modules/account/my_order/my_order_binding.dart';
@@ -30,6 +32,11 @@ class MyPages {
       name: MyRoutes.dashboard,
       page: () => DashboardPage(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: MyRoutes.login,
+      page: () => LoginPage(),
+      binding: LoginBinding(),
     ),
     GetPage(
       name: MyRoutes.intro,

@@ -30,59 +30,67 @@ class MyPasswordPage extends GetView<MyPasswordController> {
           body: Obx(() {
             if (controller.isLoading.value) return MyLoading();
 
-            return ListView(
-              padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-              children: [
-                MyText(
-                  text: "Password",
-                  fontSize: 24,
-                  fontFamily: MyFonts.libreBaskerville,
+            return Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 1200),
+                child: ListView(
+                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  children: [
+                    MyText(
+                      text: "Password",
+                      fontSize: 24,
+                      fontFamily: MyFonts.libreBaskerville,
+                    ),
+                    SizedBox(height: 24),
+                    Obx(
+                      () => MyTextFormField(
+                        isPassword: true,
+                        obscureText: controller.isOldObscure.value,
+                        controller: controller.txtOldPassword,
+                        label: "Old Password",
+                        labelFontWeight: FontWeight.w500,
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.next,
+                        icPassOnTap: () =>
+                            changeStatusBool(val: controller.isOldObscure),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Obx(
+                      () => MyTextFormField(
+                        isPassword: true,
+                        obscureText: controller.isNewObscure.value,
+                        controller: controller.txtNewPassword,
+                        label: "New Password",
+                        labelFontWeight: FontWeight.w500,
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.next,
+                        icPassOnTap: () =>
+                            changeStatusBool(val: controller.isNewObscure),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Obx(
+                      () => MyTextFormField(
+                        isPassword: true,
+                        obscureText: controller.isConfObscure.value,
+                        controller: controller.txtConfPassword,
+                        label: "Confirm Password",
+                        labelFontWeight: FontWeight.w500,
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.done,
+                        icPassOnTap: () =>
+                            changeStatusBool(val: controller.isConfObscure),
+                      ),
+                    ),
+                    SizedBox(height: 32),
+                    MyButton(
+                      text: "Update",
+                      onTap: () => controller.updateData(),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 24),
-                Obx(
-                  () => MyTextFormField(
-                    isPassword: true,
-                    obscureText: controller.isOldObscure.value,
-                    controller: controller.txtOldPassword,
-                    label: "Old Password",
-                    labelFontWeight: FontWeight.w500,
-                    keyboardType: TextInputType.visiblePassword,
-                    textInputAction: TextInputAction.next,
-                    icPassOnTap: () =>
-                        changeStatusBool(val: controller.isOldObscure),
-                  ),
-                ),
-                SizedBox(height: 12),
-                Obx(
-                  () => MyTextFormField(
-                    isPassword: true,
-                    obscureText: controller.isNewObscure.value,
-                    controller: controller.txtNewPassword,
-                    label: "New Password",
-                    labelFontWeight: FontWeight.w500,
-                    keyboardType: TextInputType.visiblePassword,
-                    textInputAction: TextInputAction.next,
-                    icPassOnTap: () =>
-                        changeStatusBool(val: controller.isNewObscure),
-                  ),
-                ),
-                SizedBox(height: 12),
-                Obx(
-                  () => MyTextFormField(
-                    isPassword: true,
-                    obscureText: controller.isConfObscure.value,
-                    controller: controller.txtConfPassword,
-                    label: "Confirm Password",
-                    labelFontWeight: FontWeight.w500,
-                    keyboardType: TextInputType.visiblePassword,
-                    textInputAction: TextInputAction.done,
-                    icPassOnTap: () =>
-                        changeStatusBool(val: controller.isConfObscure),
-                  ),
-                ),
-                SizedBox(height: 32),
-                MyButton(text: "Update", onTap: () => controller.updateData()),
-              ],
+              ),
             );
           }),
         ),

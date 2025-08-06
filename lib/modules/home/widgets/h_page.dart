@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nocvla/modules/home/home_controller.dart';
 import 'package:nocvla/shared/utils/my_colors.dart';
 import 'package:nocvla/shared/utils/my_fonts.dart';
-import 'package:nocvla/shared/utils/my_input_formatters.dart';
 import 'package:nocvla/shared/widgets/my_button.dart';
 import 'package:nocvla/shared/widgets/my_image.dart';
 import 'package:nocvla/shared/widgets/my_loading.dart';
@@ -135,18 +133,23 @@ class HPageNotifyForm extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // MyTextFormField(
+            //   hintText: "Phone Number (For Get Notification)",
+            //   inputFormatters: [
+            //     NoLeadingZeroTextInputFormatter(),
+            //     FilteringTextInputFormatter.digitsOnly,
+            //     No62TextInputFormatter(),
+            //   ],
+            //   textInputAction: TextInputAction.next,
+            //   prefixIcon: const Padding(
+            //     padding: EdgeInsets.only(top: 15, left: 12),
+            //     child: MyText(text: "+62", color: MyColors.primary),
+            //   ),
+            // ),
             MyTextFormField(
-              hintText: "Phone Number (For Get Notification)",
-              inputFormatters: [
-                NoLeadingZeroTextInputFormatter(),
-                FilteringTextInputFormatter.digitsOnly,
-                No62TextInputFormatter(),
-              ],
-              textInputAction: TextInputAction.next,
-              prefixIcon: const Padding(
-                padding: EdgeInsets.only(top: 15, left: 12),
-                child: MyText(text: "+62", color: MyColors.primary),
-              ),
+              controller: controller.txtEmail,
+              hintText: "Email (For Get Notification)",
+              textInputAction: TextInputAction.done,
             ),
             SizedBox(height: 32),
             MyButton(text: "Notify Me", onTap: () => controller.notifyMe()),

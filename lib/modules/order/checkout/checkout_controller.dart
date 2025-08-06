@@ -141,6 +141,7 @@ class CheckoutController extends BaseController {
         }
 
         Get.offAllNamed(MyRoutes.dashboard);
+        Get.toNamed(MyRoutes.myOrder);
       },
       err: (err) => showErrSnackbar(msg: err),
     );

@@ -6,6 +6,7 @@ import 'package:nocvla/modules/dashboard/dashboard_params.dart';
 import 'package:nocvla/shared/utils/my_audios.dart';
 import 'package:nocvla/shared/utils/my_getstorage.dart';
 import 'package:nocvla/shared/widgets/my_text.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../app/routes/my_routes.dart';
 import '../../data/models/order/cart_model.dart';
@@ -83,7 +84,7 @@ class DashboardController extends BaseController {
   Future<void> tapAccount(context, {required TapDownDetails details}) async {
     var token = await MyGetStorage.getString(key: MyConfig.keyAccessToken);
 
-    if (token == null) return;
+    if (token == null) return Get.toNamed(MyRoutes.login);
 
     RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -113,7 +114,18 @@ class DashboardController extends BaseController {
         ),
         PopupMenuItem(
           child: MyText(text: "Logout"),
-          onTap: () => null,
+          onTap: () async {
+            isLoading.value = true;
+
+            await MyGetStorage.clearAll();
+
+            var newUUID = Uuid().v4();
+            await MyGetStorage.setValue(key: MyConfig.keyUUID, value: newUUID);
+            print("Generate New UUID: $newUUID");
+
+            Get.offAllNamed(MyRoutes.dashboard);
+            isLoading.value = false;
+          },
         ),
       ],
     );
