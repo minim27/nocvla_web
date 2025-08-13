@@ -12,7 +12,7 @@ class ProductDetailModel {
 
   ProductDetailModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    name = json["name"];
+    name = json["alias_name"];
     slug = json["slug"];
     description = json["description"];
     gallery = json["gallery"];
