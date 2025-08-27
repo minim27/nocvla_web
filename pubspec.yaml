@@ -44,6 +44,8 @@ dependencies:
   chucker_flutter: ^1.8.5
   dio: ^5.8.0+1
   uuid: ^4.5.1
+  url_launcher: ^6.3.2
+  flutter_html: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +75,7 @@ flutter:
     - assets/audios/
     - assets/images/
     - assets/icons/
+    - assets/vectors/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

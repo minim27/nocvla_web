@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:nocvla/app/routes/my_routes.dart';
 import 'package:nocvla/shared/utils/my_colors.dart';
 import 'package:nocvla/shared/utils/my_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/my_text.dart';
 
@@ -56,3 +57,5 @@ copy({required String val}) {
 
 formatDate({required dynamic val, bool isString = true}) =>
     DateFormat("dd MMM yyyy").format((isString) ? DateTime.parse(val) : val);
+
+Future<bool> execUri({required String uri}) => launchUrl(Uri.parse(uri));

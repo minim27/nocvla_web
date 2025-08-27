@@ -2,6 +2,7 @@ class MyConfig {
   static const bool prod = false;
   static const bool build = false;
   static const bool isCommingSoon = false;
+  static const bool isECommerce = false;
 
   static const String keyLocale = "locale";
   static const String keyAccessToken = "accessToken";

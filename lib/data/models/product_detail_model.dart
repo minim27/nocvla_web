@@ -1,5 +1,13 @@
 class ProductDetailModel {
-  dynamic id, name, slug, description, gallery, variation;
+  dynamic id,
+      name,
+      slug,
+      description,
+      gallery,
+      urlShopee,
+      urlTiktokshop,
+      urlTokped,
+      variation;
 
   ProductDetailModel({
     this.id,
@@ -7,6 +15,9 @@ class ProductDetailModel {
     this.slug,
     this.description,
     this.gallery,
+    this.urlShopee,
+    this.urlTiktokshop,
+    this.urlTokped,
     this.variation,
   });
 
@@ -16,6 +27,9 @@ class ProductDetailModel {
     slug = json["slug"];
     description = json["description"];
     gallery = json["gallery"];
+    urlShopee = json["url_shopee"];
+    urlTiktokshop = json["url_tiktokshop"];
+    urlTokped = json["url_tokped"];
     variation = json["variation"];
   }
 }
