@@ -38,23 +38,26 @@ class CollectionHeader extends StatelessWidget {
               spacing: 12,
               children: .generate(controller.resType.length, (index) {
                 final items = controller.resType[index];
+                final filterValue = items.value.isEmpty
+                    ? items.value
+                    : items.name;
 
                 return GestureDetector(
-                  onTap: () => controller.selectType(items.value),
+                  onTap: () => controller.selectType(filterValue),
                   child: Obx(
                     () => Container(
                       padding: .symmetric(vertical: 6, horizontal: 12),
                       decoration: BoxDecoration(
-                        color: controller.selectedType.value == items.value
+                        color: controller.selectedType.value == filterValue
                             ? MyColors.white
                             : MyColors.white.withValues(alpha: 0),
                       ),
                       child: MyText(
                         text: items.name,
-                        color: controller.selectedType.value == items.value
+                        color: controller.selectedType.value == filterValue
                             ? MyColors.black
                             : MyColors.white.withValues(alpha: 0.6),
-                        fontWeight: controller.selectedType.value == items.value
+                        fontWeight: controller.selectedType.value == filterValue
                             ? .w500
                             : .w400,
                       ),

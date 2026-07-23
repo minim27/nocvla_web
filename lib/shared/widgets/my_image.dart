@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../utils/my_colors.dart';
+import '../utils/my_images.dart';
 import 'my_loading.dart';
 
 class MyImage extends StatelessWidget {
@@ -28,24 +30,28 @@ class MyImage extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: (image == null)
-          ? MyImage(
-              "https://pixsector.com/cache/517d8be6/av5c8336583e291842624.png",
-            )
+          ? _placeholder()
           : CachedNetworkImage(
-              imageUrl: "${dotenv.env["API_URL"]}/${dotenv.env["API_STORAGE"]}/$image",
+              imageUrl:
+                  "${dotenv.env["API_URL"]}/${dotenv.env["API_STORAGE"]}/$image",
               fit: fit,
               scale: scale,
               alignment: alignment,
               placeholder: (context, url) =>
                   MyLoading(backgroundColor: Colors.transparent),
               errorWidget: (context, url, error) =>
-                  errorWidget ??
-                  MyImage(
-                    "https://pixsector.com/cache/517d8be6/av5c8336583e291842624.png",
-                  ),
+                  errorWidget ?? _placeholder(),
             ),
     );
   }
+
+  Widget _placeholder() => Container(
+    color: MyColors.nativeBlack,
+    child: AspectRatio(
+      aspectRatio: 1,
+      child: MyImageAssets(MyImages.imgNocvla, fit: .contain),
+    ),
+  );
 }
 
 class MyImageAssets extends StatelessWidget {

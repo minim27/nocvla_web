@@ -25,10 +25,10 @@ class CartProducts extends StatelessWidget {
   }
 
   Iterable<Widget> products(CartController controller) {
-    return .generate(controller.res.length, (index) {
-      final items = controller.res[index];
+    return .generate(controller.resItems.length, (index) {
+      final items = controller.resItems[index];
 
-      final total = items["price"] * items["qty"].value;
+      final total = items.price * items.qty.value;
 
       return Row(
         spacing: 12,
@@ -42,29 +42,31 @@ class CartProducts extends StatelessWidget {
                   color: MyColors.black2,
                   width: 80,
                   height: 80,
-                  child: MyImageAssets(items["image"], fit: .cover),
+                  child: MyImage(items.imageUrl, fit: .cover),
                 ),
-                Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    MyText(
-                      text: "${items["label"]} - ${items["color"]}",
-                      fontSize: 16,
-                      fontWeight: .w600,
-                    ),
-                    MyText(
-                      text: "SIZE ${items["size"]}",
-                      fontSize: 16,
-                      color: MyColors.white.withValues(alpha: 0.6),
-                    ),
-                  ],
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    children: [
+                      MyText(
+                        text: "${items.name} - ${items.color}",
+                        fontSize: 16,
+                        fontWeight: .w600,
+                      ),
+                      MyText(
+                        text: "SIZE ${items.size}",
+                        fontSize: 16,
+                        color: MyColors.white.withValues(alpha: 0.6),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
           Expanded(
             child: MyText(
-              text: parsingCurrency(items["price"]),
+              text: parsingCurrency(items.price),
               fontSize: 16,
               textAlign: .center,
             ),
@@ -75,7 +77,7 @@ class CartProducts extends StatelessWidget {
               children: [
                 GestureDetector(
                   behavior: .opaque,
-                  onTap: () => controller.decrease(items["qty"]),
+                  onTap: () => controller.decrease(items.qty),
                   child: Container(
                     alignment: .center,
                     width: 40,
@@ -101,14 +103,14 @@ class CartProducts extends StatelessWidget {
                   child: Obx(
                     () => MyTextFormFieldNoBorder(
                       controller: TextEditingController(
-                        text: items["qty"].value.toString(),
+                        text: items.qty.value.toString(),
                       ),
                     ),
                   ),
                 ),
                 GestureDetector(
                   behavior: .opaque,
-                  onTap: () => controller.increase(items["qty"]),
+                  onTap: () => controller.increase(items.qty),
                   child: Container(
                     alignment: .center,
                     width: 40,
@@ -137,7 +139,11 @@ class CartProducts extends StatelessWidget {
           ),
           SizedBox(
             width: 80,
-            child: Icon(Icons.delete_forever_outlined, color: MyColors.white),
+            child: GestureDetector(
+              behavior: .opaque,
+              onTap: () => controller.removeItem(items.productId, items.size),
+              child: Icon(Icons.delete_forever_outlined, color: MyColors.white),
+            ),
           ),
         ],
       );

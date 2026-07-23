@@ -45,6 +45,21 @@ class CartSummary extends StatelessWidget {
                 MyText(text: "PAID BY BUYER"),
               ],
             ),
+            Obx(() {
+              controller.refreshSubtotal.value;
+
+              if (controller.appliedCode.value == null) return SizedBox();
+
+              return Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  MyText(text: "DISCOUNT (8%)"),
+                  MyText(
+                    text: "- ${parsingCurrency(controller.discountAmount)}",
+                  ),
+                ],
+              );
+            }),
             MyDivider(),
             Row(
               mainAxisAlignment: .spaceBetween,
@@ -54,7 +69,7 @@ class CartSummary extends StatelessWidget {
                   controller.refreshSubtotal.value;
 
                   return MyText(
-                    text: parsingCurrency(controller.subTotal),
+                    text: parsingCurrency(controller.total),
                     fontWeight: .w600,
                     fontSize: 18,
                   );

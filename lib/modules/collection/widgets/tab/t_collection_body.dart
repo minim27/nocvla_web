@@ -41,7 +41,7 @@ class TCollectionBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
-                  if (items.imageUrl != null) MyImage(items.imageUrl),
+                  MyImage(items.imageUrl),
                   Padding(
                     padding: .all(24),
                     child: Column(
@@ -51,6 +51,8 @@ class TCollectionBody extends StatelessWidget {
                           text: items.name,
                           fontSize: 20,
                           fontWeight: .w600,
+                          maxLines: 2,
+                          overflow: .ellipsis,
                         ),
                         MyText(
                           text: "— ${items.color}",

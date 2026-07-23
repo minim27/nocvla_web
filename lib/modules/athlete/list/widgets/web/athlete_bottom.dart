@@ -5,10 +5,10 @@ import 'package:nocvla_web/shared/utils/my_fonts.dart';
 import 'package:nocvla_web/shared/widgets/my_button.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 
-import '../../../../shared/utils/my_dummies.dart';
-import '../../../../shared/utils/my_linears.dart';
-import '../../../../shared/widgets/my_divider.dart';
-import '../../../../shared/widgets/my_image.dart';
+import '../../../../../shared/utils/my_dummies.dart';
+import '../../../../../shared/utils/my_linears.dart';
+import '../../../../../shared/widgets/my_divider.dart';
+import '../../../../../shared/widgets/my_image.dart';
 import '../../athlete_controller.dart';
 
 class AthleteBottom extends StatelessWidget {

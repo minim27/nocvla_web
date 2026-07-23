@@ -17,6 +17,8 @@ class MHomeFeatured extends StatelessWidget {
     return Obx(() {
       if (controller.isLoadingFeatured.value) return MyLoading();
 
+      if (controller.resFeatured.isEmpty) return SizedBox();
+
       return Padding(
         padding: .fromLTRB(24, 90, 24, 140),
         child: Column(
@@ -30,14 +32,14 @@ class MHomeFeatured extends StatelessWidget {
                   fontSize: 32,
                   fontWeight: .w700,
                 ),
-                Opacity(
-                  opacity: 0.6,
-                  child: MyText(
-                    text: "VIEW ALL",
-                    fontSize: 16,
-                    color: MyColors.white2,
-                  ),
-                ),
+                // Opacity(
+                //   opacity: 0.6,
+                //   child: MyText(
+                //     text: "VIEW ALL",
+                //     fontSize: 16,
+                //     color: MyColors.white2,
+                //   ),
+                // ),
               ],
             ),
             GridView.builder(
@@ -60,7 +62,7 @@ class MHomeFeatured extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
-                        if (items.imageUrl != null) MyImage(items.imageUrl),
+                        MyImage(items.imageUrl),
                         Padding(
                           padding: .all(20),
                           child: Column(
@@ -70,6 +72,8 @@ class MHomeFeatured extends StatelessWidget {
                                 text: items.name,
                                 fontSize: 16,
                                 fontWeight: .w600,
+                                maxLines: 2,
+                                overflow: .ellipsis,
                               ),
                               MyText(
                                 text: "— ${items.color}",

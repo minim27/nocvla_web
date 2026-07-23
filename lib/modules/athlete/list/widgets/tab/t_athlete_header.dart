@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:nocvla_web/shared/utils/my_fonts.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 
-import '../../../../shared/utils/my_colors.dart';
+import '../../../../../shared/utils/my_colors.dart';
 
-class AthleteHeader extends StatelessWidget {
-  const AthleteHeader({super.key});
+class TAthleteHeader extends StatelessWidget {
+  const TAthleteHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

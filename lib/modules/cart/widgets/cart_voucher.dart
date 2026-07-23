@@ -33,11 +33,14 @@ class CartVoucher extends StatelessWidget {
             ),
             Padding(
               padding: .only(bottom: 2),
-              child: MyButton(
-                "APPLY",
-                width: 120,
-                height: 52,
-                onTap: () => null,
+              child: Obx(
+                () => MyButton(
+                  "APPLY",
+                  width: 120,
+                  height: 52,
+                  enable: !controller.isValidatingCode.value,
+                  onTap: () => controller.applyCode(),
+                ),
               ),
             ),
           ],

@@ -6,6 +6,7 @@ import 'package:nocvla_web/shared/widgets/my_image.dart';
 import '../../../../app/routes/my_routes.dart';
 import '../../../../shared/utils/my_colors.dart';
 import '../../../../shared/utils/my_fonts.dart';
+import '../../../../shared/utils/my_utility.dart';
 import '../../../../shared/widgets/my_text.dart';
 
 class MNavbar extends StatelessWidget {
@@ -14,6 +15,7 @@ class MNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentRoute = Get.currentRoute;
+    final cartCount = getCartCount();
 
     return Container(
       padding: .symmetric(horizontal: 40),
@@ -73,30 +75,31 @@ class MNavbar extends StatelessWidget {
             ),
             SizedBox(width: 16),
             GestureDetector(
-              onTap: () => null,
+              onTap: () => Get.toNamed(MyRoutes.cart),
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
                   MyImageAssets(MyIcons.icCart),
-                  Positioned(
-                    top: -6,
-                    right: -8,
-                    child: Container(
-                      width: 18,
-                      height: 18,
-                      alignment: .center,
-                      decoration: BoxDecoration(
-                        color: MyColors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: MyText(
-                        text: "2",
-                        fontSize: 10,
-                        color: MyColors.black,
-                        fontWeight: .w600,
+                  if (cartCount > 0)
+                    Positioned(
+                      top: -6,
+                      right: -8,
+                      child: Container(
+                        width: 18,
+                        height: 18,
+                        alignment: .center,
+                        decoration: BoxDecoration(
+                          color: MyColors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: MyText(
+                          text: "$cartCount",
+                          fontSize: 10,
+                          color: MyColors.black,
+                          fontWeight: .w600,
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),

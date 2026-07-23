@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:nocvla_web/shared/utils/my_fonts.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 
-import '../../../../shared/utils/my_colors.dart';
+import '../../../../../shared/utils/my_colors.dart';
 
-class MAthleteHeader extends StatelessWidget {
-  const MAthleteHeader({super.key});
+class AthleteHeader extends StatelessWidget {
+  const AthleteHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: .fromLTRB(24, 80, 24, 0),
+      padding: .fromLTRB(40, 80, 40, 0),
       child: Column(
         crossAxisAlignment: .start,
         children: [

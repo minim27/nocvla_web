@@ -15,10 +15,12 @@ class ProductDetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<ProductDetailController>();
     final items = controller.res;
+    final images = items["images"] as List;
 
     return Padding(
       padding: .all(40),
-      child: Row(crossAxisAlignment: .start,
+      child: Row(
+        crossAxisAlignment: .start,
         spacing: 42,
         children: [
           Row(
@@ -29,8 +31,8 @@ class ProductDetailHeader extends StatelessWidget {
                 width: 100,
                 child: Column(
                   spacing: 12,
-                  children: .generate(items["images"].length, (index) {
-                    final images = items["images"][index];
+                  children: .generate(images.length, (index) {
+                    final image = images[index];
 
                     return GestureDetector(
                       onTap: () => controller.selectImage(index),
@@ -42,7 +44,8 @@ class ProductDetailHeader extends StatelessWidget {
                           ),
                         ),
                         width: 90,
-                        child: MyImage(images),
+                        height: 90,
+                        child: MyImage(image),
                       ),
                     );
                   }),
@@ -54,11 +57,12 @@ class ProductDetailHeader extends StatelessWidget {
                   aspectRatio: 4 / 5,
                   child: Container(
                     color: MyColors.black2,
-                    child: Obx(
-                      () => MyImage(
-                        items["images"][controller.selectedImage.value],
-                      ),
-                    ),
+                    child: Obx(() {
+                      final selectedImage = controller.selectedImage.value;
+                      return MyImage(
+                        images.isEmpty ? null : images[selectedImage],
+                      );
+                    }),
                   ),
                 ),
               ),
@@ -75,8 +79,8 @@ class ProductDetailHeader extends StatelessWidget {
                 Column(
                   spacing: 16,
                   crossAxisAlignment: .start,
-                  children: .generate(items["features"].length, (index) {
-                    final features = items["features"][index];
+                  children: .generate(controller.features.length, (index) {
+                    final features = controller.features[index];
 
                     return Row(
                       spacing: 12,

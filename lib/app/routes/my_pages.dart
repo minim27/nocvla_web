@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:nocvla_web/modules/about/about_binding.dart';
 import 'package:nocvla_web/modules/about/about_page.dart';
-import 'package:nocvla_web/modules/athlete/athlete_binding.dart';
-import 'package:nocvla_web/modules/athlete/athlete_page.dart';
+import 'package:nocvla_web/modules/athlete/detail/athlete_detail_binding.dart';
+import 'package:nocvla_web/modules/athlete/detail/athlete_detail_page.dart';
+import 'package:nocvla_web/modules/athlete/list/athlete_binding.dart';
+import 'package:nocvla_web/modules/athlete/list/athlete_page.dart';
 import 'package:nocvla_web/modules/cart/cart_binding.dart';
 import 'package:nocvla_web/modules/cart/cart_page.dart';
 import 'package:nocvla_web/modules/checkout/checkout_binding.dart';
@@ -41,6 +43,11 @@ class MyPages {
       name: MyRoutes.athlete,
       page: () => AthletePage(),
       binding: AthleteBinding(),
+    ),
+    GetPage(
+      name: MyRoutes.athleteDetail,
+      page: () => AthleteDetailPage(),
+      binding: AthleteDetailBinding(),
     ),
     GetPage(name: MyRoutes.faq, page: () => FAQPage(), binding: FAQBinding()),
     GetPage(

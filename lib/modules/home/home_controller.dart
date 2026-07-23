@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
+import 'package:nocvla_web/data/models/collections/list_products_model.dart';
 import 'package:nocvla_web/data/models/home/banner_model.dart';
-import 'package:nocvla_web/data/models/home/featured_products_model.dart';
 import 'package:nocvla_web/shared/utils/my_icons.dart';
 import 'package:nocvla_web/shared/utils/my_utility.dart';
 
@@ -9,7 +9,7 @@ import '../../app/routes/my_routes.dart';
 
 class HomeController extends BaseController {
   final resBanners = <BannerModel>[].obs;
-  final resFeatured = <FeaturedProductsModel>[].obs;
+  final resFeatured = <ListProductsModel>[].obs;
 
   final resBenefits = <String, dynamic>{
     "benefits1": [
@@ -87,8 +87,28 @@ class HomeController extends BaseController {
     req.responseHandler(
       res: (res) {
         resFeatured.value = (res as List).map((e) {
-          // print(e);
-          return FeaturedProductsModel.fromJson(e);
+          final images = e["images"] as List;
+          final mainImage = images.isEmpty
+              ? null
+              : images.firstWhere(
+                  (img) => img["is_main"] == true,
+                  orElse: () => images.first,
+                );
+
+          final prices = (e["stock"] as List)
+              .map((s) => s["price"] as int)
+              .toList();
+          final minPrice = prices.isEmpty
+              ? 0
+              : prices.reduce((a, b) => a < b ? a : b);
+
+          return ListProductsModel.fromJson({
+            "id": e["id"],
+            "name": e["name"],
+            "image_url": mainImage?["image_url"],
+            "color": e["color"],
+            "price": minPrice,
+          });
         }).toList();
       },
       err: (err) => showMyErrAPISnackbar(err),

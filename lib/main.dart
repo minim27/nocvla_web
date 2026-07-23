@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app/routes/my_pages.dart';
@@ -11,6 +12,7 @@ import 'shared/utils/my_colors.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await GetStorage.init();
 
   await Supabase.initialize(
     url: dotenv.env["API_URL"]!,
@@ -40,7 +42,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: MyRoutes.home,
       getPages: MyPages.routes,
-      routingCallback: (_) => Get.appUpdate(),
+      routingCallback: (_) =>
+          WidgetsBinding.instance.addPostFrameCallback((_) => Get.appUpdate()),
       builder: (context, child) => MainLayout(child: child!),
     );
   }

@@ -14,6 +14,12 @@ class HomeRepo extends BaseRepository {
     );
   }
 
-  Future<ResponseHandler<dynamic>> featuredProducts() async =>
-      ResponseHandler(supabase.from("v_product_features").select());
+  Future<ResponseHandler<dynamic>> featuredProducts() async => ResponseHandler(
+    supabase
+        .from("m_products")
+        .select(
+          "id, name, color, images:m_product_images(image_url, is_main), stock:m_product_stock(price)",
+        )
+        .eq("is_featured", true),
+  );
 }
