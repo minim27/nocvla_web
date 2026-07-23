@@ -1,0 +1,34 @@
+class MyIcons {
+  static const String icBag = "assets/icons/ic_bag.png";
+  static const String icBreathable = "assets/icons/ic_breathable.png";
+  static const String icCart = "assets/icons/ic_cart.png";
+  static const String icComfort = "assets/icons/ic_comfort.png";
+  static const String icCommunity = "assets/icons/ic_community.png";
+  static const String icDurable = "assets/icons/ic_durable.png";
+  static const String icEmail = "assets/icons/ic_email.png";
+  static const String icEmail2 = "assets/icons/ic_email2.png";
+  static const String icFit = "assets/icons/ic_fit.png";
+  static const String icFocus = "assets/icons/ic_focus.png";
+  static const String icForward = "assets/icons/ic_forward.png";
+  static const String icInstagram = "assets/icons/ic_instagram.png";
+  static const String icLink = "assets/icons/ic_link.png";
+  static const String icMission = "assets/icons/ic_mission.png";
+  static const String icPayment = "assets/icons/ic_payment.png";
+  static const String icPerformance = "assets/icons/ic_performance.png";
+  static const String icQuickDry = "assets/icons/ic_quick_dry.png";
+  static const String icProfile = "assets/icons/ic_profile.png";
+  static const String icReturns = "assets/icons/ic_returns.png";
+  static const String icSearch = "assets/icons/ic_search.png";
+  static const String icShopee = "assets/icons/ic_shopee.png";
+  static const String icShipping = "assets/icons/ic_shipping.png";
+  static const String icShirt = "assets/icons/ic_shirt.png";
+  static const String icStretch = "assets/icons/ic_stretch.png";
+  static const String icSupport = "assets/icons/ic_support.png";
+  static const String icTokped = "assets/icons/ic_tokped.png";
+  static const String icTikTok = "assets/icons/ic_tiktok.png";
+  static const String icTikTok2 = "assets/icons/ic_tiktok.webp";
+  static const String icValues = "assets/icons/ic_values.png";
+  static const String icVision = "assets/icons/ic_vision.png";
+  static const String icWhatsapp = "assets/icons/ic_whatsapp.png";
+  static const String icUp = "assets/icons/ic_up.png";
+}

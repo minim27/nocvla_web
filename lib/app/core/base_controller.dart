@@ -1,0 +1,8 @@
+import 'package:get/get.dart';
+import 'package:nocvla_web/data/repositories/collections_repo.dart';
+import 'package:nocvla_web/data/repositories/home_repo.dart';
+
+class BaseController extends GetxController {
+  HomeRepo homeRepo = HomeRepo();
+  CollectionsRepo collectionsRepo = CollectionsRepo();
+}
