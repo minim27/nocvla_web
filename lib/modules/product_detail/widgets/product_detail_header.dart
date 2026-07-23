@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:get/get.dart';
 import 'package:nocvla_web/modules/product_detail/product_detail_controller.dart';
 import 'package:nocvla_web/shared/utils/my_colors.dart';
@@ -6,6 +9,7 @@ import 'package:nocvla_web/shared/widgets/my_image.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 import 'package:nocvla_web/shared/widgets/my_text_form_field.dart';
 
+import '../../../shared/utils/my_fonts.dart';
 import '../../../shared/utils/my_parsing_currency.dart';
 
 class ProductDetailHeader extends StatelessWidget {
@@ -76,28 +80,28 @@ class ProductDetailHeader extends StatelessWidget {
                 identity(controller, items),
                 size(controller),
                 qty(controller),
-                Column(
-                  spacing: 16,
-                  crossAxisAlignment: .start,
-                  children: .generate(controller.features.length, (index) {
-                    final features = controller.features[index];
+                // Column(
+                //   spacing: 16,
+                //   crossAxisAlignment: .start,
+                //   children: .generate(controller.features.length, (index) {
+                //     final features = controller.features[index];
 
-                    return Row(
-                      spacing: 12,
-                      children: [
-                        SizedBox(
-                          width: 28,
-                          height: 28,
-                          child: MyImageAssets(features["icon"], fit: .cover),
-                        ),
-                        MyText(
-                          text: features["label"],
-                          color: MyColors.white.withValues(alpha: 0.6),
-                        ),
-                      ],
-                    );
-                  }),
-                ),
+                //     return Row(
+                //       spacing: 12,
+                //       children: [
+                //         SizedBox(
+                //           width: 28,
+                //           height: 28,
+                //           child: MyImageAssets(features["icon"], fit: .cover),
+                //         ),
+                //         MyText(
+                //           text: features["label"],
+                //           color: MyColors.white.withValues(alpha: 0.6),
+                //         ),
+                //       ],
+                //     );
+                //   }),
+                // ),
               ],
             ),
           ),
@@ -110,6 +114,15 @@ class ProductDetailHeader extends StatelessWidget {
     ProductDetailController controller,
     Map<String, dynamic> items,
   ) {
+    final description = items["description"];
+    final descriptionController = quill.QuillController(
+      document: description == null
+          ? quill.Document()
+          : quill.Document.fromJson(jsonDecode(description)),
+      selection: const TextSelection.collapsed(offset: 0),
+      readOnly: true,
+    );
+
     return Obx(
       () => Column(
         spacing: 24,
@@ -118,11 +131,7 @@ class ProductDetailHeader extends StatelessWidget {
           Column(
             crossAxisAlignment: .start,
             children: [
-              MyText(
-                text: "${items["name"]} - ${items["color"]}",
-                fontSize: 20,
-                fontWeight: .w600,
-              ),
+              MyText(text: items["name"], fontSize: 20, fontWeight: .w600),
               MyText(
                 text: "- ${items["color"]}",
                 fontSize: 24,
@@ -136,10 +145,26 @@ class ProductDetailHeader extends StatelessWidget {
               fontSize: 18,
               fontWeight: .w600,
             ),
-          MyText(
-            text: items["description"],
-            fontSize: 16,
-            color: MyColors.white2,
+          DefaultTextStyle(
+            style: TextStyle(
+              color: MyColors.white2,
+              fontSize: 16,
+              fontFamily: MyFonts.stackSansHeadline,
+            ),
+            child: IgnorePointer(
+              child: quill.QuillEditor(
+                controller: descriptionController,
+                focusNode: FocusNode(),
+                scrollController: ScrollController(),
+                config: const quill.QuillEditorConfig(
+                  scrollable: false,
+                  padding: EdgeInsets.zero,
+                  autoFocus: false,
+                  expands: false,
+                  enableInteractiveSelection: false,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -225,32 +250,36 @@ class ProductDetailHeader extends StatelessWidget {
           spacing: 6,
           children: .generate(controller.res["stock"].length, (index) {
             final items = controller.res["stock"][index];
+            final isOutOfStock = items["qty"] <= 0;
 
             return GestureDetector(
-              onTap: () => controller.selectStock(items),
-              child: Obx(
-                () => Container(
-                  alignment: .center,
-                  width: 40,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: controller.selectedStock.value == items
-                        ? MyColors.white
-                        : MyColors.white.withValues(alpha: 0),
-                    border: .all(
+              onTap: isOutOfStock ? null : () => controller.selectStock(items),
+              child: Opacity(
+                opacity: isOutOfStock ? 0.3 : 1,
+                child: Obx(
+                  () => Container(
+                    alignment: .center,
+                    width: 40,
+                    height: 45,
+                    decoration: BoxDecoration(
                       color: controller.selectedStock.value == items
                           ? MyColors.white
-                          : MyColors.white.withValues(alpha: 0.1),
+                          : MyColors.white.withValues(alpha: 0),
+                      border: .all(
+                        color: controller.selectedStock.value == items
+                            ? MyColors.white
+                            : MyColors.white.withValues(alpha: 0.1),
+                      ),
                     ),
-                  ),
-                  child: MyText(
-                    text: items["size"],
-                    color: controller.selectedStock.value == items
-                        ? MyColors.black
-                        : MyColors.white.withValues(alpha: 0.6),
-                    fontWeight: controller.selectedStock.value == items
-                        ? .w500
-                        : .w400,
+                    child: MyText(
+                      text: items["size"],
+                      color: controller.selectedStock.value == items
+                          ? MyColors.black
+                          : MyColors.white.withValues(alpha: 0.6),
+                      fontWeight: controller.selectedStock.value == items
+                          ? .w500
+                          : .w400,
+                    ),
                   ),
                 ),
               ),

@@ -88,12 +88,7 @@ class HomeController extends BaseController {
       res: (res) {
         resFeatured.value = (res as List).map((e) {
           final images = e["images"] as List;
-          final mainImage = images.isEmpty
-              ? null
-              : images.firstWhere(
-                  (img) => img["is_main"] == true,
-                  orElse: () => images.first,
-                );
+          final mainImage = images.isEmpty ? null : images.first;
 
           final prices = (e["stock"] as List)
               .map((s) => s["price"] as int)

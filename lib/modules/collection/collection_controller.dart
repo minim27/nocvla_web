@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nocvla_web/app/routes/my_routes.dart';
 import 'package:nocvla_web/data/models/collections/list_products_model.dart';
@@ -11,7 +12,9 @@ class CollectionController extends BaseController {
   final resType = <ProductTypeModel>[].obs;
   final resProducts = <ListProductsModel>[].obs;
 
-  final txtEmail = TextEditingController();
+  final txtEmail = TextEditingController(
+    text: "https://discord.gg/PReNjegU9",
+  );
 
   final selectedType = "".obs;
 
@@ -48,8 +51,24 @@ class CollectionController extends BaseController {
     req.responseHandler(
       res: (res) {
         resProducts.value = (res as List).map((e) {
-          // print(e);
-          return ListProductsModel.fromJson(e);
+          final images = e["images"] as List;
+          final mainImage = images.isEmpty ? null : images.first;
+
+          final prices = (e["stock"] as List)
+              .map((s) => s["price"] as int)
+              .toList();
+          final minPrice = prices.isEmpty
+              ? 0
+              : prices.reduce((a, b) => a < b ? a : b);
+
+          return ListProductsModel.fromJson({
+            "id": e["id"],
+            "name": e["name"],
+            "image_url": mainImage?["image_url"],
+            "color": e["color"],
+            "type": e["product_type"]?["name"],
+            "price": minPrice,
+          });
         }).toList();
       },
       err: (err) => showMyErrAPISnackbar(err),
@@ -65,4 +84,11 @@ class CollectionController extends BaseController {
 
   void openDetail(String id) =>
       Get.toNamed(MyRoutes.productDetail, parameters: {"id": id});
+
+  void copyDiscordLink() {
+    Clipboard.setData(ClipboardData(text: txtEmail.text));
+    Get.snackbar("Disalin", "Link Discord disalin");
+  }
+
+  void openDiscordLink() => execUri(txtEmail.text);
 }

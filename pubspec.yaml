@@ -42,7 +42,7 @@ dependencies:
   supabase_flutter: ^2.14.2
   flutter_dotenv: ^6.0.1
   get_storage: ^2.1.1
-
+  flutter_quill: ^11.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

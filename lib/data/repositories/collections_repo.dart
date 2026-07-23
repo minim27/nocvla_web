@@ -6,11 +6,20 @@ class CollectionsRepo extends BaseRepository {
   );
 
   Future<ResponseHandler<dynamic>> listProducts(String type) async {
-    final query = type.isEmpty
-        ? supabase.from("v_products").select()
-        : supabase.from("v_products").select().eq("type", type);
+    final base = supabase.from("m_products").select(
+      "id, name, color, product_type:m_product_type!inner(name), "
+      "images:m_product_images(image_url, sort_order), "
+      "stock:m_product_stock(price)",
+    );
 
-    return ResponseHandler(query.order("name", ascending: true));
+    final query = type.isEmpty ? base : base.eq("product_type.name", type);
+
+    return ResponseHandler(
+      query
+          .order("sort_order", referencedTable: "images", ascending: true)
+          .order("name", ascending: true)
+          .order("color", ascending: true),
+    );
   }
 
   Future<ResponseHandler<dynamic>> getProduct(String id) async =>

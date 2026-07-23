@@ -17,7 +17,7 @@ class ResponseHandler<T> {
       final response = await _response;
       res(response);
     } catch (e) {
-      err(e.toString());
+      err({"message": e.toString()});
     }
   }
 }

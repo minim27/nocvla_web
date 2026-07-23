@@ -13,8 +13,17 @@ class AthleteRepo extends BaseRepository {
       ResponseHandler(
         supabase
             .from("t_athlete")
-            .select("created_at, v_products(*)")
+            .select(
+              "created_at, m_products(id, name, color, "
+              "images:m_product_images(image_url, sort_order), "
+              "stock:m_product_stock(price))",
+            )
             .eq("athlete_id", athleteId)
+            .order(
+              "sort_order",
+              referencedTable: "m_products.images",
+              ascending: true,
+            )
             .order("created_at", ascending: false),
       );
 

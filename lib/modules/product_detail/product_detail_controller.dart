@@ -74,7 +74,10 @@ class ProductDetailController extends BaseController {
 
   void selectImage(int index) => selectedImage.value = index;
 
-  void selectStock(Map<String, dynamic> value) => selectedStock.value = value;
+  void selectStock(Map<String, dynamic> value) {
+    selectedStock.value = value;
+    qty.value = 0;
+  }
 
   void decrease() => qty.value > 0 ? qty.value-- : null;
 
