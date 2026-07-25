@@ -86,23 +86,27 @@ class HomeController extends BaseController {
     final req = await homeRepo.featuredProducts();
     req.responseHandler(
       res: (res) {
-        resFeatured.value = (res as List).map((e) {
-          final images = e["images"] as List;
-          final mainImage = images.isEmpty ? null : images.first;
+        resFeatured.value = (res as List).expand((e) {
+          final colors = (e["colors"] as List?) ?? [];
 
-          final prices = (e["stock"] as List)
-              .map((s) => s["price"] as int)
-              .toList();
-          final minPrice = prices.isEmpty
-              ? 0
-              : prices.reduce((a, b) => a < b ? a : b);
+          return colors.map((c) {
+            final images = c["images"] as List;
+            final mainImage = images.isEmpty ? null : images.first;
 
-          return ListProductsModel.fromJson({
-            "id": e["id"],
-            "name": e["name"],
-            "image_url": mainImage?["image_url"],
-            "color": e["color"],
-            "price": minPrice,
+            final prices = (c["stock"] as List)
+                .map((s) => s["price"] as int)
+                .toList();
+            final minPrice = prices.isEmpty
+                ? 0
+                : prices.reduce((a, b) => a < b ? a : b);
+
+            return ListProductsModel.fromJson({
+              "id": c["id"],
+              "name": e["name"],
+              "image_url": mainImage?["image_url"],
+              "color": c["name"],
+              "price": minPrice,
+            });
           });
         }).toList();
       },

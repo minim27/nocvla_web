@@ -42,14 +42,16 @@ class ProductDetailController extends BaseController {
     final req = await collectionsRepo.getProduct(id.value!);
     req.responseHandler(
       res: (data) {
+        final product = data["product"];
+
         res.value = {
           "id": data["id"],
           "images": (data["images"] as List)
               .map((e) => e["image_url"])
               .toList(),
-          "name": data["name"],
-          "description": data["description"],
-          "color": data["color"],
+          "name": product["name"],
+          "description": product["description"],
+          "color": data["name"],
           "stock": (data["stock"] as List)
               .map(
                 (e) => {
@@ -60,9 +62,9 @@ class ProductDetailController extends BaseController {
               )
               .toList(),
           "links": {
-            "shopee": data["shopee_url"],
-            "tiktok": data["tiktok_url"],
-            "tokopedia": data["tokopedia_url"],
+            "shopee": product["shopee_url"],
+            "tiktok": product["tiktok_url"],
+            "tokopedia": product["tokopedia_url"],
           },
         };
       },

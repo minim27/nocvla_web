@@ -43,24 +43,28 @@ class AthleteDetailController extends BaseController {
     final req = await athleteRepo.assignedProducts(id.value!);
     req.responseHandler(
       res: (res) {
-        resProducts.value = (res as List).map((e) {
-          final product = e["m_products"];
-          final images = product["images"] as List;
-          final mainImage = images.isEmpty ? null : images.first;
+        resProducts.value = (res as List).expand((e) {
+          final product = e["product"];
+          final colors = (product["colors"] as List?) ?? [];
 
-          final prices = (product["stock"] as List)
-              .map((s) => s["price"] as int)
-              .toList();
-          final minPrice = prices.isEmpty
-              ? 0
-              : prices.reduce((a, b) => a < b ? a : b);
+          return colors.map((c) {
+            final images = c["images"] as List;
+            final mainImage = images.isEmpty ? null : images.first;
 
-          return ListProductsModel.fromJson({
-            "id": product["id"],
-            "name": product["name"],
-            "image_url": mainImage?["image_url"],
-            "color": product["color"],
-            "price": minPrice,
+            final prices = (c["stock"] as List)
+                .map((s) => s["price"] as int)
+                .toList();
+            final minPrice = prices.isEmpty
+                ? 0
+                : prices.reduce((a, b) => a < b ? a : b);
+
+            return ListProductsModel.fromJson({
+              "id": c["id"],
+              "name": product["name"],
+              "image_url": mainImage?["image_url"],
+              "color": c["name"],
+              "price": minPrice,
+            });
           });
         }).toList();
       },

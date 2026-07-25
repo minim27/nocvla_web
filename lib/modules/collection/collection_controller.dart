@@ -12,9 +12,7 @@ class CollectionController extends BaseController {
   final resType = <ProductTypeModel>[].obs;
   final resProducts = <ListProductsModel>[].obs;
 
-  final txtEmail = TextEditingController(
-    text: "https://discord.gg/PReNjegU9",
-  );
+  final txtEmail = TextEditingController(text: "https://discord.gg/PReNjegU9");
 
   final selectedType = "".obs;
 
@@ -50,24 +48,28 @@ class CollectionController extends BaseController {
     final req = await collectionsRepo.listProducts(selectedType.value);
     req.responseHandler(
       res: (res) {
-        resProducts.value = (res as List).map((e) {
-          final images = e["images"] as List;
-          final mainImage = images.isEmpty ? null : images.first;
+        resProducts.value = (res as List).expand((e) {
+          final colors = (e["colors"] as List?) ?? [];
 
-          final prices = (e["stock"] as List)
-              .map((s) => s["price"] as int)
-              .toList();
-          final minPrice = prices.isEmpty
-              ? 0
-              : prices.reduce((a, b) => a < b ? a : b);
+          return colors.map((c) {
+            final images = c["images"] as List;
+            final mainImage = images.isEmpty ? null : images.first;
 
-          return ListProductsModel.fromJson({
-            "id": e["id"],
-            "name": e["name"],
-            "image_url": mainImage?["image_url"],
-            "color": e["color"],
-            "type": e["product_type"]?["name"],
-            "price": minPrice,
+            final prices = (c["stock"] as List)
+                .map((s) => s["price"] as int)
+                .toList();
+            final minPrice = prices.isEmpty
+                ? 0
+                : prices.reduce((a, b) => a < b ? a : b);
+
+            return ListProductsModel.fromJson({
+              "id": c["id"],
+              "name": e["name"],
+              "image_url": mainImage?["image_url"],
+              "color": c["name"],
+              "type": e["product_type"]?["name"],
+              "price": minPrice,
+            });
           });
         }).toList();
       },

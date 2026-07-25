@@ -28,7 +28,7 @@ class CollectionBody extends StatelessWidget {
           crossAxisCount: 4,
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          childAspectRatio: 1 / 1.6,
+          childAspectRatio: 1 / 1.5,
         ),
         itemCount: controller.resProducts.length,
         itemBuilder: (context, index) {

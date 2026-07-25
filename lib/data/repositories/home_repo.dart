@@ -18,11 +18,13 @@ class HomeRepo extends BaseRepository {
     supabase
         .from("m_products")
         .select(
-          "id, name, color, images:m_product_images(image_url, sort_order), stock:m_product_stock(price)",
+          "id, name, colors:m_product_color(id, name, "
+          "images:m_product_images(image_url, sort_order), "
+          "stock:m_product_stock(price))",
         )
         .eq("is_featured", true)
-        .order("sort_order", referencedTable: "images", ascending: true)
-        .order("name", ascending: true)
-        .order("color", ascending: true),
+        .order("sort_order", referencedTable: "colors.images", ascending: true)
+        .order("name", referencedTable: "colors", ascending: true)
+        .order("name", ascending: true),
   );
 }
