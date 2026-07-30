@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nocvla_web/app/routes/my_routes.dart';
 import 'package:nocvla_web/data/models/athlete/athlete_model.dart';
@@ -64,6 +65,9 @@ class AthleteDetailController extends BaseController {
               "image_url": mainImage?["image_url"],
               "color": c["name"],
               "price": minPrice,
+              "link_aff_shopee": e["link_aff_shopee"],
+              "link_aff_tktkshop": e["link_aff_tktkshop"],
+              "link_aff_tokped": e["link_aff_tokped"],
             });
           });
         }).toList();
@@ -74,6 +78,19 @@ class AthleteDetailController extends BaseController {
     isLoadingProducts.value = false;
   }
 
-  void openDetail(String id) =>
-      Get.toNamed(MyRoutes.productDetail, parameters: {"id": id});
+  void openDetail(ListProductsModel item) => Get.toNamed(
+    MyRoutes.productDetail,
+    parameters: {"id": item.id},
+    arguments: {
+      "code": resAthlete.value?.code,
+      "shopee": item.linkAffShopee,
+      "tiktok": item.linkAffTktkshop,
+      "tokopedia": item.linkAffTokped,
+    },
+  );
+
+  void copyCode() {
+    Clipboard.setData(ClipboardData(text: resAthlete.value?.code ?? ""));
+    Get.snackbar("Disalin", "Code disalin");
+  }
 }

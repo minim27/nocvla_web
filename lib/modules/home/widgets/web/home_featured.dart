@@ -62,7 +62,10 @@ class HomeFeatured extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
-                        MyImage(items.imageUrl),
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: MyImage(items.imageUrl),
+                        ),
                         Padding(
                           padding: .all(20),
                           child: Column(

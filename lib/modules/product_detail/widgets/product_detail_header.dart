@@ -65,6 +65,9 @@ class ProductDetailHeader extends StatelessWidget {
                       final selectedImage = controller.selectedImage.value;
                       return MyImage(
                         images.isEmpty ? null : images[selectedImage],
+                        onTap: images.isEmpty
+                            ? null
+                            : () => controller.openImageViewer(),
                       );
                     }),
                   ),

@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nocvla_web/app/routes/my_routes.dart';
 import 'package:nocvla_web/app/services/my_config.dart';
 import 'package:nocvla_web/data/models/cart/cart_item_model.dart';
+import 'package:nocvla_web/modules/product_detail/widgets/product_detail_image_viewer_dialog.dart';
+import 'package:nocvla_web/shared/utils/my_colors.dart';
 import 'package:nocvla_web/shared/utils/my_icons.dart';
 
 import '../../app/core/base_controller.dart';
@@ -27,10 +30,17 @@ class ProductDetailController extends BaseController {
   final qty = 0.obs;
   final isLoading = false.obs;
 
+  Map<String, dynamic>? athleteLinks;
+
+  final txtCode = TextEditingController();
+  final isValidatingCode = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
     id.value = Get.parameters["id"];
+    athleteLinks = Get.arguments as Map<String, dynamic>?;
+    if (athleteLinks != null) txtCode.text = athleteLinks?["code"] ?? "";
     fetchApiProduct();
   }
 
@@ -61,11 +71,17 @@ class ProductDetailController extends BaseController {
                 },
               )
               .toList(),
-          "links": {
-            "shopee": product["shopee_url"],
-            "tiktok": product["tiktok_url"],
-            "tokopedia": product["tokopedia_url"],
-          },
+          "links": athleteLinks == null
+              ? {
+                  "shopee": product["shopee_url"],
+                  "tiktok": product["tiktok_url"],
+                  "tokopedia": product["tokopedia_url"],
+                }
+              : {
+                  "shopee": athleteLinks?["shopee"],
+                  "tiktok": athleteLinks?["tiktok"],
+                  "tokopedia": athleteLinks?["tokopedia"],
+                },
         };
       },
       err: (err) => showMyErrAPISnackbar(err),
@@ -75,6 +91,14 @@ class ProductDetailController extends BaseController {
   }
 
   void selectImage(int index) => selectedImage.value = index;
+
+  void openImageViewer() {
+    Get.dialog(
+      const ProductDetailImageViewerDialog(),
+      barrierColor: MyColors.black,
+      useSafeArea: false,
+    );
+  }
 
   void selectStock(Map<String, dynamic> value) {
     selectedStock.value = value;
@@ -134,5 +158,49 @@ class ProductDetailController extends BaseController {
     });
 
     Get.toNamed(MyRoutes.cart);
+  }
+
+  void applyCode() async {
+    final code = txtCode.text.trim();
+    if (code.isEmpty) return;
+
+    isValidatingCode.value = true;
+
+    final box = GetStorage();
+    final cart = box.read(MyConfig.keyCart) as Map<String, dynamic>?;
+
+    final items = ((cart?["items"] as List?) ?? [])
+        .map((e) => CartItemModel.fromJson(e))
+        .toList();
+
+    final productIds = [
+      ...items.map((e) => e.productId as String),
+      res["id"] as String,
+    ];
+
+    final req = await athleteRepo.validateCode(code, productIds);
+    req.responseHandler(
+      res: (data) {
+        if (data == null) {
+          showMyErrAPISnackbar({
+            "message": "Kode athlete tidak valid untuk produk ini",
+          });
+          return;
+        }
+
+        final matched = (data["t_athlete"] as List)
+            .map((e) => e["product_id"] as String)
+            .toList();
+
+        box.write(MyConfig.keyCart, {
+          "items": items.map((e) => e.toJson()).toList(),
+          "appliedCode": code,
+          "discountProductIds": matched,
+        });
+      },
+      err: (err) => showMyErrAPISnackbar(err),
+    );
+
+    isValidatingCode.value = false;
   }
 }

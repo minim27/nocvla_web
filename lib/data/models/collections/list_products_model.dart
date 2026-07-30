@@ -1,5 +1,14 @@
 class ListProductsModel {
-  dynamic id, name, imageUrl, type, color, price;
+  dynamic
+  id,
+  name,
+  imageUrl,
+  type,
+  color,
+  price,
+  linkAffShopee,
+  linkAffTktkshop,
+  linkAffTokped;
 
   ListProductsModel({
     this.id,
@@ -8,6 +17,9 @@ class ListProductsModel {
     this.type,
     this.color,
     this.price,
+    this.linkAffShopee,
+    this.linkAffTktkshop,
+    this.linkAffTokped,
   });
 
   ListProductsModel.fromJson(Map<String, dynamic> json) {
@@ -17,5 +29,8 @@ class ListProductsModel {
     type = json["type"];
     color = json["color"];
     price = json["price"] ?? 0;
+    linkAffShopee = json["link_aff_shopee"];
+    linkAffTktkshop = json["link_aff_tktkshop"];
+    linkAffTokped = json["link_aff_tokped"];
   }
 }

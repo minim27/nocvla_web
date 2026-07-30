@@ -27,7 +27,7 @@ class TAthleteBody extends StatelessWidget {
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           crossAxisCount: 3,
-          childAspectRatio: 1 / 1.3,
+          childAspectRatio: 1 / 1.6,
         ),
         itemCount: controller.resAthlete.length,
         itemBuilder: (context, index) {
@@ -68,7 +68,7 @@ class TAthleteBody extends StatelessWidget {
                 spacing: 20,
                 children: [
                   AspectRatio(
-                    aspectRatio: 720 / 500,
+                    aspectRatio: 1,
                     child: MyImage(items.picture, fit: .cover),
                   ),
                   Expanded(

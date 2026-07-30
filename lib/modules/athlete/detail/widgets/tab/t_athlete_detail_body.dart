@@ -35,13 +35,16 @@ class TAthleteDetailBody extends StatelessWidget {
           final items = controller.resProducts[index];
 
           return GestureDetector(
-            onTap: () => controller.openDetail(items.id),
+            onTap: () => controller.openDetail(items),
             child: Container(
               decoration: BoxDecoration(color: MyColors.black2),
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
-                  MyImage(items.imageUrl),
+                  AspectRatio(
+                    aspectRatio: 1,
+                    child: MyImage(items.imageUrl),
+                  ),
                   Padding(
                     padding: .all(24),
                     child: Column(

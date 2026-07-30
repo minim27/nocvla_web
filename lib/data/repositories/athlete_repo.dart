@@ -32,12 +32,16 @@ class AthleteRepo extends BaseRepository {
   Future<ResponseHandler<dynamic>> validateCode(
     String code,
     List<String> productIds,
-  ) async => ResponseHandler(
-    supabase
+  ) async {
+    final result = await supabase
         .from("m_athlete")
         .select("id, code, t_athlete!inner(product_id)")
         .eq("code", code)
         .inFilter("t_athlete.product_id", productIds)
-        .maybeSingle(),
-  );
+        .maybeSingle();
+
+    print(result);
+
+    return ResponseHandler(Future.value(result));
+  }
 }

@@ -40,10 +40,19 @@ class MAthleteDetailHeader extends StatelessWidget {
               letterSpacing: 2,
               fontFamily: MyFonts.bebasNeue,
             ),
-            MyText(
-              text: "CODE: ${items.code}",
-              fontSize: 16,
-              color: MyColors.white2,
+            Row(
+              spacing: 8,
+              children: [
+                MyText(
+                  text: "CODE: ${items.code}",
+                  fontSize: 16,
+                  color: MyColors.white2,
+                ),
+                GestureDetector(
+                  onTap: controller.copyCode,
+                  child: Icon(Icons.copy, size: 16, color: MyColors.white2),
+                ),
+              ],
             ),
           ],
         );

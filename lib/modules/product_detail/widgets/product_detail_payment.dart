@@ -102,19 +102,24 @@ class ProductDetailPayment extends StatelessWidget {
                                   padding: .all(16),
                                   color: MyColors.black.withValues(alpha: 0.1),
                                   child: MyTextFormFieldNoBorder(
+                                    controller: controller.txtCode,
                                     hintText: "Masukkan Kode",
                                     hintTextColor: MyColors.black.withValues(
                                       alpha: 0.6,
                                     ),
                                     textAlign: .left,
+                                    textColor: MyColors.black,
                                   ),
                                 ),
                               ),
-                              MyButton(
-                                color: MyColors.black.withValues(alpha: 0.1),
-                                width: 100,
-                                "APPLY",
-                                onTap: () => null,
+                              Obx(
+                                () => MyButton(
+                                  color: MyColors.black.withValues(alpha: 0.1),
+                                  width: 100,
+                                  "APPLY",
+                                  enable: !controller.isValidatingCode.value,
+                                  onTap: () => controller.applyCode(),
+                                ),
                               ),
                             ],
                           ),
@@ -127,111 +132,111 @@ class ProductDetailPayment extends StatelessWidget {
             ),
           ),
 
-          // if (items["shopee"] != null)
-          GestureDetector(
-            behavior: .opaque,
-            onTap: () => execUri(items["shopee"]),
-            child: Container(
-              padding: .symmetric(vertical: 16, horizontal: 20),
-              decoration: BoxDecoration(
-                border: .all(
-                  color: MyColors.white.withValues(alpha: 0.1),
-                  width: 2,
+          if (items["shopee"] != null && items["shopee"] != "")
+            GestureDetector(
+              behavior: .opaque,
+              onTap: () => execUri(items["shopee"]),
+              child: Container(
+                padding: .symmetric(vertical: 16, horizontal: 20),
+                decoration: BoxDecoration(
+                  border: .all(
+                    color: MyColors.white.withValues(alpha: 0.1),
+                    width: 2,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: .spaceBetween,
+                  children: [
+                    Row(
+                      spacing: 12,
+                      children: [
+                        SizedBox(
+                          width: 32,
+                          height: 32,
+                          child: MyImageAssets(MyIcons.icShopee, fit: .cover),
+                        ),
+                        MyText(text: "BELI DI SHOPEE"),
+                      ],
+                    ),
+                    Icon(
+                      size: 12,
+                      Icons.arrow_forward_ios_rounded,
+                      color: MyColors.white.withValues(alpha: 0.6),
+                    ),
+                  ],
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: .spaceBetween,
-                children: [
-                  Row(
-                    spacing: 12,
-                    children: [
-                      SizedBox(
-                        width: 32,
-                        height: 32,
-                        child: MyImageAssets(MyIcons.icShopee, fit: .cover),
-                      ),
-                      MyText(text: "BELI DI SHOPEE"),
-                    ],
-                  ),
-                  Icon(
-                    size: 12,
-                    Icons.arrow_forward_ios_rounded,
-                    color: MyColors.white.withValues(alpha: 0.6),
-                  ),
-                ],
-              ),
             ),
-          ),
-          // if (items["tiktok"] != null)
-          GestureDetector(
-            behavior: .opaque,
-            onTap: () => execUri(items["tiktok"]),
-            child: Container(
-              padding: .symmetric(vertical: 16, horizontal: 20),
-              decoration: BoxDecoration(
-                border: .all(
-                  color: MyColors.white.withValues(alpha: 0.1),
-                  width: 2,
+          if (items["tiktok"] != null && items["tiktok"] != "")
+            GestureDetector(
+              behavior: .opaque,
+              onTap: () => execUri(items["tiktok"]),
+              child: Container(
+                padding: .symmetric(vertical: 16, horizontal: 20),
+                decoration: BoxDecoration(
+                  border: .all(
+                    color: MyColors.white.withValues(alpha: 0.1),
+                    width: 2,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: .spaceBetween,
+                  children: [
+                    Row(
+                      spacing: 12,
+                      children: [
+                        SizedBox(
+                          width: 32,
+                          height: 32,
+                          child: MyImageAssets(MyIcons.icTikTok2, fit: .cover),
+                        ),
+                        MyText(text: "BELI DI TIKTOK"),
+                      ],
+                    ),
+                    Icon(
+                      size: 12,
+                      Icons.arrow_forward_ios_rounded,
+                      color: MyColors.white.withValues(alpha: 0.6),
+                    ),
+                  ],
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: .spaceBetween,
-                children: [
-                  Row(
-                    spacing: 12,
-                    children: [
-                      SizedBox(
-                        width: 32,
-                        height: 32,
-                        child: MyImageAssets(MyIcons.icTikTok2, fit: .cover),
-                      ),
-                      MyText(text: "BELI DI TIKTOK"),
-                    ],
-                  ),
-                  Icon(
-                    size: 12,
-                    Icons.arrow_forward_ios_rounded,
-                    color: MyColors.white.withValues(alpha: 0.6),
-                  ),
-                ],
-              ),
             ),
-          ),
-          // if (items["tokopedia"] != null)
-          GestureDetector(
-            behavior: .opaque,
-            onTap: () => execUri(items["tokopedia"]),
-            child: Container(
-              padding: .symmetric(vertical: 16, horizontal: 20),
-              decoration: BoxDecoration(
-                border: .all(
-                  color: MyColors.white.withValues(alpha: 0.1),
-                  width: 2,
+          if (items["tokopedia"] != null && items["tokopedia"] != "")
+            GestureDetector(
+              behavior: .opaque,
+              onTap: () => execUri(items["tokopedia"]),
+              child: Container(
+                padding: .symmetric(vertical: 16, horizontal: 20),
+                decoration: BoxDecoration(
+                  border: .all(
+                    color: MyColors.white.withValues(alpha: 0.1),
+                    width: 2,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: .spaceBetween,
+                  children: [
+                    Row(
+                      spacing: 12,
+                      children: [
+                        SizedBox(
+                          width: 32,
+                          height: 32,
+                          child: MyImageAssets(MyIcons.icTokped, fit: .cover),
+                        ),
+                        MyText(text: "BELI DI TOKOPEDIA"),
+                      ],
+                    ),
+                    Icon(
+                      size: 12,
+                      Icons.arrow_forward_ios_rounded,
+                      color: MyColors.white.withValues(alpha: 0.6),
+                    ),
+                  ],
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: .spaceBetween,
-                children: [
-                  Row(
-                    spacing: 12,
-                    children: [
-                      SizedBox(
-                        width: 32,
-                        height: 32,
-                        child: MyImageAssets(MyIcons.icTokped, fit: .cover),
-                      ),
-                      MyText(text: "BELI DI TOKOPEDIA"),
-                    ],
-                  ),
-                  Icon(
-                    size: 12,
-                    Icons.arrow_forward_ios_rounded,
-                    color: MyColors.white.withValues(alpha: 0.6),
-                  ),
-                ],
-              ),
             ),
-          ),
           Row(
             spacing: 8,
             children: [
