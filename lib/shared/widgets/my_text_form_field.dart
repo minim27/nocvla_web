@@ -101,6 +101,8 @@ class MyTextFormField extends StatelessWidget {
                 maxLines: maxLines,
                 autofocus: autofocus,
                 controller: controller,
+                enabled: enabled,
+                readOnly: readOnly,
                 textAlign: textAlign,
                 style: TextStyle(
                   fontSize: fontSize,

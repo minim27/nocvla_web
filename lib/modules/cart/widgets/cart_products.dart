@@ -48,14 +48,10 @@ class CartProducts extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: .start,
                     children: [
+                      MyText(text: items.name, fontSize: 16, fontWeight: .w600),
                       MyText(
-                        text: "${items.name} - ${items.color}",
-                        fontSize: 16,
-                        fontWeight: .w600,
-                      ),
-                      MyText(
-                        text: "SIZE ${items.size}",
-                        fontSize: 16,
+                        text: "${items.size} / ${items.color}",
+                        fontStyle: .italic,
                         color: MyColors.white.withValues(alpha: 0.6),
                       ),
                     ],

@@ -11,6 +11,7 @@ class MyButton extends StatelessWidget {
     super.key,
     this.width,
     this.height = 56,
+    this.scale = 4,
     this.borderColor,
     this.borderWidth = 0,
     this.color = MyColors.white,
@@ -27,14 +28,14 @@ class MyButton extends StatelessWidget {
 
   final bool enable;
   final double? width;
-  final double height, fontSize, borderRadius, borderWidth;
+  final double height, fontSize, borderRadius, borderWidth, scale;
   final String text;
   final String? prefix, suffix;
   final Color color, textColor;
   final Color? borderColor;
   final FontWeight fontWeight;
   final Map<String, String>? namedArgs;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class MyButton extends StatelessWidget {
           spacing: 16,
           mainAxisAlignment: .center,
           children: [
-            if (prefix != null) MyImageAssets(prefix!),
+            if (prefix != null) MyImageAssets(prefix!, scale: scale),
             MyText(
               textAlign: .center,
               text: text.tr,
@@ -64,7 +65,7 @@ class MyButton extends StatelessWidget {
               fontWeight: fontWeight,
               namedArgs: namedArgs,
             ),
-            if (suffix != null) MyImageAssets(suffix!),
+            if (suffix != null) MyImageAssets(suffix!, scale: scale),
           ],
         ),
       ),

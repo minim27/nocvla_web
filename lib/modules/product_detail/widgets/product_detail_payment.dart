@@ -5,10 +5,8 @@ import 'package:nocvla_web/shared/utils/my_colors.dart';
 import 'package:nocvla_web/shared/utils/my_icons.dart';
 import 'package:nocvla_web/shared/utils/my_parsing_currency.dart';
 import 'package:nocvla_web/shared/utils/my_utility.dart';
-import 'package:nocvla_web/shared/widgets/my_button.dart';
 import 'package:nocvla_web/shared/widgets/my_image.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
-import 'package:nocvla_web/shared/widgets/my_text_form_field.dart';
 
 class ProductDetailPayment extends StatelessWidget {
   const ProductDetailPayment({super.key});
@@ -52,7 +50,7 @@ class ProductDetailPayment extends StatelessWidget {
                           ),
                           GestureDetector(
                             behavior: .opaque,
-                            onTap: () => controller.openCart(),
+                            onTap: () => controller.addToCart(),
                             child: Obx(() {
                               int? total;
 
@@ -85,46 +83,65 @@ class ProductDetailPayment extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: .start,
-                        spacing: 8,
-                        children: [
-                          MyText(
-                            text: "Gunakan kode ATHLETE untuk diskon tambahan",
-                            fontSize: 16,
-                            color: MyColors.black.withValues(alpha: 0.8),
-                          ),
-                          Row(
-                            spacing: 8,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: .all(16),
-                                  color: MyColors.black.withValues(alpha: 0.1),
-                                  child: MyTextFormFieldNoBorder(
-                                    controller: controller.txtCode,
-                                    hintText: "Masukkan Kode",
-                                    hintTextColor: MyColors.black.withValues(
-                                      alpha: 0.6,
-                                    ),
-                                    textAlign: .left,
-                                    textColor: MyColors.black,
-                                  ),
-                                ),
-                              ),
-                              Obx(
-                                () => MyButton(
-                                  color: MyColors.black.withValues(alpha: 0.1),
-                                  width: 100,
-                                  "APPLY",
-                                  enable: !controller.isValidatingCode.value,
-                                  onTap: () => controller.applyCode(),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                      // Column(
+                      //   crossAxisAlignment: .start,
+                      //   spacing: 8,
+                      //   children: [
+                      //     MyText(
+                      //       text: "Gunakan kode ATHLETE untuk diskon tambahan",
+                      //       fontSize: 16,
+                      //       color: MyColors.black.withValues(alpha: 0.8),
+                      //     ),
+                      //     Row(
+                      //       spacing: 8,
+                      //       children: [
+                      //         Expanded(
+                      //           child: Container(
+                      //             padding: .all(16),
+                      //             color: MyColors.black.withValues(alpha: 0.1),
+                      //             child: MyTextFormFieldNoBorder(
+                      //               controller: controller.txtCode,
+                      //               hintText: "Masukkan Kode",
+                      //               hintTextColor: MyColors.black.withValues(
+                      //                 alpha: 0.6,
+                      //               ),
+                      //               textAlign: .left,
+                      //               textColor: MyColors.black,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Obx(
+                      //           () => MyButton(
+                      //             color: MyColors.black.withValues(alpha: 0.1),
+                      //             width: 100,
+                      //             "APPLY",
+                      //             enable: !controller.isValidatingCode.value,
+                      //             onTap: () => controller.applyCode(),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     Obx(() {
+                      //       final discount = controller.discountAmount;
+                      //       if (discount <= 0) return SizedBox();
+
+                      //       return Row(
+                      //         mainAxisAlignment: .spaceBetween,
+                      //         children: [
+                      //           MyText(
+                      //             text: "DISKON (8%)",
+                      //             color: MyColors.black.withValues(alpha: 0.8),
+                      //           ),
+                      //           MyText(
+                      //             text: "- ${parsingCurrency(discount)}",
+                      //             fontWeight: .w600,
+                      //             color: MyColors.black,
+                      //           ),
+                      //         ],
+                      //       );
+                      //     }),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),

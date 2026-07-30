@@ -40,8 +40,6 @@ class AthleteRepo extends BaseRepository {
         .inFilter("t_athlete.product_id", productIds)
         .maybeSingle();
 
-    print(result);
-
     return ResponseHandler(Future.value(result));
   }
 }

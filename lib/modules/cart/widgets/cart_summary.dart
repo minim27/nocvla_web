@@ -42,7 +42,7 @@ class CartSummary extends StatelessWidget {
               mainAxisAlignment: .spaceBetween,
               children: [
                 MyText(text: "SHIPPING"),
-                MyText(text: "PAID BY BUYER"),
+                MyText(text: "CALCULATED BY ADMIN"),
               ],
             ),
             Obx(() {
@@ -53,7 +53,7 @@ class CartSummary extends StatelessWidget {
               return Row(
                 mainAxisAlignment: .spaceBetween,
                 children: [
-                  MyText(text: "DISCOUNT (8%)"),
+                  MyText(text: "DISCOUNT (${controller.appliedCode.value})"),
                   MyText(
                     text: "- ${parsingCurrency(controller.discountAmount)}",
                   ),

@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 
 class CartItemModel {
-  dynamic productId, name, imageUrl, color, size, price;
+  dynamic productId, productBaseId, name, imageUrl, color, size, price;
   late RxInt qty;
 
   CartItemModel({
     this.productId,
+    this.productBaseId,
     this.name,
     this.imageUrl,
     this.color,
@@ -18,6 +19,7 @@ class CartItemModel {
 
   CartItemModel.fromJson(Map<String, dynamic> json) {
     productId = json["productId"];
+    productBaseId = json["productBaseId"];
     name = json["name"];
     imageUrl = json["imageUrl"];
     color = json["color"];
@@ -28,6 +30,7 @@ class CartItemModel {
 
   Map<String, dynamic> toJson() => {
     "productId": productId,
+    "productBaseId": productBaseId,
     "name": name,
     "imageUrl": imageUrl,
     "color": color,

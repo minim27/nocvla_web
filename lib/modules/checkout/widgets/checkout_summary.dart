@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nocvla_web/data/models/cart/cart_item_model.dart';
 import 'package:nocvla_web/shared/utils/my_colors.dart';
+import 'package:nocvla_web/shared/utils/my_icons.dart';
 import 'package:nocvla_web/shared/utils/my_parsing_currency.dart';
 import 'package:nocvla_web/shared/widgets/my_divider.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
@@ -33,21 +35,32 @@ class CheckoutSummary extends StatelessWidget {
               mainAxisAlignment: .spaceBetween,
               children: [
                 MyText(text: "SUBTOTAL", fontWeight: .w500),
-                Obx(() {
-                  controller.refreshSubtotal.value;
-
-                  return MyText(
+                Obx(
+                  () => MyText(
                     text: parsingCurrency(controller.subTotal),
                     fontWeight: .w500,
-                  );
-                }),
+                  ),
+                ),
               ],
             ),
+            Obx(() {
+              if (controller.appliedCode.value == null) return SizedBox();
+
+              return Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  MyText(text: "DISCOUNT (${controller.appliedCode.value})"),
+                  MyText(
+                    text: "- ${parsingCurrency(controller.discountAmount)}",
+                  ),
+                ],
+              );
+            }),
             Row(
               mainAxisAlignment: .spaceBetween,
               children: [
                 MyText(text: "SHIPPING"),
-                MyText(text: "PAID BY BUYER"),
+                MyText(text: "CALCULATED BY ADMIN"),
               ],
             ),
             MyDivider(),
@@ -55,19 +68,45 @@ class CheckoutSummary extends StatelessWidget {
               mainAxisAlignment: .spaceBetween,
               children: [
                 MyText(text: "TOTAL", fontWeight: .w600, fontSize: 18),
-                Obx(() {
-                  controller.refreshSubtotal.value;
-
-                  return MyText(
-                    text: parsingCurrency(controller.subTotal),
+                Obx(
+                  () => MyText(
+                    text: parsingCurrency(controller.total),
                     fontWeight: .w600,
                     fontSize: 18,
-                  );
-                }),
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 16),
-            MyButton("PLACE ORDER", onTap: () => null),
+            Column(
+              spacing: 12,
+              children: [
+                MyButton(
+                  "ORDER VIA WHATSAPP",
+                  textColor: MyColors.white,
+                  prefix: MyIcons.icWhatsapp,
+                  color: MyColors.whatsApp,
+                  scale: 6,
+                  onTap: () => controller.placeOrder(),
+                ),
+                MyButton(
+                  "ORDER VIA INSTAGRAM",
+                  textColor: MyColors.white,
+                  prefix: MyIcons.icInstagram,
+                  color: MyColors.instagram,
+                  scale: 6,
+                  onTap: () => controller.placeOrderViaInstagram(),
+                ),
+                MyButton(
+                  "ORDER VIA TIKTOK",
+                  textColor: MyColors.white,
+                  prefix: MyIcons.icTikTok2,
+                  color: MyColors.nativeBlack,
+                  scale: 10,
+                  onTap: () => controller.placeOrderViaTiktok(),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -75,8 +114,8 @@ class CheckoutSummary extends StatelessWidget {
   }
 
   Iterable<Widget> products(CheckoutController controller) {
-    return .generate(controller.res.length, (index) {
-      final items = controller.res[index];
+    return .generate(controller.resItems.length, (index) {
+      final CartItemModel items = controller.resItems[index];
 
       return Row(
         spacing: 12,
@@ -89,24 +128,23 @@ class CheckoutSummary extends StatelessWidget {
                 color: MyColors.black2,
                 width: 80,
                 height: 80,
-                child: MyImageAssets(items["image"], fit: .cover),
+                child: MyImage(items.imageUrl, fit: .cover),
               ),
               Column(
                 crossAxisAlignment: .start,
                 children: [
+                  MyText(text: items.name, fontWeight: .w600),
                   MyText(
-                    text: "${items["label"]} - ${items["color"]}",
-                    fontWeight: .w600,
-                  ),
-                  MyText(
-                    text: "SIZE ${items["size"]}",
+                    text: "${items.size} / ${items.color}",
+                    fontStyle: .italic,
+                    fontSize: 12,
                     color: MyColors.white.withValues(alpha: 0.6),
                   ),
                 ],
               ),
             ],
           ),
-          MyText(text: "${parsingCurrency(items["price"])} x${items["qty"]}"),
+          MyText(text: "${parsingCurrency(items.price)} x${items.qty.value}"),
         ],
       );
     });

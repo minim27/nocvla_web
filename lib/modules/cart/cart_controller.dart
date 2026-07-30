@@ -55,7 +55,7 @@ class CartController extends BaseController {
     if (appliedCode.value == null) return 0;
 
     final anchorTotal = resItems
-        .where((item) => discountProductIds.contains(item.productId))
+        .where((item) => discountProductIds.contains(item.productBaseId))
         .fold(0, (total, item) => total + (item.price as int) * item.qty.value);
 
     return (anchorTotal * 0.08).round();
@@ -85,17 +85,20 @@ class CartController extends BaseController {
     );
 
     final stillValid = resItems.any(
-      (item) => discountProductIds.contains(item.productId),
+      (item) => discountProductIds.contains(item.productBaseId),
     );
 
-    if (!stillValid) {
-      appliedCode.value = null;
-      discountProductIds.clear();
-      txtCode.clear();
-    }
+    if (!stillValid) removeCode();
 
     saveCart();
     refreshCartBadge();
+  }
+
+  void removeCode() {
+    appliedCode.value = null;
+    discountProductIds.clear();
+    txtCode.clear();
+    saveCart();
   }
 
   void refreshCartBadge() =>
@@ -107,7 +110,10 @@ class CartController extends BaseController {
 
     isValidatingCode.value = true;
 
-    final productIds = resItems.map((e) => e.productId as String).toList();
+    final productIds = resItems
+        .map((e) => e.productBaseId)
+        .whereType<String>()
+        .toList();
     final req = await athleteRepo.validateCode(code, productIds);
     req.responseHandler(
       res: (res) {
@@ -124,6 +130,7 @@ class CartController extends BaseController {
 
         appliedCode.value = code;
         discountProductIds.value = matched;
+        txtCode.clear();
         saveCart();
       },
       err: (err) => showMyErrAPISnackbar(err),

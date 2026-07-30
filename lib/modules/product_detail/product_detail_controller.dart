@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:nocvla_web/app/routes/my_routes.dart';
 import 'package:nocvla_web/app/services/my_config.dart';
 import 'package:nocvla_web/data/models/cart/cart_item_model.dart';
 import 'package:nocvla_web/modules/product_detail/widgets/product_detail_image_viewer_dialog.dart';
@@ -34,6 +33,8 @@ class ProductDetailController extends BaseController {
 
   final txtCode = TextEditingController();
   final isValidatingCode = false.obs;
+  final appliedCode = RxnString();
+  final discountProductIds = <String>[].obs;
 
   @override
   void onInit() async {
@@ -42,6 +43,22 @@ class ProductDetailController extends BaseController {
     athleteLinks = Get.arguments as Map<String, dynamic>?;
     if (athleteLinks != null) txtCode.text = athleteLinks?["code"] ?? "";
     fetchApiProduct();
+
+    final cart =
+        GetStorage().read(MyConfig.keyCart) as Map<String, dynamic>?;
+    appliedCode.value = cart?["appliedCode"];
+    discountProductIds.value = List<String>.from(
+      cart?["discountProductIds"] ?? [],
+    );
+  }
+
+  int get discountAmount {
+    if (appliedCode.value == null) return 0;
+    if (selectedStock.value == null) return 0;
+    if (!discountProductIds.contains(res["productBaseId"])) return 0;
+
+    final subTotal = (selectedStock.value!["price"] as int) * qty.value;
+    return (subTotal * 0.08).round();
   }
 
   void fetchApiProduct() async {
@@ -56,6 +73,7 @@ class ProductDetailController extends BaseController {
 
         res.value = {
           "id": data["id"],
+          "productBaseId": product["id"],
           "images": (data["images"] as List)
               .map((e) => e["image_url"])
               .toList(),
@@ -83,6 +101,8 @@ class ProductDetailController extends BaseController {
                   "tokopedia": athleteLinks?["tokopedia"],
                 },
         };
+
+        if (athleteLinks?["code"] != null) applyCode();
       },
       err: (err) => showMyErrAPISnackbar(err),
     );
@@ -110,7 +130,7 @@ class ProductDetailController extends BaseController {
   void increase() =>
       qty.value < selectedStock.value!["qty"] ? qty.value++ : null;
 
-  void openCart() {
+  void addToCart() {
     if (selectedStock.value == null) {
       showMyErrAPISnackbar({"message": "Pilih ukuran terlebih dahulu"});
       return;
@@ -141,6 +161,7 @@ class ProductDetailController extends BaseController {
       items.add(
         CartItemModel(
           productId: res["id"],
+          productBaseId: res["productBaseId"],
           name: res["name"],
           imageUrl: images.isEmpty ? null : images.first,
           color: res["color"],
@@ -157,7 +178,12 @@ class ProductDetailController extends BaseController {
       "discountProductIds": data?["discountProductIds"] ?? [],
     });
 
-    Get.toNamed(MyRoutes.cart);
+    showAddedToCartSnackbar(
+      name: res["name"],
+      color: res["color"],
+      size: stock["size"],
+      imageUrl: images.isEmpty ? null : images.first,
+    );
   }
 
   void applyCode() async {
@@ -174,8 +200,8 @@ class ProductDetailController extends BaseController {
         .toList();
 
     final productIds = [
-      ...items.map((e) => e.productId as String),
-      res["id"] as String,
+      ...items.map((e) => e.productBaseId).whereType<String>(),
+      res["productBaseId"] as String,
     ];
 
     final req = await athleteRepo.validateCode(code, productIds);
@@ -197,6 +223,9 @@ class ProductDetailController extends BaseController {
           "appliedCode": code,
           "discountProductIds": matched,
         });
+
+        appliedCode.value = code;
+        discountProductIds.value = matched;
       },
       err: (err) => showMyErrAPISnackbar(err),
     );

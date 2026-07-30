@@ -53,14 +53,17 @@ class MCollectionBottom extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: .end,
                   children: [
-                    Flexible(
-                      child: MyTextFormField(
-                        width: 400,
-                        height: 48,
-                        controller: controller.txtEmail,
-                        readOnly: true,
-                        textAlign: .left,
-                        onTap: () => controller.copyDiscordLink(),
+                    GestureDetector(
+                      onTap: () => controller.copyDiscordLink(),
+                      behavior: .opaque,
+                      child: Flexible(
+                        child: MyTextFormField(
+                          width: 400,
+                          height: 48,
+                          controller: controller.txtEmail,
+                          readOnly: true,
+                          textAlign: .left,
+                        ),
                       ),
                     ),
                     MyButtonIcon(

@@ -91,6 +91,6 @@ class AthleteDetailController extends BaseController {
 
   void copyCode() {
     Clipboard.setData(ClipboardData(text: resAthlete.value?.code ?? ""));
-    Get.snackbar("Disalin", "Code disalin");
+    showMySnackbar("Disalin", "Code disalin");
   }
 }

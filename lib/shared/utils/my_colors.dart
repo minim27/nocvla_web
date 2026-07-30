@@ -10,4 +10,7 @@ class MyColors {
   static const Color white2 = Color(0xFFD1D5DC);
 
   static const Color red = Color.fromARGB(255, 204, 0, 0);
+
+  static const Color whatsApp = Color(0xFF1fbd6a);
+  static const Color instagram = Color(0xFFfd2d4e);
 }

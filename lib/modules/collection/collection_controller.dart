@@ -89,7 +89,7 @@ class CollectionController extends BaseController {
 
   void copyDiscordLink() {
     Clipboard.setData(ClipboardData(text: txtEmail.text));
-    Get.snackbar("Disalin", "Link Discord disalin");
+    showMySnackbar("Disalin", "Link Discord disalin");
   }
 
   void openDiscordLink() => execUri(txtEmail.text);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nocvla_web/modules/main_layout/widgets/navbar/m_navbar.dart';
 import 'package:nocvla_web/modules/main_layout/widgets/navbar/t_navbar.dart';
 
+import 'widgets/navbar/m_navbar_drawer.dart';
 import 'widgets/navbar/navbar.dart';
 
 class MainLayout extends StatelessWidget {
@@ -12,6 +13,7 @@ class MainLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MNavbarDrawer(),
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isDesktop = constraints.maxWidth >= 1280;
