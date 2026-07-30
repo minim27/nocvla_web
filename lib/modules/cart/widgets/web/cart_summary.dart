@@ -6,7 +6,7 @@ import 'package:nocvla_web/shared/utils/my_parsing_currency.dart';
 import 'package:nocvla_web/shared/widgets/my_divider.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 
-import '../../../shared/widgets/my_button.dart';
+import '../../../../shared/widgets/my_button.dart';
 
 class CartSummary extends StatelessWidget {
   const CartSummary({super.key});

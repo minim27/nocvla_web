@@ -7,9 +7,9 @@ import 'package:nocvla_web/shared/utils/my_parsing_currency.dart';
 import 'package:nocvla_web/shared/widgets/my_divider.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 
-import '../../../shared/widgets/my_button.dart';
-import '../../../shared/widgets/my_image.dart';
-import '../checkout_controller.dart';
+import '../../../../shared/widgets/my_button.dart';
+import '../../../../shared/widgets/my_image.dart';
+import '../../checkout_controller.dart';
 
 class CheckoutSummary extends StatelessWidget {
   const CheckoutSummary({super.key});
@@ -119,30 +119,27 @@ class CheckoutSummary extends StatelessWidget {
 
       return Row(
         spacing: 12,
-        mainAxisAlignment: .spaceBetween,
+        crossAxisAlignment: .start,
         children: [
-          Row(
-            spacing: 12,
-            children: [
-              Container(
-                color: MyColors.black2,
-                width: 80,
-                height: 80,
-                child: MyImage(items.imageUrl, fit: .cover),
-              ),
-              Column(
-                crossAxisAlignment: .start,
-                children: [
-                  MyText(text: items.name, fontWeight: .w600),
-                  MyText(
-                    text: "${items.size} / ${items.color}",
-                    fontStyle: .italic,
-                    fontSize: 12,
-                    color: MyColors.white.withValues(alpha: 0.6),
-                  ),
-                ],
-              ),
-            ],
+          Container(
+            color: MyColors.black2,
+            width: 80,
+            height: 80,
+            child: MyImage(items.imageUrl, fit: .cover),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: .start,
+              children: [
+                MyText(text: items.name, fontWeight: .w600),
+                MyText(
+                  text: "${items.size} / ${items.color}",
+                  fontStyle: .italic,
+                  fontSize: 12,
+                  color: MyColors.white.withValues(alpha: 0.6),
+                ),
+              ],
+            ),
           ),
           MyText(text: "${parsingCurrency(items.price)} x${items.qty.value}"),
         ],

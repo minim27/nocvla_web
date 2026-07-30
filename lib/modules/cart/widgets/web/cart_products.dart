@@ -6,8 +6,8 @@ import 'package:nocvla_web/shared/widgets/my_divider.dart';
 import 'package:nocvla_web/shared/widgets/my_image.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 
-import '../../../shared/utils/my_colors.dart';
-import '../../../shared/widgets/my_text_form_field.dart';
+import '../../../../shared/utils/my_colors.dart';
+import '../../../../shared/widgets/my_text_form_field.dart';
 
 class CartProducts extends StatelessWidget {
   const CartProducts({super.key});

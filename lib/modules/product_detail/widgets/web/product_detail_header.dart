@@ -9,8 +9,8 @@ import 'package:nocvla_web/shared/widgets/my_image.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 import 'package:nocvla_web/shared/widgets/my_text_form_field.dart';
 
-import '../../../shared/utils/my_fonts.dart';
-import '../../../shared/utils/my_parsing_currency.dart';
+import '../../../../shared/utils/my_fonts.dart';
+import '../../../../shared/utils/my_parsing_currency.dart';
 
 class ProductDetailHeader extends StatelessWidget {
   const ProductDetailHeader({super.key});

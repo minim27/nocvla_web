@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:nocvla_web/modules/checkout/checkout_controller.dart';
 import 'package:nocvla_web/shared/widgets/my_text_form_field.dart';
 
-import '../../../shared/widgets/my_text.dart';
+import '../../../../shared/widgets/my_text.dart';
 
 class CheckoutForm extends StatelessWidget {
   const CheckoutForm({super.key});

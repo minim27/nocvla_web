@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nocvla_web/modules/cart/cart_controller.dart';
 
-import '../../../shared/utils/my_colors.dart';
-import '../../../shared/widgets/my_button.dart';
-import '../../../shared/widgets/my_text.dart';
-import '../../../shared/widgets/my_text_form_field.dart';
+import '../../../../shared/utils/my_colors.dart';
+import '../../../../shared/widgets/my_button.dart';
+import '../../../../shared/widgets/my_text.dart';
+import '../../../../shared/widgets/my_text_form_field.dart';
 
 class CartVoucher extends StatelessWidget {
   const CartVoucher({super.key});
