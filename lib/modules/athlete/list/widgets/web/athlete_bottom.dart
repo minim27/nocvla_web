@@ -5,6 +5,7 @@ import 'package:nocvla_web/shared/utils/my_fonts.dart';
 import 'package:nocvla_web/shared/widgets/my_button.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 
+import '../../../../../app/routes/my_routes.dart';
 import '../../../../../shared/utils/my_dummies.dart';
 import '../../../../../shared/utils/my_linears.dart';
 import '../../../../../shared/widgets/my_divider.dart';
@@ -69,7 +70,7 @@ class AthleteBottom extends StatelessWidget {
                     width: 140,
                     height: 48,
                     "JOIN NOW",
-                    onTap: () => null,
+                    onTap: () => Get.toNamed(MyRoutes.athleteApplication),
                   ),
                 ],
               ),

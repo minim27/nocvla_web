@@ -142,12 +142,14 @@ class ProductDetailHeader extends StatelessWidget {
               ),
             ],
           ),
-          if (controller.selectedStock.value != null)
-            MyText(
-              text: parsingCurrency(controller.selectedStock.value!["price"]),
-              fontSize: 18,
-              fontWeight: .w600,
+          MyText(
+            text: parsingCurrency(
+              controller.selectedStock.value?["price"] ??
+                  minPrice(items["stock"] as List),
             ),
+            fontSize: 18,
+            fontWeight: .w600,
+          ),
           DefaultTextStyle(
             style: TextStyle(
               color: MyColors.white2,
@@ -291,5 +293,12 @@ class ProductDetailHeader extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  int minPrice(List stock) {
+    if (stock.isEmpty) return 0;
+    return stock
+        .map((e) => e["price"] as int)
+        .reduce((a, b) => a < b ? a : b);
   }
 }

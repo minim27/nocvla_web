@@ -1,8 +1,9 @@
 import '../../app/core/base_repository.dart';
 
 class AthleteRepo extends BaseRepository {
-  Future<ResponseHandler<dynamic>> listAthlete() async =>
-      ResponseHandler(supabase.from("m_athlete").select());
+  Future<ResponseHandler<dynamic>> listAthlete() async => ResponseHandler(
+    supabase.from("m_athlete").select().eq("is_active", true),
+  );
 
   Future<ResponseHandler<dynamic>> getAthlete(String id) async =>
       ResponseHandler(

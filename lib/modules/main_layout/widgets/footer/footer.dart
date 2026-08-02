@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../../../app/routes/my_routes.dart';
+import '../../../../app/services/my_config.dart';
 import '../../../../shared/utils/my_colors.dart';
 import '../../../../shared/utils/my_fonts.dart';
 import '../../../../shared/utils/my_icons.dart';
+import '../../../../shared/utils/my_utility.dart';
 import '../../../../shared/widgets/my_image.dart';
 import '../../../../shared/widgets/my_text.dart';
 
@@ -46,26 +50,35 @@ class Footer extends StatelessWidget {
               Expanded(
                 child: footerMenu(
                   title: "SHOP",
-                  items: ["Compression", "Oversized", "Accessories"],
+                  items: {
+                    "Compression": () => Get.toNamed(MyRoutes.collection),
+                    "Oversized": () => Get.toNamed(MyRoutes.collection),
+                    "Accessories": () => Get.toNamed(MyRoutes.collection),
+                  },
                 ),
               ),
               Expanded(
                 child: footerMenu(
                   title: "COMPANY",
-                  items: ["About", "Athlete", "FAQ", "Contact"],
+                  items: {
+                    "About": () => Get.toNamed(MyRoutes.about),
+                    "Athlete": () => Get.toNamed(MyRoutes.athlete),
+                    "FAQ": () => Get.toNamed(MyRoutes.faq),
+                    "Contact": () => Get.toNamed(MyRoutes.contact),
+                  },
                 ),
               ),
-              Expanded(
-                child: footerMenu(
-                  title: "SUPPORT",
-                  items: [
-                    "Shipping",
-                    "Returns",
-                    "Size Guide",
-                    "Privacy Policy",
-                  ],
-                ),
-              ),
+              // Expanded(
+              //   child: footerMenu(
+              //     title: "SUPPORT",
+              //     items: {
+              //       "Shipping": () {},
+              //       "Returns": () {},
+              //       "Size Guide": () {},
+              //       "Privacy Policy": () {},
+              //     },
+              //   ),
+              // ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: .start,
@@ -75,9 +88,19 @@ class Footer extends StatelessWidget {
                     Row(
                       spacing: 12,
                       children: [
-                        MyImageAssets(MyIcons.icInstagram),
-                        MyImageAssets(MyIcons.icTikTok),
-                        MyImageAssets(MyIcons.icWhatsapp),
+                        GestureDetector(
+                          onTap: () => execUri(
+                            "https://instagram.com/${MyConfig.instagramUsername}",
+                          ),
+                          child: MyImageAssets(MyIcons.icInstagram),
+                        ),
+                        GestureDetector(
+                          onTap: () => execUri(
+                            "https://www.tiktok.com/@${MyConfig.tiktokUsername}",
+                          ),
+                          child: MyImageAssets(MyIcons.icTikTok),
+                        ),
+                        // MyImageAssets(MyIcons.icWhatsapp),
                       ],
                     ),
                   ],
@@ -107,18 +130,24 @@ class Footer extends StatelessWidget {
     );
   }
 
-  Widget footerMenu({required String title, required List<String> items}) {
+  Widget footerMenu({
+    required String title,
+    required Map<String, VoidCallback> items,
+  }) {
     return Column(
       crossAxisAlignment: .start,
       children: [
         MyText(text: title, fontWeight: .w600),
         SizedBox(height: 20),
-        ...items.map(
+        ...items.entries.map(
           (e) => Padding(
             padding: .only(bottom: 12),
-            child: MyText(
-              text: e,
-              color: MyColors.white.withValues(alpha: 0.6),
+            child: GestureDetector(
+              onTap: e.value,
+              child: MyText(
+                text: e.key,
+                color: MyColors.white.withValues(alpha: 0.6),
+              ),
             ),
           ),
         ),
