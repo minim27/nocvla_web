@@ -75,7 +75,7 @@ class MHomeFeatured extends StatelessWidget {
                                 text: items.name,
                                 fontSize: 16,
                                 fontWeight: .w600,
-                                maxLines: 2,
+                                maxLines: 1,
                                 overflow: .ellipsis,
                               ),
                               MyText(
