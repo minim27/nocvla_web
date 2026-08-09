@@ -41,12 +41,9 @@ class MAthleteDetailBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: MyImage(items.imageUrl),
-                  ),
+                  AspectRatio(aspectRatio: 1, child: MyImage(items.imageUrl)),
                   Padding(
-                    padding: .all(24),
+                    padding: .all(16),
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
@@ -54,6 +51,8 @@ class MAthleteDetailBody extends StatelessWidget {
                           text: items.name,
                           fontSize: 16,
                           fontWeight: .w600,
+                          maxLines: 1,
+                          overflow: .ellipsis,
                         ),
                         MyText(
                           text: "— ${items.color}",

@@ -10,4 +10,5 @@ class MyRoutes {
   static const productDetail = '/product/detail';
   static const cart = '/cart';
   static const checkout = '/cart/checkout';
+  static const earlyAccess = '/early-access';
 }

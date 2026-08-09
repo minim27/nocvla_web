@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../utils/my_colors.dart';
+import '../utils/my_fonts.dart';
 import 'my_image.dart';
 import 'my_text.dart';
 
@@ -85,6 +86,7 @@ class MyButtonBorder extends StatelessWidget {
     this.fontSize = 16,
     this.borderRadius = 0,
     this.fontWeight = .w400,
+    this.fontFamily = MyFonts.stackSansHeadline,
     this.namedArgs,
     this.enable = true,
     this.prefix,
@@ -100,6 +102,7 @@ class MyButtonBorder extends StatelessWidget {
   final Color textColor;
   final Color? borderColor;
   final FontWeight fontWeight;
+  final String fontFamily;
   final Map<String, String>? namedArgs;
   final VoidCallback onTap;
 
@@ -132,6 +135,7 @@ class MyButtonBorder extends StatelessWidget {
               fontSize: fontSize,
               fontWeight: fontWeight,
               namedArgs: namedArgs,
+              fontFamily: fontFamily,
             ),
             if (suffix != null) MyImageAssets(suffix!),
           ],

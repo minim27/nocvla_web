@@ -46,7 +46,7 @@ class MCollectionBody extends StatelessWidget {
                     child: MyImage(items.imageUrl),
                   ),
                   Padding(
-                    padding: .all(24),
+                    padding: .all(16),
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
@@ -54,7 +54,7 @@ class MCollectionBody extends StatelessWidget {
                           text: items.name,
                           fontSize: 16,
                           fontWeight: .w600,
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: .ellipsis,
                         ),
                         MyText(

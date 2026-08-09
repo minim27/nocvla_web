@@ -8,6 +8,8 @@ class MyConfig {
   static const String keyEmail = "email";
   static const String keyUUID = "uuid";
   static const String keyCart = "cart";
+  static const String keyEarlyAccessUnlockedVersion =
+      "earlyAccessUnlockedVersion";
 
   static const String whatsappNumber = "6282116346884";
   static const String instagramUsername = "nocvla";

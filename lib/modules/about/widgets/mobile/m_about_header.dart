@@ -38,6 +38,7 @@ class MAboutHeader extends StatelessWidget {
           left: 24,
           top: 0,
           bottom: 0,
+          right: 24,
           child: Column(
             mainAxisSize: .min,
             crossAxisAlignment: .start,

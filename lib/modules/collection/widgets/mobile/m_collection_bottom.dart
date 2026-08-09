@@ -23,9 +23,9 @@ class MCollectionBottom extends StatelessWidget {
         MyDivider(),
         Padding(
           padding: .all(48),
-          child: Row(
-            spacing: 36,
-            mainAxisAlignment: .spaceBetween,
+          child: Column(
+            crossAxisAlignment: .stretch,
+            spacing: 24,
             children: [
               Row(
                 spacing: 24,
@@ -49,31 +49,24 @@ class MCollectionBottom extends StatelessWidget {
                   ),
                 ],
               ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: .end,
-                  children: [
-                    GestureDetector(
-                      onTap: () => controller.copyDiscordLink(),
-                      behavior: .opaque,
-                      child: Flexible(
-                        child: MyTextFormField(
-                          width: 400,
-                          height: 48,
-                          controller: controller.txtEmail,
-                          readOnly: true,
-                          textAlign: .left,
-                        ),
-                      ),
-                    ),
-                    MyButtonIcon(
-                      width: 48,
+              Row(
+                children: [
+                  Flexible(
+                    child: MyTextFormField(
                       height: 48,
-                      MyIcons.icForward,
-                      onTap: () => controller.openDiscordLink(),
+                      controller: controller.txtEmail,
+                      readOnly: true,
+                      textAlign: .left,
+                      onTap: () => controller.copyDiscordLink(),
                     ),
-                  ],
-                ),
+                  ),
+                  MyButtonIcon(
+                    width: 54,
+                    height: 54,
+                    MyIcons.icForward,
+                    onTap: () => controller.openDiscordLink(),
+                  ),
+                ],
               ),
             ],
           ),

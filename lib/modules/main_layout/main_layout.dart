@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nocvla_web/modules/main_layout/widgets/navbar/m_navbar.dart';
 import 'package:nocvla_web/modules/main_layout/widgets/navbar/t_navbar.dart';
 
+import '../../app/routes/my_routes.dart';
 import 'widgets/navbar/m_navbar_drawer.dart';
 import 'widgets/navbar/navbar.dart';
 
@@ -12,6 +14,8 @@ class MainLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.currentRoute == MyRoutes.earlyAccess) return child;
+
     return Scaffold(
       drawer: MNavbarDrawer(),
       body: LayoutBuilder(

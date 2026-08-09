@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app/routes/my_pages.dart';
 import 'app/routes/my_routes.dart';
+import 'modules/early_access/early_access_controller.dart';
 import 'modules/main_layout/main_layout.dart';
 import 'shared/utils/my_colors.dart';
 
@@ -18,6 +19,12 @@ void main() async {
     url: dotenv.env["API_URL"]!,
     publishableKey: dotenv.env["SUPABASE_KEY"],
   );
+
+  final earlyAccessController = Get.put(
+    EarlyAccessController(),
+    permanent: true,
+  );
+  await earlyAccessController.init();
 
   runApp(const MyApp());
 }

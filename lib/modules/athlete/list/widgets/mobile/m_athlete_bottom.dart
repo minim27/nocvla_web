@@ -26,7 +26,7 @@ class MAthleteBottom extends StatelessWidget {
             Stack(
               children: [
                 AspectRatio(
-                  aspectRatio: 2590 / 890,
+                  aspectRatio: 3 / 4,
                   child: MyImageAssets(
                     MyDummies.dumMovement,
                     alignment: .topCenter,
@@ -35,7 +35,7 @@ class MAthleteBottom extends StatelessWidget {
                   ),
                 ),
                 AspectRatio(
-                  aspectRatio: 2590 / 890,
+                  aspectRatio: 3 / 4,
                   child: Container(
                     decoration: BoxDecoration(gradient: MyLinears.linear1),
                   ),
@@ -44,6 +44,7 @@ class MAthleteBottom extends StatelessWidget {
             ),
             Positioned(
               left: 24,
+              right: 24,
               top: 0,
               bottom: 0,
               child: Column(
@@ -57,9 +58,11 @@ class MAthleteBottom extends StatelessWidget {
                     fontSize: 24,
                     letterSpacing: 2,
                   ),
+                  SizedBox(height: 8),
                   MyText(
                     text:
-                        "Kami mencari individu yang berkomitmen pada disiplin,\nkonsistensi, dan progres tanpa kompromi.\nBergabunglah menjadi bagian dari NOCVLA Athlete\ndan representasikan standar yang lebih tinggi.",
+                        "Kami mencari individu yang berkomitmen pada disiplin, konsistensi, dan progres tanpa kompromi. Bergabunglah menjadi bagian dari NOCVLA Athlete dan representasikan standar yang lebih tinggi.",
+                    fontSize: 13,
                     color: MyColors.white.withValues(alpha: 0.6),
                   ),
                   SizedBox(height: 16),
@@ -80,7 +83,7 @@ class MAthleteBottom extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 2,
+            childAspectRatio: 1.1,
           ),
           itemCount: controller.resBenefits.length,
           itemBuilder: (context, index) {

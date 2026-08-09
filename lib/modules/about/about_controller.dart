@@ -8,7 +8,7 @@ class AboutController extends BaseController {
     "image": MyDummies.dumBanner,
     "title": "ABOUT NOCVLA",
     "desc":
-        "NOCVLA lahir dari keyakinan bahwa kemajuan tidak diberikan,\ntetapi diperjuangkan. Melalui disiplin, konsistensi, dan kerja keras,\nkami menciptakan apparel yang mendukung setiap\nlangkah perjalananmu—di gym maupun dalam kehidupan",
+        "NOCVLA lahir dari keyakinan bahwa kemajuan tidak diberikan, tetapi diperjuangkan. Melalui disiplin, konsistensi, dan kerja keras, kami menciptakan apparel yang mendukung setiap langkah perjalananmu—di gym maupun dalam kehidupan",
     "targets": [
       {
         "icon": MyIcons.icMission,

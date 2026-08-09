@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla_web/shared/utils/my_icons.dart';
-import 'package:nocvla_web/shared/widgets/my_image.dart';
+// import 'package:nocvla_web/shared/utils/my_icons.dart';
+// import 'package:nocvla_web/shared/widgets/my_image.dart';
 
 import '../../../../app/routes/my_routes.dart';
 import '../../../../shared/utils/my_colors.dart';
@@ -58,32 +58,32 @@ class MNavbarDrawer extends StatelessWidget {
                 color: MyColors.white.withValues(alpha: 0.08),
               ),
             ),
-            GestureDetector(
-              onTap: () => null,
-              child: Padding(
-                padding: .symmetric(horizontal: 24, vertical: 12),
-                child: Row(
-                  spacing: 16,
-                  children: [
-                    MyImageAssets(MyIcons.icSearch),
-                    MyText(text: "SEARCH", fontSize: 14),
-                  ],
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () => null,
-              child: Padding(
-                padding: .symmetric(horizontal: 24, vertical: 12),
-                child: Row(
-                  spacing: 16,
-                  children: [
-                    MyImageAssets(MyIcons.icProfile),
-                    MyText(text: "PROFILE", fontSize: 14),
-                  ],
-                ),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () => null,
+            //   child: Padding(
+            //     padding: .symmetric(horizontal: 24, vertical: 12),
+            //     child: Row(
+            //       spacing: 16,
+            //       children: [
+            //         MyImageAssets(MyIcons.icSearch),
+            //         MyText(text: "SEARCH", fontSize: 14),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // GestureDetector(
+            //   onTap: () => null,
+            //   child: Padding(
+            //     padding: .symmetric(horizontal: 24, vertical: 12),
+            //     child: Row(
+            //       spacing: 16,
+            //       children: [
+            //         MyImageAssets(MyIcons.icProfile),
+            //         MyText(text: "PROFILE", fontSize: 14),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

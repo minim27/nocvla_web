@@ -42,6 +42,7 @@ class MHomeHeader extends StatelessWidget {
             ),
             Positioned(
               left: 24,
+              right: 24,
               top: 0,
               bottom: 0,
               child: Column(
@@ -65,21 +66,22 @@ class MHomeHeader extends StatelessWidget {
                   ),
                   SizedBox(height: 24),
                   Row(
-                    mainAxisSize: .min,
-                    spacing: 24,
+                    spacing: 12,
                     children: [
-                      MyButton(
-                        width: 180,
-                        height: 42,
-                        "SHOP NOW",
-                        suffix: MyIcons.icForward,
-                        onTap: () => null,
+                      Expanded(
+                        child: MyButton(
+                          height: 42,
+                          "SHOP NOW",
+                          suffix: MyIcons.icForward,
+                          onTap: () => null,
+                        ),
                       ),
-                      MyButtonBorder(
-                        width: 180,
-                        height: 44,
-                        "VIEW COLLECTION",
-                        onTap: () => null,
+                      Expanded(
+                        child: MyButtonBorder(
+                          height: 44,
+                          "VIEW COLLECTION",
+                          onTap: () => null,
+                        ),
                       ),
                     ],
                   ),

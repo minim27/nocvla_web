@@ -41,12 +41,15 @@ class MProductDetailPayment extends StatelessWidget {
                     children: [
                       Row(
                         mainAxisAlignment: .spaceBetween,
+                        spacing: 12,
                         children: [
-                          MyText(
-                            text: "ORDER DISINI LEBIH MURAH",
-                            fontSize: 16,
-                            fontWeight: .w700,
-                            color: MyColors.black,
+                          Flexible(
+                            child: MyText(
+                              text: "ORDER DISINI LEBIH MURAH",
+                              fontSize: 14,
+                              fontWeight: .w700,
+                              color: MyColors.black,
+                            ),
                           ),
                           GestureDetector(
                             behavior: .opaque,
