@@ -5,16 +5,16 @@ import '../../app/core/base_controller.dart';
 
 class ContactController extends BaseController {
   final res = <String, dynamic>{
-    "whatsapp": {
-      "icon": MyIcons.icWhatsapp,
-      "label": "WHATSAPP",
-      "desc": "+62 812-3321-1234",
-      "link": null,
-    },
+    // "whatsapp": {
+    //   "icon": MyIcons.icWhatsapp,
+    //   "label": "WHATSAPP",
+    //   "desc": "+62 812-3321-1234",
+    //   "link": null,
+    // },
     "email": {
       "icon": MyIcons.icEmail2,
       "label": "EMAIL",
-      "desc": "cs@nocvla.com",
+      "desc": "nocvla.apparel@gmail.com",
       "link": null,
     },
     "instagram": {
