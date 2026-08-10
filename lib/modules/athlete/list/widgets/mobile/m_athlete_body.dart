@@ -24,8 +24,8 @@ class MAthleteBody extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         padding: .fromLTRB(24, 32, 24, 0),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
           crossAxisCount: 2,
           childAspectRatio: 1 / 1.6,
         ),

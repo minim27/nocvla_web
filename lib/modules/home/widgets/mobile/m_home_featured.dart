@@ -47,8 +47,8 @@ class MHomeFeatured extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
                 childAspectRatio: 1 / 1.8,
               ),
               itemCount: controller.resFeatured.length,
@@ -67,7 +67,7 @@ class MHomeFeatured extends StatelessWidget {
                           child: MyImage(items.imageUrl),
                         ),
                         Padding(
-                          padding: .all(20),
+                          padding: .all(12),
                           child: Column(
                             crossAxisAlignment: .start,
                             children: [

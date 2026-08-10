@@ -24,13 +24,13 @@ class TAthleteDetailHeader extends StatelessWidget {
         if (items == null) return SizedBox();
 
         return Row(
-          crossAxisAlignment: .start,
+          crossAxisAlignment: .center,
           spacing: 24,
           children: [
             SizedBox(
               width: 140,
               child: AspectRatio(
-                aspectRatio: 720 / 500,
+                aspectRatio: 1,
                 child: Container(
                   color: MyColors.black2,
                   child: MyImage(items.picture, fit: .cover),

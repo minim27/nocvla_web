@@ -26,8 +26,8 @@ class MAthleteDetailBody extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
           childAspectRatio: 1 / 2,
         ),
         itemCount: controller.resProducts.length,
@@ -43,7 +43,7 @@ class MAthleteDetailBody extends StatelessWidget {
                 children: [
                   AspectRatio(aspectRatio: 1, child: MyImage(items.imageUrl)),
                   Padding(
-                    padding: .all(16),
+                    padding: .all(12),
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [

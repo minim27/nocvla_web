@@ -15,7 +15,8 @@ class AthleteRepo extends BaseRepository {
         supabase
             .from("t_athlete")
             .select(
-              "created_at, product:m_products(id, name, "
+              "created_at, link_aff_shopee, link_aff_tktkshop, link_aff_tokped, "
+              "product:m_products(id, name, "
               "colors:m_product_color(id, name, "
               "images:m_product_images(image_url, sort_order), "
               "stock:m_product_stock(price)))",

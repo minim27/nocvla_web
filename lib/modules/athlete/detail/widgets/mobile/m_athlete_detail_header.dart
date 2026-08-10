@@ -28,7 +28,7 @@ class MAthleteDetailHeader extends StatelessWidget {
           spacing: 16,
           children: [
             AspectRatio(
-              aspectRatio: 720 / 500,
+              aspectRatio: 1,
               child: Container(
                 color: MyColors.black2,
                 child: MyImage(items.picture, fit: .cover),

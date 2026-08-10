@@ -48,7 +48,7 @@ class MFooter extends StatelessWidget {
             items: {
               "About": () => Get.toNamed(MyRoutes.about),
               "Athlete": () => Get.toNamed(MyRoutes.athlete),
-              "FAQ": () => Get.toNamed(MyRoutes.faq),
+              // "FAQ": () => Get.toNamed(MyRoutes.faq),
               "Contact": () => Get.toNamed(MyRoutes.contact),
             },
           ),
