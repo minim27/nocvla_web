@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../../shared/utils/my_colors.dart';
-import '../../../../../shared/widgets/my_image.dart';
+import '../../../../../shared/widgets/my_athlete_card.dart';
 import '../../../../../shared/widgets/my_loading.dart';
-import '../../../../../shared/widgets/my_text.dart';
 import '../../athlete_controller.dart';
 
 class TAthleteBody extends StatelessWidget {
@@ -19,82 +17,62 @@ class TAthleteBody extends StatelessWidget {
 
       if (controller.resAthlete.isEmpty) return SizedBox();
 
-      return GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        padding: .fromLTRB(24, 32, 24, 0),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          crossAxisCount: 3,
-          childAspectRatio: 1 / 1.6,
-        ),
-        itemCount: controller.resAthlete.length,
-        itemBuilder: (context, index) {
-          // final isLast = index == controller.resAthlete.length;
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          const crossAxisCount = 3;
+          const crossAxisSpacing = 16.0;
+          const horizontalPadding = 24.0;
+          const textAreaHeight = 90.0;
+          final columnWidth =
+              (constraints.maxWidth -
+                  horizontalPadding * 2 -
+                  crossAxisSpacing * (crossAxisCount - 1)) /
+              crossAxisCount;
 
-          // if (isLast) {
-          //   return GestureDetector(
-          //     onTap: () => null,
-          //     child: Container(
-          //       decoration: BoxDecoration(color: MyColors.black2),
-          //       child: Center(
-          //         child: Column(
-          //           mainAxisSize: .min,
-          //           spacing: 12,
-          //           children: [
-          //             Icon(Icons.arrow_forward, color: MyColors.white, size: 32),
-          //             MyText(
-          //               text: "ALL ATHLETES",
-          //               fontSize: 20,
-          //               fontWeight: .w700,
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   );
-          // }
-
-          final items = controller.resAthlete[index];
-
-          return GestureDetector(
-            onTap: () => controller.openDetail(items.id),
-            child: Container(
-              decoration: BoxDecoration(color: MyColors.black2),
-              child: Column(
-                crossAxisAlignment: .start,
-                mainAxisAlignment: .spaceBetween,
-                spacing: 20,
-                children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: MyImage(items.picture, fit: .cover),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: .symmetric(horizontal: 24, vertical: 12),
-                      child: Column(
-                        spacing: 6,
-                        crossAxisAlignment: .start,
-                        mainAxisAlignment: .center,
-                        children: [
-                          MyText(
-                            text: items.name,
-                            fontSize: 20,
-                            fontWeight: .w600,
-                          ),
-                          MyText(
-                            text: "CODE: ${items.code}",
-                            color: MyColors.white2.withValues(alpha: 0.6),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            padding: .fromLTRB(horizontalPadding, 32, horizontalPadding, 0),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisSpacing: crossAxisSpacing,
+              mainAxisSpacing: 16,
+              crossAxisCount: crossAxisCount,
+              mainAxisExtent: columnWidth + textAreaHeight,
             ),
+            itemCount: controller.resAthlete.length,
+            itemBuilder: (context, index) {
+              // final isLast = index == controller.resAthlete.length;
+
+              // if (isLast) {
+              //   return GestureDetector(
+              //     onTap: () => null,
+              //     child: Container(
+              //       decoration: BoxDecoration(color: MyColors.black2),
+              //       child: Center(
+              //         child: Column(
+              //           mainAxisSize: .min,
+              //           spacing: 12,
+              //           children: [
+              //             Icon(Icons.arrow_forward, color: MyColors.white, size: 32),
+              //             MyText(
+              //               text: "ALL ATHLETES",
+              //               fontSize: 20,
+              //               fontWeight: .w700,
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   );
+              // }
+
+              final items = controller.resAthlete[index];
+
+              return MyAthleteCard(
+                item: items,
+                onTap: () => controller.openDetail(items.id),
+              );
+            },
           );
         },
       );

@@ -12,7 +12,7 @@ class CollectionController extends BaseController {
   final resType = <ProductTypeModel>[].obs;
   final resProducts = <ListProductsModel>[].obs;
 
-  final txtEmail = TextEditingController(text: "https://discord.gg/PReNjegU9");
+  final txtEmail = TextEditingController();
 
   final selectedType = "".obs;
 
@@ -24,6 +24,15 @@ class CollectionController extends BaseController {
     super.onInit();
     fetchApiType();
     fetchApiFeatured();
+    fetchDiscordLink();
+  }
+
+  void fetchDiscordLink() async {
+    final req = await configRepo.getConfig("LINK_DISCORD");
+    req.responseHandler(
+      res: (res) => txtEmail.text = res["value"] ?? "",
+      err: (err) => showMyErrAPISnackbar(err),
+    );
   }
 
   void fetchApiType() async {

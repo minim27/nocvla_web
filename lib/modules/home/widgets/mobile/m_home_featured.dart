@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nocvla_web/modules/home/home_controller.dart';
-import 'package:nocvla_web/shared/utils/my_colors.dart';
-import 'package:nocvla_web/shared/utils/my_parsing_currency.dart';
-import 'package:nocvla_web/shared/widgets/my_image.dart';
 import 'package:nocvla_web/shared/widgets/my_loading.dart';
+import 'package:nocvla_web/shared/widgets/my_product_card.dart';
 import 'package:nocvla_web/shared/widgets/my_text.dart';
 
 class MHomeFeatured extends StatelessWidget {
@@ -42,58 +40,35 @@ class MHomeFeatured extends StatelessWidget {
                 // ),
               ],
             ),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 1 / 1.8,
-              ),
-              itemCount: controller.resFeatured.length,
-              itemBuilder: (context, index) {
-                final items = controller.resFeatured[index];
+            LayoutBuilder(
+              builder: (context, constraints) {
+                const crossAxisCount = 2;
+                const crossAxisSpacing = 8.0;
+                const textAreaHeight = 100.0;
+                final columnWidth =
+                    (constraints.maxWidth -
+                        crossAxisSpacing * (crossAxisCount - 1)) /
+                    crossAxisCount;
 
-                return GestureDetector(
-                  onTap: () => controller.openDetail(items.id),
-                  child: Container(
-                    decoration: BoxDecoration(color: MyColors.black2),
-                    child: Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        AspectRatio(
-                          aspectRatio: 1,
-                          child: MyImage(items.imageUrl),
-                        ),
-                        Padding(
-                          padding: .all(12),
-                          child: Column(
-                            crossAxisAlignment: .start,
-                            children: [
-                              MyText(
-                                text: items.name,
-                                fontSize: 16,
-                                fontWeight: .w600,
-                                maxLines: 1,
-                                overflow: .ellipsis,
-                              ),
-                              MyText(
-                                text: "— ${items.color}",
-                                fontWeight: .w600,
-                                color: MyColors.white.withValues(alpha: 0.6),
-                              ),
-                              SizedBox(height: 8),
-                              MyText(
-                                text: parsingCurrency(items.price),
-                                color: MyColors.white2.withValues(alpha: 0.8),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: crossAxisSpacing,
+                    mainAxisExtent: columnWidth + textAreaHeight,
                   ),
+                  itemCount: controller.resFeatured.length,
+                  itemBuilder: (context, index) {
+                    final items = controller.resFeatured[index];
+
+                    return MyProductCard(
+                      item: items,
+                      onTap: () => controller.openDetail(items.id),
+                     
+                    );
+                  },
                 );
               },
             ),

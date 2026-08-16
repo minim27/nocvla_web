@@ -154,6 +154,7 @@ class ProductDetailHeader extends StatelessWidget {
             style: TextStyle(
               color: MyColors.white2,
               fontSize: 16,
+              fontWeight: .w100,
               fontFamily: MyFonts.stackSansHeadline,
             ),
             child: IgnorePointer(
@@ -297,8 +298,6 @@ class ProductDetailHeader extends StatelessWidget {
 
   int minPrice(List stock) {
     if (stock.isEmpty) return 0;
-    return stock
-        .map((e) => e["price"] as int)
-        .reduce((a, b) => a < b ? a : b);
+    return stock.map((e) => e["price"] as int).reduce((a, b) => a < b ? a : b);
   }
 }

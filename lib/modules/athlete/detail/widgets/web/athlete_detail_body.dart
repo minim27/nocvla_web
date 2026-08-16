@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../../shared/utils/my_colors.dart';
-import '../../../../../shared/utils/my_parsing_currency.dart';
-import '../../../../../shared/widgets/my_image.dart';
 import '../../../../../shared/widgets/my_loading.dart';
-import '../../../../../shared/widgets/my_text.dart';
+import '../../../../../shared/widgets/my_product_card.dart';
 import '../../athlete_detail_controller.dart';
 
 class AthleteDetailBody extends StatelessWidget {
@@ -20,58 +17,37 @@ class AthleteDetailBody extends StatelessWidget {
 
       if (controller.resProducts.isEmpty) return SizedBox();
 
-      return GridView.builder(
-        padding: .fromLTRB(40, 32, 40, 0),
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 1 / 1.6,
-        ),
-        itemCount: controller.resProducts.length,
-        itemBuilder: (context, index) {
-          final items = controller.resProducts[index];
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          const crossAxisCount = 4;
+          const crossAxisSpacing = 16.0;
+          const horizontalPadding = 40.0;
+          const textAreaHeight = 120.0;
+          final columnWidth =
+              (constraints.maxWidth -
+                  horizontalPadding * 2 -
+                  crossAxisSpacing * (crossAxisCount - 1)) /
+              crossAxisCount;
 
-          return GestureDetector(
-            onTap: () => controller.openDetail(items),
-            child: Container(
-              decoration: BoxDecoration(color: MyColors.black2),
-              child: Column(
-                crossAxisAlignment: .start,
-                children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: MyImage(items.imageUrl),
-                  ),
-                  Padding(
-                    padding: .all(24),
-                    child: Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        MyText(
-                          text: items.name,
-                          fontSize: 20,
-                          fontWeight: .w600,
-                        ),
-                        MyText(
-                          text: "— ${items.color}",
-                          fontWeight: .w600,
-                          color: MyColors.white.withValues(alpha: 0.6),
-                        ),
-                        SizedBox(height: 8),
-                        MyText(
-                          text: parsingCurrency(items.price),
-                          fontSize: 18,
-                          color: MyColors.white2.withValues(alpha: 0.8),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+          return GridView.builder(
+            padding: .fromLTRB(horizontalPadding, 32, horizontalPadding, 0),
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: crossAxisSpacing,
+              mainAxisExtent: columnWidth + textAreaHeight,
             ),
+            itemCount: controller.resProducts.length,
+            itemBuilder: (context, index) {
+              final items = controller.resProducts[index];
+
+              return MyProductCard(
+                item: items,
+                onTap: () => controller.openDetail(items),
+              );
+            },
           );
         },
       );

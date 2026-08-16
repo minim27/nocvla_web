@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nocvla_web/app/routes/my_routes.dart';
 import 'package:nocvla_web/modules/home/home_controller.dart';
 import 'package:nocvla_web/shared/utils/my_colors.dart';
 import 'package:nocvla_web/shared/utils/my_dummies.dart';
@@ -76,12 +77,12 @@ class HomeHeader extends StatelessWidget {
                         width: 217,
                         "SHOP NOW",
                         suffix: MyIcons.icForward,
-                        onTap: () => null,
+                        onTap: () => Get.toNamed(MyRoutes.collection),
                       ),
                       MyButtonBorder(
                         width: 217,
                         "VIEW COLLECTION",
-                        onTap: () => null,
+                        onTap: () => Get.toNamed(MyRoutes.collection),
                       ),
                     ],
                   ),
