@@ -79,9 +79,7 @@ class CheckoutController extends BaseController {
     return true;
   }
 
-  Future<void> placeOrder() async {
-    if (!validOrder() || isPlacingOrder.value) return;
-
+  Future<String?> createOrder() async {
     isPlacingOrder.value = true;
     String? code;
 
@@ -115,14 +113,25 @@ class CheckoutController extends BaseController {
 
     isPlacingOrder.value = false;
 
-    if (code == null) return;
+    return code;
+  }
 
-    final message = "Kode order: $code\n\n${buildMessage()}";
-
+  void clearCart() {
     box.remove(MyConfig.keyCart);
     if (Get.isRegistered<CartController>()) {
       Get.find<CartController>().loadCart();
     }
+  }
+
+  Future<void> placeOrder() async {
+    if (!validOrder() || isPlacingOrder.value) return;
+
+    final code = await createOrder();
+    if (code == null) return;
+
+    final message = "Kode order: $code\n\n${buildMessage()}";
+
+    clearCart();
 
     launchUrl(
       .parse(
@@ -132,21 +141,30 @@ class CheckoutController extends BaseController {
     );
   }
 
-  void placeOrderViaInstagram() {
-    if (!validOrder()) return;
+  Future<void> placeOrderViaDm(String uri) async {
+    if (!validOrder() || isPlacingOrder.value) return;
 
     Clipboard.setData(ClipboardData(text: buildMessage()));
+
+    final code = await createOrder();
+    if (code == null) return;
+
+    final message = "Kode order: $code\n\n${buildMessage()}";
+
+    Clipboard.setData(ClipboardData(text: message));
+    clearCart();
     showMySnackbar("Disalin", "Rincian order disalin, tinggal paste di DM");
-    execUri("https://ig.me/m/${MyConfig.instagramUsername}");
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    launchUrl(.parse(uri), webOnlyWindowName: "_self");
   }
 
-  void placeOrderViaTiktok() {
-    if (!validOrder()) return;
+  void placeOrderViaInstagram() =>
+      placeOrderViaDm("https://ig.me/m/${MyConfig.instagramUsername}");
 
-    Clipboard.setData(ClipboardData(text: buildMessage()));
-    showMySnackbar("Disalin", "Rincian order disalin, tinggal paste di DM");
-    execUri("https://www.tiktok.com/@${MyConfig.tiktokUsername}");
-  }
+  void placeOrderViaTiktok() =>
+      placeOrderViaDm("https://www.tiktok.com/@${MyConfig.tiktokUsername}");
 
   String buildMessage() {
     final buffer = StringBuffer()
