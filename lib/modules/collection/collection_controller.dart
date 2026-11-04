@@ -30,10 +30,15 @@ class CollectionController extends BaseController {
     final req = await collectionsRepo.productType();
     await req.responseHandler(
       res: (res) {
+        final types = (res as List)
+            .map((e) => ProductTypeModel.fromJson(e))
+            .toList();
+
         resType.value = [
           ProductTypeModel(name: "ALL", value: ""),
-          ...(res as List).map((e) => ProductTypeModel.fromJson(e)),
-          ProductTypeModel(name: "ACCESSORIES", value: "accessories"),
+          ...types,
+          if (!types.any((e) => e.name == "ACCESSORIES"))
+            ProductTypeModel(name: "ACCESSORIES", value: "accessories"),
         ];
       },
       err: (err) => showMyErrAPISnackbar(err),

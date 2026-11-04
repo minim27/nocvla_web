@@ -100,7 +100,7 @@ class MFooter extends StatelessWidget {
         title: "BELANJA",
         items: {
           for (final e in controller.resType)
-            "${e.name}".toLowerCase().capitalizeFirst!: () =>
+            "${e.name}".capitalize!: () =>
                 controller.openCollection(e.name),
         },
       ),

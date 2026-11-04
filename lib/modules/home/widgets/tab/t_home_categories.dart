@@ -17,12 +17,16 @@ class THomeCategories extends StatelessWidget {
     return Padding(
       padding: .fromLTRB(40, 40, 40, 0),
       child: Obx(
-        () => Row(
-          spacing: 16,
-
+        () => GridView.count(
+          crossAxisCount: 3,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 4 / 5,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             for (final items in controller.resCategories)
-              Expanded(child: category(controller, items)),
+              category(controller, items),
           ],
         ),
       ),

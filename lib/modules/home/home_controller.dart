@@ -19,15 +19,7 @@ class HomeController extends BaseController {
   final resAthlete = <AthleteModel>[].obs;
   final resTypeImages = <String, dynamic>{}.obs;
 
-  final resCategories = <Map<String, dynamic>>[
-    {
-      "label": "COMPRESSION",
-      "desc": "ARGOS · Prototype I/II",
-      "type": "COMPRESSION",
-    },
-    {"label": "OVERSIZE", "desc": "FALLENSERAPH", "type": "OVERSIZE"},
-    {"label": "ACCESSORIES", "desc": "Segera hadir", "type": null},
-  ];
+  final resCategories = <Map<String, dynamic>>[].obs;
 
   final resBenefits = <Map<String, dynamic>>[
     {
@@ -59,7 +51,7 @@ class HomeController extends BaseController {
     super.onInit();
     fetchApiBanner();
     fetchApiFeatured();
-    fetchApiTypeImages();
+    fetchApiCategories();
     fetchApiAthlete();
   }
 
@@ -121,16 +113,28 @@ class HomeController extends BaseController {
     preloadHero();
   }
 
-  void fetchApiTypeImages() async {
+  void fetchApiCategories() async {
+    final types = <String>[];
+
+    final reqType = await collectionsRepo.productType();
+    await reqType.responseHandler(
+      res: (res) => types.addAll((res as List).map((e) => "${e["name"]}")),
+      err: (err) => showMyErrAPISnackbar(err),
+    );
+
     final req = await collectionsRepo.listProducts("");
     await req.responseHandler(
       res: (res) {
         final images = <String, dynamic>{};
+        final names = <String, List<String>>{};
 
         for (final e in res as List) {
           final type = e["product_type"]?["name"];
           final colors = (e["colors"] as List?) ?? [];
-          if (images.containsKey(type) || colors.isEmpty) continue;
+          if (colors.isEmpty) continue;
+
+          names.putIfAbsent(type, () => []).add("${e["name"]}");
+          if (images.containsKey(type)) continue;
 
           final colorImages = colors.first["images"] as List;
           if (colorImages.isNotEmpty) {
@@ -139,6 +143,17 @@ class HomeController extends BaseController {
         }
 
         resTypeImages.value = images;
+        resCategories.value = [
+          for (final type in types)
+            if (names.containsKey(type))
+              {
+                "label": type,
+                "desc": names[type]!.take(2).join(" · "),
+                "type": type,
+              },
+          if (!types.contains("ACCESSORIES"))
+            {"label": "ACCESSORIES", "desc": "Segera hadir", "type": null},
+        ];
       },
       err: (err) => showMyErrAPISnackbar(err),
     );
