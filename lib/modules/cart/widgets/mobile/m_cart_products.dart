@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla_web/modules/cart/cart_controller.dart';
-import 'package:nocvla_web/shared/utils/my_parsing_currency.dart';
-import 'package:nocvla_web/shared/widgets/my_divider.dart';
-import 'package:nocvla_web/shared/widgets/my_image.dart';
-import 'package:nocvla_web/shared/widgets/my_text.dart';
 
+import '../../../../data/models/cart/cart_item_model.dart';
 import '../../../../shared/utils/my_colors.dart';
-import '../../../../shared/widgets/my_text_form_field.dart';
+import '../../../../shared/utils/my_fonts.dart';
+import '../../../../shared/utils/my_parsing_currency.dart';
+import '../../../../shared/widgets/my_image.dart';
+import '../../../../shared/widgets/my_text.dart';
+import '../../cart_controller.dart';
 
 class MCartProducts extends StatelessWidget {
   const MCartProducts({super.key});
@@ -16,124 +16,100 @@ class MCartProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CartController>();
 
-    return Obx(
-      () => Column(spacing: 16, children: [...products(controller)]),
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        for (final items in controller.resItems) item(controller, items),
+        SizedBox(height: 16),
+        GestureDetector(
+          behavior: .opaque,
+          onTap: controller.continueShopping,
+          child: SizedBox(
+            height: 44,
+            child: Center(
+              widthFactor: 1,
+              child: MyText(
+                text: "← LANJUT BELANJA",
+                fontFamily: MyFonts.archivoNarrow,
+                fontWeight: .w600,
+                letterSpacing: 14 * 0.12,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  Iterable<Widget> products(CartController controller) {
-    return .generate(controller.resItems.length, (index) {
-      final items = controller.resItems[index];
-
-      final total = items.price * items.qty.value;
-
-      return Column(
+  Widget item(CartController controller, CartItemModel items) {
+    return Container(
+      padding: .symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: MyColors.line)),
+      ),
+      child: Row(
+        crossAxisAlignment: .start,
         spacing: 12,
         children: [
-          Row(
-            crossAxisAlignment: .start,
-            spacing: 12,
-            children: [
-              Container(
-                color: MyColors.black2,
-                width: 64,
-                height: 64,
-                child: MyImage(items.imageUrl, fit: .cover),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: .start,
+          SizedBox(width: 72, height: 72, child: MyImage(items.imageUrl)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: .start,
+              spacing: 8,
+              children: [
+                MyText(text: "${items.name}", fontWeight: .w600),
+                MyText(
+                  text: "${items.color} / ${items.size}",
+                  fontSize: 13,
+                  color: MyColors.white2,
+                ),
+                MyText(text: parsingCurrency(items.price)),
+                Row(
                   children: [
-                    MyText(text: items.name, fontSize: 16, fontWeight: .w600),
-                    MyText(
-                      text: "${items.size} / ${items.color}",
-                      fontStyle: .italic,
-                      color: MyColors.white.withValues(alpha: 0.6),
+                    qtyButton(
+                      Icons.remove,
+                      () => controller.decrease(items.qty),
                     ),
-                    SizedBox(height: 4),
-                    MyText(text: parsingCurrency(items.price), fontSize: 14),
+                    Container(
+                      alignment: .center,
+                      width: 48,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        border: .all(color: MyColors.line),
+                      ),
+                      child: Obx(() => MyText(text: "${items.qty.value}")),
+                    ),
+                    qtyButton(Icons.add, () => controller.increase(items)),
                   ],
                 ),
-              ),
-              GestureDetector(
-                behavior: .opaque,
-                onTap: () => controller.removeItem(items.productId, items.size),
-                child: Icon(Icons.delete_forever_outlined, color: MyColors.white),
-              ),
-            ],
+              ],
+            ),
           ),
-          Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    behavior: .opaque,
-                    onTap: () => controller.decrease(items.qty),
-                    child: Container(
-                      alignment: .center,
-                      width: 36,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        border: .all(
-                          color: MyColors.white.withValues(alpha: 0.1),
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.remove,
-                        size: 16,
-                        color: MyColors.white.withValues(alpha: 0.6),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    alignment: .center,
-                    width: 44,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      border: .all(
-                        color: MyColors.white.withValues(alpha: 0.1),
-                      ),
-                    ),
-                    child: Obx(
-                      () => MyTextFormFieldNoBorder(
-                        controller: TextEditingController(
-                          text: items.qty.value.toString(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    behavior: .opaque,
-                    onTap: () => controller.increase(items.qty),
-                    child: Container(
-                      alignment: .center,
-                      width: 36,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        border: .all(
-                          color: MyColors.white.withValues(alpha: 0.1),
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.add,
-                        size: 16,
-                        color: MyColors.white.withValues(alpha: 0.6),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              MyText(
-                text: "SUBTOTAL: ${parsingCurrency(total)}",
-                fontSize: 14,
-                fontWeight: .w600,
-              ),
-            ],
+          GestureDetector(
+            behavior: .opaque,
+            onTap: () => controller.removeItem(items.productId, items.size),
+            child: SizedBox(
+              width: 44,
+              height: 44,
+              child: Icon(Icons.close, color: MyColors.white2, size: 20),
+            ),
           ),
-          MyDivider(),
         ],
-      );
-    });
+      ),
+    );
+  }
+
+  Widget qtyButton(IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      behavior: .opaque,
+      onTap: onTap,
+      child: Container(
+        alignment: .center,
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(border: .all(color: MyColors.line)),
+        child: Icon(icon, color: MyColors.white2, size: 18),
+      ),
+    );
   }
 }

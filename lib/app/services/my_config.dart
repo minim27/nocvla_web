@@ -4,8 +4,7 @@ class MyConfig {
   static const bool prod = false;
   static const bool build = false;
 
-  static String get apiUrl =>
-      dotenv.env[prod ? "API_URL" : "API_URL_STAGING"]!;
+  static String get apiUrl => dotenv.env[prod ? "API_URL" : "API_URL_STAGING"]!;
   static String get supabaseKey =>
       dotenv.env[prod ? "SUPABASE_KEY" : "SUPABASE_KEY_STAGING"]!;
 

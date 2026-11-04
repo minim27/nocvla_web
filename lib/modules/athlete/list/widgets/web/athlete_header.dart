@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nocvla_web/shared/utils/my_fonts.dart';
-import 'package:nocvla_web/shared/widgets/my_text.dart';
 
 import '../../../../../shared/utils/my_colors.dart';
+import '../../../../../shared/utils/my_fonts.dart';
+import '../../../../../shared/widgets/my_text.dart';
 
 class AthleteHeader extends StatelessWidget {
   const AthleteHeader({super.key});
@@ -10,18 +10,18 @@ class AthleteHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: .fromLTRB(40, 80, 40, 0),
+      padding: .fromLTRB(40, 40, 40, 0),
       child: Column(
         crossAxisAlignment: .start,
         children: [
           MyText(
-            text: "NOCVLA ATHLETE",
-            fontSize: 42,
-            letterSpacing: 2,
+            text: "THE CONGREGATION",
             fontFamily: MyFonts.grenzeGotisch,
+            fontSize: 64,
+            fontWeight: .w600,
           ),
           MyText(
-            text: "They Represent. We Support.",
+            text: "Atlet yang berlatih bersama NOCVLA.",
             fontSize: 16,
             color: MyColors.white2,
           ),

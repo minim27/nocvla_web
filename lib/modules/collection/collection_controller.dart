@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nocvla_web/app/routes/my_routes.dart';
 import 'package:nocvla_web/data/models/collections/list_products_model.dart';
@@ -12,9 +10,8 @@ class CollectionController extends BaseController {
   final resType = <ProductTypeModel>[].obs;
   final resProducts = <ListProductsModel>[].obs;
 
-  final txtEmail = TextEditingController();
-
   final selectedType = "".obs;
+  final selectedSize = "".obs;
 
   final isLoadingType = false.obs;
   final isLoadingProd = false.obs;
@@ -22,17 +19,9 @@ class CollectionController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    selectedType.value = Get.parameters["type"] ?? "";
     fetchApiType();
-    fetchApiFeatured();
-    fetchDiscordLink();
-  }
-
-  void fetchDiscordLink() async {
-    final req = await configRepo.getConfig("LINK_DISCORD");
-    await req.responseHandler(
-      res: (res) => txtEmail.text = res["value"] ?? "",
-      err: (err) => showMyErrAPISnackbar(err),
-    );
+    fetchApiProducts();
   }
 
   void fetchApiType() async {
@@ -44,6 +33,7 @@ class CollectionController extends BaseController {
         resType.value = [
           ProductTypeModel(name: "ALL", value: ""),
           ...(res as List).map((e) => ProductTypeModel.fromJson(e)),
+          ProductTypeModel(name: "ACCESSORIES", value: "accessories"),
         ];
       },
       err: (err) => showMyErrAPISnackbar(err),
@@ -51,7 +41,7 @@ class CollectionController extends BaseController {
     isLoadingType.value = false;
   }
 
-  void fetchApiFeatured() async {
+  void fetchApiProducts() async {
     isLoadingProd.value = true;
 
     final req = await collectionsRepo.listProducts(selectedType.value);
@@ -90,18 +80,42 @@ class CollectionController extends BaseController {
     isLoadingProd.value = false;
   }
 
+  List<String> get sizes {
+    final sizes = resProducts
+        .expand((e) => (e.stock as List))
+        .where((s) => s["qty"] > 0)
+        .map((s) => s["size"] as String)
+        .toSet()
+        .toList();
+    sizes.sort((a, b) => sizeRank(a).compareTo(sizeRank(b)));
+
+    return sizes;
+  }
+
+  List<List<ListProductsModel>> get groups {
+    final groups = <dynamic, List<ListProductsModel>>{};
+    final size = selectedSize.value;
+
+    for (final item in resProducts) {
+      final isReady =
+          size.isEmpty ||
+          (item.stock as List).any((s) => s["size"] == size && s["qty"] > 0);
+
+      if (isReady) groups.putIfAbsent(item.productId, () => []).add(item);
+    }
+
+    return groups.values.toList();
+  }
+
   void selectType(String value) {
     selectedType.value = value;
-    fetchApiFeatured();
+    selectedSize.value = "";
+    fetchApiProducts();
   }
+
+  void selectSize(String value) =>
+      selectedSize.value = selectedSize.value == value ? "" : value;
 
   void openDetail(String id) =>
       Get.toNamed(MyRoutes.productDetail, parameters: {"id": id});
-
-  void copyDiscordLink() {
-    Clipboard.setData(ClipboardData(text: txtEmail.text));
-    showMySnackbar("Disalin", "Link Discord disalin");
-  }
-
-  void openDiscordLink() => execUri(txtEmail.text);
 }

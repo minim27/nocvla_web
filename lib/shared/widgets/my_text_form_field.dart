@@ -92,15 +92,14 @@ class MyTextFormField extends StatelessWidget {
             alignment: .center,
             // width: width,
             // height: height,
-            decoration: BoxDecoration(
-              border: .all(color: MyColors.line),
-            ),
+            decoration: BoxDecoration(border: .all(color: MyColors.line)),
             child: Padding(
               padding: .all(16),
               child: TextFormField(
                 maxLines: maxLines,
                 autofocus: autofocus,
                 controller: controller,
+                obscureText: isPassword && obscureText,
                 enabled: enabled,
                 readOnly: readOnly,
                 textAlign: textAlign,
@@ -158,6 +157,7 @@ class MyTextFormFieldNoBorder extends StatelessWidget {
     this.onFieldSubmitted,
     this.fontSize = 14,
     this.fontWeight = .w400,
+    this.fontFamily = MyFonts.archivo,
     this.hintText,
     this.prefixIcon,
     this.suffixIcon,
@@ -173,6 +173,7 @@ class MyTextFormFieldNoBorder extends StatelessWidget {
   final ValueChanged<String>? onChanged, onFieldSubmitted;
   final double fontSize;
   final FontWeight fontWeight;
+  final String fontFamily;
   final String? hintText;
   final Widget? prefixIcon, suffixIcon;
   final bool autofocus;
@@ -185,7 +186,7 @@ class MyTextFormFieldNoBorder extends StatelessWidget {
       textAlign: textAlign,
       style: TextStyle(
         fontSize: fontSize,
-        fontFamily: MyFonts.archivo,
+        fontFamily: fontFamily,
         color: textColor,
         fontWeight: fontWeight,
       ),
@@ -196,7 +197,7 @@ class MyTextFormFieldNoBorder extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyle(
           fontSize: fontSize,
-          fontFamily: MyFonts.archivo,
+          fontFamily: fontFamily,
           color: hintTextColor ?? MyColors.white2,
           fontWeight: fontWeight,
         ),

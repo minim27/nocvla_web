@@ -1,16 +1,16 @@
 class ListProductsModel {
-  dynamic
-  id,
-  productId,
-  name,
-  imageUrl,
-  type,
-  color,
-  price,
-  stock,
-  linkAffShopee,
-  linkAffTktkshop,
-  linkAffTokped;
+  dynamic id,
+      productId,
+      name,
+      imageUrl,
+      type,
+      color,
+      price,
+      stock,
+      colors,
+      linkAffShopee,
+      linkAffTktkshop,
+      linkAffTokped;
 
   ListProductsModel({
     this.id,
@@ -21,6 +21,7 @@ class ListProductsModel {
     this.color,
     this.price,
     this.stock,
+    this.colors,
     this.linkAffShopee,
     this.linkAffTktkshop,
     this.linkAffTokped,
@@ -35,8 +36,14 @@ class ListProductsModel {
     color = json["color"];
     price = json["price"] ?? 0;
     stock = json["stock"];
+    colors = json["colors"];
     linkAffShopee = json["link_aff_shopee"];
     linkAffTktkshop = json["link_aff_tktkshop"];
     linkAffTokped = json["link_aff_tokped"];
   }
+
+  int get totalQty => ((stock as List?) ?? []).fold(
+    0,
+    (total, e) => total + ((e["qty"] as int?) ?? 0),
+  );
 }

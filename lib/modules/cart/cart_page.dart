@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:nocvla_web/modules/cart/cart_controller.dart';
 import 'package:nocvla_web/modules/cart/widgets/mobile/m_cart_products.dart';
 import 'package:nocvla_web/modules/cart/widgets/mobile/m_cart_summary.dart';
@@ -13,10 +13,12 @@ import 'package:nocvla_web/modules/cart/widgets/web/cart_voucher.dart';
 import 'package:nocvla_web/modules/main_layout/widgets/footer/footer.dart';
 import 'package:nocvla_web/shared/widgets/my_scaffold.dart';
 
+import '../../shared/utils/my_fonts.dart';
+import '../../shared/widgets/my_button.dart';
+import '../../shared/widgets/my_empty_state.dart';
+import '../../shared/widgets/my_text.dart';
 import '../main_layout/widgets/footer/m_footer.dart';
 import '../main_layout/widgets/footer/t_footer.dart';
-import '../../shared/utils/my_fonts.dart';
-import '../../shared/widgets/my_text.dart';
 
 class CartPage extends GetView<CartController> {
   const CartPage({super.key});
@@ -33,38 +35,58 @@ class CartPage extends GetView<CartController> {
             children: [
               Padding(
                 padding: .all(isDesktop ? 40 : 24),
-                child: Column(
-                  children: [
-                    MyText(
-                      text: "YOUR CART",
-                      fontSize: 42,
-                      letterSpacing: 2,
-                      fontFamily: MyFonts.grenzeGotisch,
-                    ),
-                    SizedBox(height: 40),
-                    isDesktop
-                        ? CartProducts()
-                        : isTab
-                        ? TCartProducts()
-                        : MCartProducts(),
-                    SizedBox(height: 20),
-                    isDesktop
-                        ? Row(
-                            crossAxisAlignment: .start,
-                            spacing: 40,
-                            children: [CartVoucher(), CartSummary()],
-                          )
-                        : isTab
-                        ? Row(
-                            crossAxisAlignment: .start,
-                            spacing: 24,
-                            children: [TCartVoucher(), TCartSummary()],
-                          )
-                        : Column(
-                            spacing: 24,
-                            children: [MCartVoucher(), MCartSummary()],
-                          ),
-                  ],
+                child: Obx(
+                  () => Column(
+                    crossAxisAlignment: .start,
+                    spacing: 24,
+                    children: [
+                      MyText(
+                        text: "KERANJANG",
+                        fontSize: isDesktop ? 64 : 44,
+                        fontWeight: .w600,
+                        fontFamily: MyFonts.grenzeGotisch,
+                      ),
+                      if (controller.resItems.isEmpty) ...[
+                        MyEmptyState(text: "Keranjang kamu masih kosong."),
+                        MyButton(
+                          "LIHAT KOLEKSI",
+                          onTap: controller.continueShopping,
+                        ),
+                      ] else if (isDesktop)
+                        Row(
+                          crossAxisAlignment: .start,
+                          spacing: 40,
+                          children: [
+                            Expanded(flex: 3, child: CartProducts()),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                spacing: 16,
+                                children: [CartVoucher(), CartSummary()],
+                              ),
+                            ),
+                          ],
+                        )
+                      else if (isTab)
+                        Column(
+                          spacing: 24,
+                          children: [
+                            TCartProducts(),
+                            TCartVoucher(),
+                            TCartSummary(),
+                          ],
+                        )
+                      else
+                        Column(
+                          spacing: 24,
+                          children: [
+                            MCartProducts(),
+                            MCartVoucher(),
+                            MCartSummary(),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
               isDesktop

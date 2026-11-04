@@ -9,6 +9,7 @@ class MyRoutes {
   static const contact = '/contact';
   static const productDetail = '/product/detail';
   static const cart = '/cart';
+  static const search = '/search';
   static const checkout = '/cart/checkout';
-  static const earlyAccess = '/early-access';
+  static const earlyAccess = '/drop';
 }

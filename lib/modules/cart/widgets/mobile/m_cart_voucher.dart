@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla_web/modules/cart/cart_controller.dart';
 
 import '../../../../shared/utils/my_colors.dart';
 import '../../../../shared/widgets/my_button.dart';
+import '../../../../shared/widgets/my_panel.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../../../shared/widgets/my_text_form_field.dart';
+import '../../cart_controller.dart';
 
 class MCartVoucher extends StatelessWidget {
   const MCartVoucher({super.key});
@@ -14,57 +15,50 @@ class MCartVoucher extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CartController>();
 
-    return Column(
-      crossAxisAlignment: .start,
-      spacing: 12,
-      children: [
-        MyTextFormField(
-          label: "HAVE A ATHLETE CODE",
-          height: 48,
-          controller: controller.txtCode,
-          hintText: "Masukkan Kode",
-          textInputAction: .send,
-          keyboardType: .text,
-          textAlign: .left,
-        ),
-        Obx(
-          () => MyButton(
-            "APPLY",
-            height: 48,
-            enable: !controller.isValidatingCode.value,
-            onTap: () => controller.applyCode(),
-          ),
-        ),
-        Obx(() {
-          final code = controller.appliedCode.value;
-          if (code == null) return SizedBox();
-
-          return Container(
-            padding: .symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: MyColors.black2,
-              border: .all(color: MyColors.white.withValues(alpha: 0.1)),
+    return MyPanel(
+      child: Obx(
+        () => Column(
+          crossAxisAlignment: .stretch,
+          spacing: 12,
+          children: [
+            MyTextFormField(
+              controller: controller.txtCode,
+              label: "KODE ATLET",
+              hintText: "Masukkan kode",
+              onFieldSubmitted: (_) => controller.applyCode(),
             ),
-            child: Row(
-              mainAxisSize: .min,
-              spacing: 8,
-              children: [
-                Icon(
-                  Icons.local_offer_outlined,
-                  size: 14,
-                  color: MyColors.white2,
-                ),
-                MyText(text: code, fontSize: 14, fontWeight: .w600),
-                GestureDetector(
-                  behavior: .opaque,
-                  onTap: () => controller.removeCode(),
-                  child: Icon(Icons.close, size: 14, color: MyColors.white2),
-                ),
-              ],
+            MyButtonBorder(
+              "PAKAI KODE",
+              enable: !controller.isValidatingCode.value,
+              onTap: controller.applyCode,
             ),
-          );
-        }),
-      ],
+            if (controller.appliedCode.value != null)
+              Row(
+                children: [
+                  Expanded(
+                    child: MyText(
+                      text: "Kode ${controller.appliedCode.value} terpasang",
+                      color: MyColors.green,
+                    ),
+                  ),
+                  GestureDetector(
+                    behavior: .opaque,
+                    onTap: controller.removeCode,
+                    child: SizedBox(
+                      width: 44,
+                      height: 44,
+                      child: Icon(
+                        Icons.close,
+                        color: MyColors.white2,
+                        size: 18,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

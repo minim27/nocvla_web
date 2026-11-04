@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../../shared/widgets/my_loading.dart';
+import '../../../../../shared/utils/my_fonts.dart';
+import '../../../../../shared/widgets/my_grid.dart';
 import '../../../../../shared/widgets/my_product_card.dart';
+import '../../../../../shared/widgets/my_skeleton.dart';
+import '../../../../../shared/widgets/my_text.dart';
 import '../../athlete_detail_controller.dart';
 
 class MAthleteDetailBody extends StatelessWidget {
@@ -12,45 +15,46 @@ class MAthleteDetailBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<AthleteDetailController>();
 
-    return Obx(() {
-      if (controller.isLoadingProducts.value) return MyLoading();
-
-      if (controller.resProducts.isEmpty) return SizedBox();
-
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          const crossAxisCount = 2;
-          const crossAxisSpacing = 8.0;
-          const horizontalPadding = 24.0;
-          const textAreaHeight = 100.0;
-          final columnWidth =
-              (constraints.maxWidth -
-                  horizontalPadding * 2 -
-                  crossAxisSpacing * (crossAxisCount - 1)) /
-              crossAxisCount;
-
-          return GridView.builder(
-            padding: .fromLTRB(horizontalPadding, 32, horizontalPadding, 0),
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: crossAxisSpacing,
-              mainAxisExtent: columnWidth + textAreaHeight,
-            ),
-            itemCount: controller.resProducts.length,
-            itemBuilder: (context, index) {
-              final items = controller.resProducts[index];
-
-              return MyProductCard(
-                item: items,
-                onTap: () => controller.openDetail(items),
+    return Padding(
+      padding: .all(24),
+      child: Column(
+        crossAxisAlignment: .start,
+        spacing: 24,
+        children: [
+          MyText(
+            text: "PRODUK YANG DIPAKAI",
+            fontFamily: MyFonts.grenzeGotisch,
+            fontSize: 32,
+            fontWeight: .w600,
+          ),
+          Obx(() {
+            if (controller.isLoadingProducts.value) {
+              return MyGrid(
+                crossAxisCount: 2,
+                children: [
+                  for (var i = 0; i < 2; i++)
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: MySkeleton(height: null),
+                    ),
+                ],
               );
-            },
-          );
-        },
-      );
-    });
+            }
+
+            return MyGrid(
+              crossAxisCount: 2,
+              children: [
+                for (final items in controller.resProducts)
+                  MyProductCard(
+                    item: items,
+                    colorFontSize: 20,
+                    onTap: () => controller.openDetail(items),
+                  ),
+              ],
+            );
+          }),
+        ],
+      ),
+    );
   }
 }

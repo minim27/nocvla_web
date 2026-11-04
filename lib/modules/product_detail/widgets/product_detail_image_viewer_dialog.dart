@@ -109,10 +109,7 @@ class _NavButton extends StatelessWidget {
           width: 48,
           height: 48,
           alignment: .center,
-          decoration: BoxDecoration(
-            color: MyColors.black2,
-            shape: .circle,
-          ),
+          decoration: BoxDecoration(color: MyColors.black2, shape: .circle),
           child: Icon(icon, color: MyColors.white, size: 20),
         ),
       ),

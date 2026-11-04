@@ -19,6 +19,8 @@ import 'package:nocvla_web/modules/faq/faq_binding.dart';
 import 'package:nocvla_web/modules/faq/faq_page.dart';
 import 'package:nocvla_web/modules/product_detail/product_detail_binding.dart';
 import 'package:nocvla_web/modules/product_detail/product_detail_page.dart';
+import 'package:nocvla_web/modules/search/search_binding.dart';
+import 'package:nocvla_web/modules/search/search_page.dart';
 
 import '../../modules/early_access/early_access_page.dart';
 import '../../modules/home/home_binding.dart';
@@ -86,6 +88,12 @@ class MyPages {
       name: MyRoutes.cart,
       page: () => CartPage(),
       binding: CartBinding(),
+      middlewares: [EarlyAccessMiddleware()],
+    ),
+    GetPage(
+      name: MyRoutes.search,
+      page: () => SearchPage(),
+      binding: SearchBinding(),
       middlewares: [EarlyAccessMiddleware()],
     ),
     GetPage(

@@ -1,83 +1,76 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nocvla_web/data/models/athlete/athlete_model.dart';
 import 'package:nocvla_web/data/models/collections/list_products_model.dart';
 import 'package:nocvla_web/data/models/home/banner_model.dart';
+import 'package:nocvla_web/modules/main_layout/main_layout_controller.dart';
 import 'package:nocvla_web/shared/utils/my_icons.dart';
 import 'package:nocvla_web/shared/utils/my_utility.dart';
+import 'package:nocvla_web/shared/widgets/my_image.dart';
 
 import '../../app/core/base_controller.dart';
 import '../../app/routes/my_routes.dart';
+import '../../app/services/my_config.dart';
 
 class HomeController extends BaseController {
   final resBanners = <BannerModel>[].obs;
   final resFeatured = <ListProductsModel>[].obs;
+  final resAthlete = <AthleteModel>[].obs;
+  final resTypeImages = <String, dynamic>{}.obs;
 
-  final resBenefits = <String, dynamic>{
-    "benefits1": [
-      {
-        "icon": MyIcons.icPerformance,
-        "label": "PERFORMANCE",
-        "desc": "Engineered to move",
-      },
-      {
-        "icon": MyIcons.icComfort,
-        "label": "COMFORT",
-        "desc": "All-day comfort",
-      },
-      {"icon": MyIcons.icDurable, "label": "DURABLE", "desc": "Built to last"},
-      {
-        "icon": MyIcons.icFocus,
-        "label": "FOCUS",
-        "desc": "Train without distractions",
-      },
-    ],
-    "benefits2": [
-      {
-        "icon": MyIcons.icShipping,
-        "label": "FREE SHIPPING",
-        "desc": "Fast worldwide delivery",
-      },
-      {
-        "icon": MyIcons.icPayment,
-        "label": "SECURE PAYMENT",
-        "desc": "100% secure payment",
-      },
-      {
-        "icon": MyIcons.icReturns,
-        "label": "EASY RETURNS",
-        "desc": "Quick, hassle-free",
-      },
-      {
-        "icon": MyIcons.icSupport,
-        "label": "SUPPORT",
-        "desc": "24/7 customer support",
-      },
-    ],
-  };
+  final resCategories = <Map<String, dynamic>>[
+    {
+      "label": "COMPRESSION",
+      "desc": "ARGOS · Prototype I/II",
+      "type": "COMPRESSION",
+    },
+    {"label": "OVERSIZE", "desc": "FALLENSERAPH", "type": "OVERSIZE"},
+    {"label": "ACCESSORIES", "desc": "Segera hadir", "type": null},
+  ];
 
-  final isLoadingBanners = false.obs;
+  final resBenefits = <Map<String, dynamic>>[
+    {
+      "icon": MyIcons.icShirt,
+      "label": "FREE PRODUCT",
+      "desc": "Dapatkan produk eksklusif",
+    },
+    {
+      "icon": MyIcons.icLink,
+      "label": "AFFILIATE ACCESS",
+      "desc": "Dapatkan keuntungan dari hasil penjualan",
+    },
+    {
+      "icon": MyIcons.icCommunity,
+      "label": "EXCLUSIVE COMMUNITY",
+      "desc": "Gabung dengan komunitas NOCVLA",
+    },
+    {
+      "icon": MyIcons.icUp,
+      "label": "GROW TOGETHER",
+      "desc": "Bertumbuh bersama NOCVLA",
+    },
+  ];
+
   final isLoadingFeatured = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // fetchApiBanner();
+    fetchApiBanner();
     fetchApiFeatured();
+    fetchApiTypeImages();
+    fetchApiAthlete();
   }
 
   void fetchApiBanner() async {
-    isLoadingBanners.value = true;
-
     final req = await homeRepo.banners();
     await req.responseHandler(
-      res: (res) {
-        resBanners.value = (res as List).map((e) {
-          // print(e);
-          return BannerModel.fromJson(e);
-        }).toList();
-      },
+      res: (res) => resBanners.value = (res as List)
+          .map((e) => BannerModel.fromJson(e))
+          .toList(),
       err: (err) => showMyErrAPISnackbar(err),
     );
-    isLoadingBanners.value = false;
   }
 
   void fetchApiFeatured() async {
@@ -86,38 +79,116 @@ class HomeController extends BaseController {
     final req = await homeRepo.featuredProducts();
     await req.responseHandler(
       res: (res) {
-        resFeatured.value = (res as List).expand((e) {
-          final colors = (e["colors"] as List?) ?? [];
+        resFeatured.value = (res as List)
+            .where((e) {
+              return ((e["colors"] as List?) ?? []).isNotEmpty;
+            })
+            .map((e) {
+              final colors = (e["colors"] as List).map((c) {
+                final images = c["images"] as List;
 
-          return colors.map((c) {
-            final images = c["images"] as List;
-            final mainImage = images.isEmpty ? null : images.first;
+                return {
+                  "id": c["id"],
+                  "name": c["name"],
+                  "image_url": images.isEmpty
+                      ? null
+                      : images.first["image_url"],
+                };
+              }).toList();
 
-            final prices = (c["stock"] as List)
-                .map((s) => s["price"] as int)
-                .toList();
-            final minPrice = prices.isEmpty
-                ? 0
-                : prices.reduce((a, b) => a < b ? a : b);
+              final prices = (e["colors"] as List)
+                  .expand((c) => c["stock"] as List)
+                  .map((s) => s["price"] as int)
+                  .toList();
 
-            return ListProductsModel.fromJson({
-              "id": c["id"],
-              "product_id": e["id"],
-              "name": e["name"],
-              "image_url": mainImage?["image_url"],
-              "color": c["name"],
-              "price": minPrice,
-              "stock": c["stock"],
-            });
-          });
-        }).toList();
+              return ListProductsModel.fromJson({
+                "id": colors.first["id"],
+                "product_id": e["id"],
+                "name": e["name"],
+                "image_url": colors.first["image_url"],
+                "price": prices.isEmpty
+                    ? 0
+                    : prices.reduce((a, b) => a < b ? a : b),
+                "colors": colors,
+              });
+            })
+            .toList();
       },
       err: (err) => showMyErrAPISnackbar(err),
     );
 
     isLoadingFeatured.value = false;
+    preloadHero();
   }
+
+  void fetchApiTypeImages() async {
+    final req = await collectionsRepo.listProducts("");
+    await req.responseHandler(
+      res: (res) {
+        final images = <String, dynamic>{};
+
+        for (final e in res as List) {
+          final type = e["product_type"]?["name"];
+          final colors = (e["colors"] as List?) ?? [];
+          if (images.containsKey(type) || colors.isEmpty) continue;
+
+          final colorImages = colors.first["images"] as List;
+          if (colorImages.isNotEmpty) {
+            images[type] = colorImages.first["image_url"];
+          }
+        }
+
+        resTypeImages.value = images;
+      },
+      err: (err) => showMyErrAPISnackbar(err),
+    );
+  }
+
+  void fetchApiAthlete() async {
+    final req = await athleteRepo.listAthlete();
+    await req.responseHandler(
+      res: (res) => resAthlete.value = (res as List)
+          .map((e) => AthleteModel.fromJson(e))
+          .toList(),
+      err: (err) => showMyErrAPISnackbar(err),
+    );
+  }
+
+  void preloadHero() {
+    final image = heroImage;
+    final context = Get.context;
+    if (image == null || context == null) return;
+
+    precacheImage(CachedNetworkImageProvider(myImageUrl(image)), context);
+  }
+
+  String? get heroImage => resBanners.isNotEmpty
+      ? resBanners.first.imageUrl
+      : resFeatured.firstOrNull?.imageUrl;
+
+  String get heroTitle =>
+      resBanners.firstOrNull?.title ?? "BUILT DIFFERENT.\nTRAIN NOCVLA.";
+
+  String get heroDesc =>
+      resBanners.firstOrNull?.description ??
+      "Performance gear designed for discipline, focus, and progress.";
 
   void openDetail(String id) =>
       Get.toNamed(MyRoutes.productDetail, parameters: {"id": id});
+
+  void openCollection() => Get.toNamed(MyRoutes.collection);
+
+  void openAthlete() => Get.toNamed(MyRoutes.athlete);
+
+  void openAthleteDetail(String id) =>
+      Get.toNamed(MyRoutes.athleteDetail, parameters: {"id": id});
+
+  void openCategory(String? type) {
+    if (type == null) return;
+
+    Get.find<MainLayoutController>().openCollection(type);
+  }
+
+  void orderViaWhatsapp() =>
+      execUri("https://wa.me/${MyConfig.whatsappNumber}");
 }

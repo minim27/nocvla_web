@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class CartItemModel {
-  dynamic productId, productBaseId, name, imageUrl, color, size, price;
+  dynamic productId, productBaseId, name, imageUrl, color, size, price, maxQty;
   late RxInt qty;
 
   CartItemModel({
@@ -12,6 +12,7 @@ class CartItemModel {
     this.color,
     this.size,
     this.price,
+    this.maxQty,
     int qty = 1,
   }) {
     this.qty = qty.obs;
@@ -25,6 +26,7 @@ class CartItemModel {
     color = json["color"];
     size = json["size"];
     price = json["price"];
+    maxQty = json["maxQty"];
     qty = ((json["qty"] ?? 1) as int).obs;
   }
 
@@ -36,6 +38,7 @@ class CartItemModel {
     "color": color,
     "size": size,
     "price": price,
+    "maxQty": maxQty,
     "qty": qty.value,
   };
 }

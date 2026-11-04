@@ -9,6 +9,6 @@ class MySkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(width: width, height: height, color: MyColors.line);
+    return Container(width: width, height: height, color: MyColors.black2);
   }
 }

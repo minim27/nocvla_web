@@ -12,6 +12,8 @@ import '../../main_layout/widgets/footer/m_footer.dart';
 import '../../main_layout/widgets/footer/t_footer.dart';
 import 'widgets/mobile/m_athlete_application_form.dart';
 import 'widgets/tab/t_athlete_application_form.dart';
+import '../../../shared/utils/my_colors.dart';
+import '../../../shared/widgets/my_panel.dart';
 import 'widgets/web/athlete_application_form.dart';
 
 class AthleteApplicationPage extends GetView<AthleteApplicationController> {
@@ -35,17 +37,29 @@ class AthleteApplicationPage extends GetView<AthleteApplicationController> {
                       crossAxisAlignment: .start,
                       children: [
                         MyText(
-                          text: "ATHLETE APPLICATION",
+                          text: "DAFTAR JADI ATLET",
                           fontSize: 42,
                           letterSpacing: 2,
                           fontFamily: MyFonts.grenzeGotisch,
                         ),
                         SizedBox(height: 20),
-                        isDesktop
-                            ? AthleteApplicationForm()
-                            : isTab
-                            ? TAthleteApplicationForm()
-                            : MAthleteApplicationForm(),
+                        Obx(() {
+                          if (controller.isSubmitted.value) {
+                            return MyPanel(
+                              child: MyText(
+                                text:
+                                    "Pendaftaran kamu sudah kami terima. Admin akan menghubungi kamu.",
+                                color: MyColors.green,
+                              ),
+                            );
+                          }
+
+                          return isDesktop
+                              ? AthleteApplicationForm()
+                              : isTab
+                              ? TAthleteApplicationForm()
+                              : MAthleteApplicationForm();
+                        }),
                       ],
                     ),
                   ),
@@ -58,12 +72,12 @@ class AthleteApplicationPage extends GetView<AthleteApplicationController> {
               );
             },
           ),
-         Obx(
-          () => Visibility(
-            visible: controller.isLoadingSubmit.value,
-            child: const MyLoading(isStack: true),
+          Obx(
+            () => Visibility(
+              visible: controller.isLoadingSubmit.value,
+              child: const MyLoading(isStack: true),
+            ),
           ),
-        ),
         ],
       ),
     );

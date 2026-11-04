@@ -14,6 +14,7 @@ class AthleteApplicationController extends BaseController {
   final txtReason = TextEditingController();
 
   final isLoadingSubmit = false.obs;
+  final isSubmitted = false.obs;
 
   bool validApplication() {
     if (txtName.text.trim().isEmpty ||
@@ -44,10 +45,7 @@ class AthleteApplicationController extends BaseController {
       reason: txtReason.text.trim(),
     );
     await req.responseHandler(
-      res: (res) {
-        Get.back();
-        showMySnackbar("Berhasil", "Aplikasi kamu berhasil dikirim");
-      },
+      res: (res) => isSubmitted.value = true,
       err: (err) => showMyErrAPISnackbar(err),
     );
 

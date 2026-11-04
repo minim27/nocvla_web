@@ -5,11 +5,19 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/routes/my_routes.dart';
 import '../../app/services/my_config.dart';
+import '../../data/models/cart/cart_item_model.dart';
 import '../widgets/my_image.dart';
 import '../widgets/my_text.dart';
 import 'my_colors.dart';
 
 void changeStatusBool(RxBool val) => val.toggle();
+
+int sizeRank(String size) {
+  const sizes = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+  final rank = sizes.indexOf(size.toUpperCase());
+
+  return rank == -1 ? sizes.length : rank;
+}
 
 int getCartCount() {
   final data = GetStorage().read(MyConfig.keyCart) as Map<String, dynamic>?;
@@ -19,9 +27,22 @@ int getCartCount() {
 }
 
 void execUri(String uri) {
-  print(uri);
   launchUrl(.parse(uri));
 }
+
+void openWhatsapp(String text) => launchUrl(
+  .parse(
+    "https://wa.me/${MyConfig.whatsappNumber}?text=${Uri.encodeComponent(text)}",
+  ),
+  webOnlyWindowName: "_self",
+);
+
+String buildOrderPreview(List<CartItemModel> items, String? code) => [
+  "Halo NOCVLA, saya mau order:",
+  for (final item in items)
+    "- ${item.name} / ${item.color} / ${item.size} x${item.qty.value}",
+  "Kode atlet: ${code ?? "-"}",
+].join("\n");
 
 void showAddedToCartSnackbar({
   required String name,
@@ -58,7 +79,7 @@ void showAddedToCartSnackbar({
                   color: MyColors.white,
                 ),
                 MyText(
-                  text: "$size / $color   •   ADDED TO CART",
+                  text: "$size / $color   •   DITAMBAHKAN KE KERANJANG",
                   textAlign: .center,
                   fontSize: 12,
                   color: MyColors.white2,
@@ -78,7 +99,7 @@ void showAddedToCartSnackbar({
               Get.toNamed(MyRoutes.cart);
             },
             child: MyText(
-              text: "VIEW CART",
+              text: "LIHAT KERANJANG",
               fontWeight: .w600,
               color: MyColors.white2,
             ),

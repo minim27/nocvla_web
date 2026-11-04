@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla_web/app/routes/my_routes.dart';
-import 'package:nocvla_web/modules/home/home_controller.dart';
-import 'package:nocvla_web/shared/utils/my_colors.dart';
-import 'package:nocvla_web/shared/utils/my_dummies.dart';
-import 'package:nocvla_web/shared/utils/my_fonts.dart';
-import 'package:nocvla_web/shared/utils/my_icons.dart';
-import 'package:nocvla_web/shared/utils/my_linears.dart';
-import 'package:nocvla_web/shared/widgets/my_button.dart';
-import 'package:nocvla_web/shared/widgets/my_divider.dart';
-import 'package:nocvla_web/shared/widgets/my_image.dart';
-import 'package:nocvla_web/shared/widgets/my_text.dart';
+
+import '../../../../shared/utils/my_colors.dart';
+import '../../../../shared/utils/my_fonts.dart';
+import '../../../../shared/widgets/my_button.dart';
+import '../../../../shared/widgets/my_image.dart';
+import '../../../../shared/widgets/my_skeleton.dart';
+import '../../../../shared/widgets/my_text.dart';
+import '../../home_controller.dart';
 
 class MHomeHeader extends StatelessWidget {
   const MHomeHeader({super.key});
@@ -19,69 +16,54 @@ class MHomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
 
-    return Column(
-      children: [
-        Stack(
-          children: [
-            Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: 2820 / 2240,
-                  child: MyImageAssets(
-                    MyDummies.dumBanner,
-                    scale: 1,
-                    fit: .cover,
-                  ),
-                ),
-                AspectRatio(
-                  aspectRatio: 2820 / 2240,
-                  child: Container(
-                    decoration: BoxDecoration(gradient: MyLinears.linear1),
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              left: 24,
-              right: 24,
-              top: 0,
-              bottom: 0,
-              child: Column(
-                mainAxisSize: .min,
-                crossAxisAlignment: .start,
+    return SizedBox(
+      height: 480,
+      child: Stack(
+        fit: .expand,
+        children: [
+          Obx(() {
+            final image = controller.heroImage;
+
+            return image == null
+                ? MySkeleton(height: null)
+                : MyImage(image, alignment: .topCenter);
+          }),
+          Container(color: MyColors.black.withValues(alpha: 0.55)),
+          Padding(
+            padding: .symmetric(horizontal: 24),
+            child: Obx(
+              () => Column(
                 mainAxisAlignment: .center,
+                crossAxisAlignment: .start,
+                spacing: 16,
                 children: [
                   MyText(
-                    text: "BUILT DIFFERENT.\nTRAIN NOCVLA.",
+                    text: controller.heroTitle,
                     fontFamily: MyFonts.grenzeGotisch,
-                    fontSize: 30,
-                    height: 0.9,
-                    letterSpacing: 2,
-                    fontWeight: .w500,
+                    fontSize: 40,
+                    fontWeight: .w600,
+                    height: 1,
                   ),
-                  SizedBox(height: 16),
                   MyText(
-                    text:
-                        "Performance gear designed for discipline, focus, and progress.",
-                    color: MyColors.white2,
+                    text: controller.heroDesc,
+                    fontSize: 16,
+                    color: MyColors.white,
                   ),
-                  SizedBox(height: 24),
+                  SizedBox(height: 8),
                   Row(
                     spacing: 12,
                     children: [
                       Expanded(
                         child: MyButton(
-                          height: 42,
-                          "SHOP NOW",
-                          suffix: MyIcons.icForward,
-                          onTap: () => Get.toNamed(MyRoutes.collection),
+                          "LIHAT KOLEKSI",
+                          onTap: controller.openCollection,
                         ),
                       ),
                       Expanded(
                         child: MyButtonBorder(
-                          height: 44,
-                          "VIEW COLLECTION",
-                          onTap: () => Get.toNamed(MyRoutes.collection),
+                          "ATLET KAMI",
+                          borderColor: MyColors.white,
+                          onTap: controller.openAthlete,
                         ),
                       ),
                     ],
@@ -89,52 +71,9 @@ class MHomeHeader extends StatelessWidget {
                 ],
               ),
             ),
-          ],
-        ),
-        MyDivider(),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1.5,
           ),
-          itemCount: controller.resBenefits["benefits1"].length,
-          itemBuilder: (context, index) {
-            final items = controller.resBenefits["benefits1"][index];
-
-            return Column(
-              mainAxisAlignment: .center,
-              spacing: 16,
-              children: [
-                MyImageAssets(items["icon"]),
-                Column(
-                  spacing: 4,
-                  crossAxisAlignment: .center,
-                  children: [
-                    MyText(
-                      text: items["label"],
-                      fontSize: 16,
-                      fontWeight: .w600,
-                      textAlign: .center,
-                    ),
-                    Opacity(
-                      opacity: 0.6,
-                      child: MyText(
-                        text: items["desc"],
-                        color: MyColors.white2,
-                        textAlign: .center,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          },
-        ),
-
-        MyDivider(),
-      ],
+        ],
+      ),
     );
   }
 }

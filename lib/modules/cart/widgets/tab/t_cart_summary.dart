@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla_web/modules/cart/cart_controller.dart';
-import 'package:nocvla_web/shared/utils/my_colors.dart';
-import 'package:nocvla_web/shared/utils/my_parsing_currency.dart';
-import 'package:nocvla_web/shared/widgets/my_divider.dart';
-import 'package:nocvla_web/shared/widgets/my_text.dart';
 
+import '../../../../shared/utils/my_colors.dart';
+import '../../../../shared/utils/my_parsing_currency.dart';
 import '../../../../shared/widgets/my_button.dart';
+import '../../../../shared/widgets/my_divider.dart';
+import '../../../../shared/widgets/my_panel.dart';
+import '../../../../shared/widgets/my_text.dart';
+import '../../cart_controller.dart';
 
 class TCartSummary extends StatelessWidget {
   const TCartSummary({super.key});
@@ -15,71 +16,53 @@ class TCartSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CartController>();
 
-    return Expanded(
-      child: Container(
-        padding: .all(24),
-        decoration: BoxDecoration(
-          border: .all(color: MyColors.white.withValues(alpha: 0.1)),
-        ),
-        child: Column(
+    return MyPanel(
+      child: Obx(() {
+        controller.refreshSubtotal.value;
+
+        return Column(
+          crossAxisAlignment: .stretch,
           spacing: 16,
           children: [
-            Row(
-              mainAxisAlignment: .spaceBetween,
-              children: [
-                MyText(text: "SUBTOTAL", fontWeight: .w500),
-                Obx(() {
-                  controller.refreshSubtotal.value;
-
-                  return MyText(
-                    text: parsingCurrency(controller.subTotal),
-                    fontWeight: .w500,
-                  );
-                }),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: .spaceBetween,
-              children: [
-                MyText(text: "SHIPPING"),
-                MyText(text: "CALCULATED BY ADMIN"),
-              ],
-            ),
-            Obx(() {
-              controller.refreshSubtotal.value;
-
-              if (controller.appliedCode.value == null) return SizedBox();
-
-              return Row(
-                mainAxisAlignment: .spaceBetween,
-                children: [
-                  MyText(text: "DISCOUNT (${controller.appliedCode.value})"),
-                  MyText(
-                    text: "- ${parsingCurrency(controller.discountAmount)}",
-                  ),
-                ],
-              );
-            }),
+            row("Subtotal", parsingCurrency(controller.subTotal)),
+            if (controller.discountAmount > 0)
+              row(
+                "Diskon (${controller.appliedCode.value})",
+                "- ${parsingCurrency(controller.discountAmount)}",
+              ),
+            row("Ongkir", "Dihitung admin via WhatsApp"),
             MyDivider(),
-            Row(
-              mainAxisAlignment: .spaceBetween,
-              children: [
-                MyText(text: "TOTAL", fontWeight: .w600, fontSize: 18),
-                Obx(() {
-                  controller.refreshSubtotal.value;
-
-                  return MyText(
-                    text: parsingCurrency(controller.total),
-                    fontWeight: .w600,
-                    fontSize: 18,
-                  );
-                }),
-              ],
+            row("Total", parsingCurrency(controller.total)),
+            MyText(text: "PRATINJAU PESAN", color: MyColors.white2),
+            Container(
+              padding: .all(12),
+              color: MyColors.black,
+              child: MyText(text: controller.orderPreview, fontSize: 13),
             ),
-            MyButton("CHECKOUT", onTap: () => controller.checkout()),
+            MyButton(
+              "KIRIM ORDER KE WHATSAPP",
+              color: MyColors.red,
+              textColor: MyColors.nativeWhite,
+              enable: !controller.isSending.value,
+              onTap: controller.sendOrder,
+            ),
           ],
+        );
+      }),
+    );
+  }
+
+  Widget row(String label, String value) {
+    return Row(
+      spacing: 12,
+      children: [
+        Expanded(
+          child: MyText(text: label, color: MyColors.white2),
         ),
-      ),
+        Flexible(
+          child: MyText(text: value, textAlign: .end, fontWeight: .w600),
+        ),
+      ],
     );
   }
 }

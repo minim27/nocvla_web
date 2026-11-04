@@ -20,8 +20,10 @@ class EarlyAccessController extends BaseController {
   final passwordController = TextEditingController();
   final box = GetStorage();
 
+  bool isActive = false;
+
   DateTime? _endAt;
-  String? _updatedAt;
+  String? _version;
   Timer? _ticker;
 
   @override
@@ -46,13 +48,14 @@ class EarlyAccessController extends BaseController {
         );
         final endAtRaw = status.earlyAccessEndAt as String?;
         _endAt = endAtRaw == null ? null : DateTime.parse(endAtRaw);
-        _updatedAt = status.updatedAt as String?;
+        _version = endAtRaw;
         final expired = _endAt == null || DateTime.now().isAfter(_endAt!);
-        final unlocked =
-            unlockedVersion != null && unlockedVersion == _updatedAt;
+        final unlocked = unlockedVersion != null && unlockedVersion == _version;
 
-        if (status.isEarlyAccess == true && !expired && !unlocked) {
-          isGated.value = true;
+        isActive = status.isEarlyAccess == true && !expired;
+
+        if (isActive) {
+          isGated.value = !unlocked;
           _fetchImages();
           _startTicker();
         }
@@ -99,9 +102,13 @@ class EarlyAccessController extends BaseController {
     await req.responseHandler(
       res: (res) {
         if (res == true) {
-          box.write(MyConfig.keyEarlyAccessUnlockedVersion, _updatedAt);
+          final wasGated = isGated.value;
+
+          box.write(MyConfig.keyEarlyAccessUnlockedVersion, _version);
           isGated.value = false;
           _ticker?.cancel();
+
+          if (!wasGated) Get.offAllNamed(MyRoutes.home);
         } else {
           showMyErrAPISnackbar({"message": "Wrong Password"});
         }

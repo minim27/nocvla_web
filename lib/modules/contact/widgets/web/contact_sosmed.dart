@@ -1,11 +1,14 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla_web/modules/contact/contact_controller.dart';
-import 'package:nocvla_web/shared/widgets/my_image.dart';
 
 import '../../../../shared/utils/my_colors.dart';
 import '../../../../shared/utils/my_fonts.dart';
+import '../../../../shared/widgets/my_accordion.dart';
+import '../../../../shared/widgets/my_grid.dart';
+import '../../../../shared/widgets/my_image.dart';
+import '../../../../shared/widgets/my_panel.dart';
 import '../../../../shared/widgets/my_text.dart';
+import '../../contact_controller.dart';
 
 class ContactSosmed extends StatelessWidget {
   const ContactSosmed({super.key});
@@ -14,63 +17,73 @@ class ContactSosmed extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<ContactController>();
 
-    return Expanded(
+    return Padding(
+      padding: .all(40),
       child: Column(
         crossAxisAlignment: .start,
-        mainAxisAlignment: .center,
-        spacing: 38,
+        spacing: 32,
         children: [
           Column(
             crossAxisAlignment: .start,
             children: [
               MyText(
-                text: "CONTACT US",
-                fontSize: 42,
-                letterSpacing: 2,
+                text: "KONTAK",
                 fontFamily: MyFonts.grenzeGotisch,
+                fontSize: 64,
+                fontWeight: .w600,
               ),
               MyText(
-                text:
-                    "Punya pertanyaan atau ingin bekerja sama?\nHubungi kami melalui form atau media sosial.",
+                text: "Hubungi kami lewat salah satu kanal berikut.",
                 fontSize: 16,
                 color: MyColors.white2,
               ),
             ],
           ),
-          Column(
-            crossAxisAlignment: .start,
-            spacing: 24,
+          MyGrid(
+            crossAxisCount: 4,
             children: [
-              ...controller.res.entries.map((entry) {
-                final items = entry.value;
-
-                return Row(
-                  spacing: 12,
-                  children: [
-                    SizedBox(
-                      width: 52,
-                      height: 52,
-                      child: MyImageAssets(items["icon"], fit: .cover),
-                    ),
-                    Column(
-                      crossAxisAlignment: .start,
+              for (final items in controller.res)
+                GestureDetector(
+                  onTap: () => controller.open(items["link"]),
+                  child: MyPanel(
+                    child: Row(
+                      spacing: 12,
                       children: [
-                        MyText(
-                          text: items["label"],
-                          fontSize: 16,
-                          fontWeight: .w600,
-                          letterSpacing: 1,
-                        ),
-                        MyText(
-                          text: items["desc"],
-                          color: MyColors.white2,
-                          fontSize: 16,
+                        MyImageAssets(items["icon"]),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: .start,
+                            children: [
+                              MyText(text: items["label"], fontWeight: .w600),
+                              MyText(
+                                text: items["desc"],
+                                fontSize: 13,
+                                color: MyColors.white2,
+                                maxLines: 1,
+                                overflow: .ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ],
-                );
-              }),
+                  ),
+                ),
+            ],
+          ),
+          MyText(
+            text: "FAQ",
+            fontFamily: MyFonts.grenzeGotisch,
+            fontSize: 40,
+            fontWeight: .w600,
+          ),
+          Column(
+            children: [
+              for (final items in controller.resFaq)
+                MyAccordion(
+                  title: items["question"]!,
+                  child: MyText(text: items["answer"]!, color: MyColors.white2),
+                ),
             ],
           ),
         ],

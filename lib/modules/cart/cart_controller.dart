@@ -18,6 +18,7 @@ class CartController extends BaseController {
   final discountProductIds = <String>[].obs;
 
   final isValidatingCode = false.obs;
+  final isSending = false.obs;
   final refreshSubtotal = 0.obs;
 
   @override
@@ -63,6 +64,8 @@ class CartController extends BaseController {
 
   int get total => subTotal - discountAmount;
 
+  String get orderPreview => buildOrderPreview(resItems, appliedCode.value);
+
   void decrease(RxInt val) {
     if (val.value > 1) {
       val.value--;
@@ -72,8 +75,10 @@ class CartController extends BaseController {
     }
   }
 
-  void increase(RxInt val) {
-    val.value++;
+  void increase(CartItemModel item) {
+    if (item.maxQty != null && item.qty.value >= item.maxQty) return;
+
+    item.qty.value++;
     refreshSubtotal.value++;
     saveCart();
     refreshCartBadge();
@@ -139,5 +144,40 @@ class CartController extends BaseController {
     isValidatingCode.value = false;
   }
 
-  void checkout() => Get.toNamed(MyRoutes.checkout);
+  void continueShopping() => Get.toNamed(MyRoutes.collection);
+
+  void sendOrder() async {
+    if (resItems.isEmpty || isSending.value) return;
+    isSending.value = true;
+
+    String? text;
+
+    final req = await orderRepo.createOrder(
+      items: resItems
+          .map(
+            (item) => {
+              "color_id": item.productId,
+              "size": item.size,
+              "qty": item.qty.value,
+            },
+          )
+          .toList(),
+      athleteCode: appliedCode.value,
+    );
+    await req.responseHandler(
+      res: (res) => text = res["wa_text"],
+      err: (err) => showMyErrAPISnackbar({
+        "message": "Order gagal dikirim. Stok mungkin tidak mencukupi.",
+      }),
+    );
+
+    isSending.value = false;
+
+    if (text == null) return;
+
+    resItems.clear();
+    removeCode();
+    refreshCartBadge();
+    openWhatsapp(text!);
+  }
 }

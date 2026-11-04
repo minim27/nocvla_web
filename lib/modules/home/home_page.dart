@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:nocvla_web/modules/home/home_controller.dart';
-import 'package:nocvla_web/modules/home/widgets/web/home_featured.dart';
-import 'package:nocvla_web/modules/home/widgets/web/home_header.dart';
-import 'package:nocvla_web/shared/widgets/my_scaffold.dart';
 
+import '../../shared/widgets/my_scaffold.dart';
 import '../main_layout/widgets/footer/footer.dart';
 import '../main_layout/widgets/footer/m_footer.dart';
 import '../main_layout/widgets/footer/t_footer.dart';
+import 'home_controller.dart';
+import 'widgets/mobile/m_home_athletes.dart';
+import 'widgets/mobile/m_home_categories.dart';
 import 'widgets/mobile/m_home_featured.dart';
 import 'widgets/mobile/m_home_header.dart';
-import 'widgets/mobile/m_home_movement.dart';
+import 'widgets/mobile/m_home_order.dart';
+import 'widgets/tab/t_home_athletes.dart';
+import 'widgets/tab/t_home_categories.dart';
 import 'widgets/tab/t_home_featured.dart';
 import 'widgets/tab/t_home_header.dart';
-import 'widgets/tab/t_home_movement.dart';
-import 'widgets/web/home_movement.dart';
+import 'widgets/tab/t_home_order.dart';
+import 'widgets/web/home_athletes.dart';
+import 'widgets/web/home_categories.dart';
+import 'widgets/web/home_featured.dart';
+import 'widgets/web/home_header.dart';
+import 'widgets/web/home_order.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -30,10 +35,31 @@ class HomePage extends GetView<HomeController> {
 
           return ListView(
             children: isDesktop
-                ? [HomeHeader(), HomeFeatured(), HomeMovement(), Footer()]
+                ? [
+                    HomeHeader(),
+                    HomeCategories(),
+                    HomeFeatured(),
+                    HomeAthletes(),
+                    HomeOrder(),
+                    Footer(),
+                  ]
                 : isTab
-                ? [THomeHeader(), THomeFeatured(), THomeMovement(), TFooter()]
-                : [MHomeHeader(), MHomeFeatured(), MHomeMovement(), MFooter()],
+                ? [
+                    THomeHeader(),
+                    THomeCategories(),
+                    THomeFeatured(),
+                    THomeAthletes(),
+                    THomeOrder(),
+                    TFooter(),
+                  ]
+                : [
+                    MHomeHeader(),
+                    MHomeCategories(),
+                    MHomeFeatured(),
+                    MHomeAthletes(),
+                    MHomeOrder(),
+                    MFooter(),
+                  ],
           );
         },
       ),

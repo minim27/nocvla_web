@@ -9,6 +9,7 @@ import 'app/routes/my_routes.dart';
 import 'app/services/my_config.dart';
 import 'modules/early_access/early_access_controller.dart';
 import 'modules/main_layout/main_layout.dart';
+import 'modules/main_layout/main_layout_controller.dart';
 import 'shared/utils/my_colors.dart';
 import 'shared/utils/my_fonts.dart';
 
@@ -27,6 +28,8 @@ void main() async {
     permanent: true,
   );
   await earlyAccessController.init();
+
+  Get.put(MainLayoutController(), permanent: true);
 
   runApp(const MyApp());
 }
@@ -75,8 +78,11 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: MyRoutes.home,
       getPages: MyPages.routes,
-      routingCallback: (_) =>
-          WidgetsBinding.instance.addPostFrameCallback((_) => Get.appUpdate()),
+      title: "NOCVLA",
+      routingCallback: (_) => WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.find<MainLayoutController>().updateTitle();
+        Get.appUpdate();
+      }),
       builder: (context, child) => MainLayout(child: child!),
     );
   }

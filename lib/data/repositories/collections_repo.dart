@@ -35,24 +35,25 @@ class CollectionsRepo extends BaseRepository {
     );
   }
 
-  Future<ResponseHandler<dynamic>> getProduct(String id) async =>
-      ResponseHandler(
-        supabase
-            .from("m_product_color")
-            .select(
-              "*, product:m_products(*, colors:m_product_color(id, name, "
-              "images:m_product_images(image_url, sort_order))), "
-              "images:m_product_images(*), stock:m_product_stock(*)",
-            )
-            .eq("id", id)
-            .order("sort_order", referencedTable: "images", ascending: true)
-            .order("sort_order", referencedTable: "stock", ascending: true)
-            .order("name", referencedTable: "product.colors", ascending: true)
-            .order(
-              "sort_order",
-              referencedTable: "product.colors.images",
-              ascending: true,
-            )
-            .single(),
-      );
+  Future<ResponseHandler<dynamic>> getProduct(
+    String id,
+  ) async => ResponseHandler(
+    supabase
+        .from("m_product_color")
+        .select(
+          "*, product:m_products(*, product_type:m_product_type(name), colors:m_product_color(id, name, "
+          "images:m_product_images(image_url, sort_order))), "
+          "images:m_product_images(*), stock:m_product_stock(*)",
+        )
+        .eq("id", id)
+        .order("sort_order", referencedTable: "images", ascending: true)
+        .order("sort_order", referencedTable: "stock", ascending: true)
+        .order("name", referencedTable: "product.colors", ascending: true)
+        .order(
+          "sort_order",
+          referencedTable: "product.colors.images",
+          ascending: true,
+        )
+        .single(),
+  );
 }

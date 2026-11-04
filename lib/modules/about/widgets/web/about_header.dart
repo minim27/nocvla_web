@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla_web/modules/about/about_controller.dart';
-import 'package:nocvla_web/shared/utils/my_colors.dart';
-import 'package:nocvla_web/shared/utils/my_fonts.dart';
-import 'package:nocvla_web/shared/utils/my_icons.dart';
-import 'package:nocvla_web/shared/utils/my_linears.dart';
-import 'package:nocvla_web/shared/widgets/my_button.dart';
-import 'package:nocvla_web/shared/widgets/my_image.dart';
-import 'package:nocvla_web/shared/widgets/my_text.dart';
+
+import '../../../../shared/utils/my_colors.dart';
+import '../../../../shared/utils/my_fonts.dart';
+import '../../../../shared/widgets/my_image.dart';
+import '../../../../shared/widgets/my_skeleton.dart';
+import '../../../../shared/widgets/my_text.dart';
+import '../../about_controller.dart';
 
 class AboutHeader extends StatelessWidget {
   const AboutHeader({super.key});
@@ -16,56 +15,58 @@ class AboutHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<AboutController>();
 
-    final items = controller.res;
-
-    return Stack(
+    return Column(
+      crossAxisAlignment: .start,
       children: [
-        Padding(
-          padding: .only(left: 250),
+        SizedBox(
+          height: 480,
           child: Stack(
+            fit: .expand,
             children: [
-              AspectRatio(
-                aspectRatio: 2820 / 2240,
-                child: MyImageAssets(items["image"], scale: 1, fit: .cover),
+              Obx(
+                () => controller.heroImage.value == null
+                    ? MySkeleton(height: null)
+                    : MyImage(
+                        controller.heroImage.value,
+                        alignment: .topCenter,
+                      ),
               ),
-              AspectRatio(
-                aspectRatio: 2820 / 2240,
-                child: Container(
-                  decoration: BoxDecoration(gradient: MyLinears.linear1),
+              Container(color: MyColors.black.withValues(alpha: 0.55)),
+              Padding(
+                padding: .all(40),
+                child: Align(
+                  alignment: .bottomLeft,
+                  child: MyText(
+                    text: controller.res["title"],
+                    fontFamily: MyFonts.grenzeGotisch,
+                    fontSize: 64,
+                    fontWeight: .w600,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        Positioned(
-          left: 190,
-          top: 0,
-          bottom: 0,
+        Padding(
+          padding: .all(40),
           child: Column(
-            mainAxisSize: .min,
             crossAxisAlignment: .start,
-            mainAxisAlignment: .center,
+            spacing: 16,
             children: [
               MyText(
-                text: items["title"],
+                text: "OUR STORY",
                 fontFamily: MyFonts.grenzeGotisch,
-                fontSize: 104,
-                height: 0.9,
-                letterSpacing: 2,
-                fontWeight: .w500,
+                fontSize: 40,
+                fontWeight: .w600,
               ),
-              SizedBox(height: 48),
-              MyText(
-                text: items["desc"],
-                fontSize: 18,
-                color: MyColors.white.withValues(alpha: 0.6),
-              ),
-              SizedBox(height: 80),
-              MyButton(
-                width: 217,
-                "OUR STORY",
-                suffix: MyIcons.icForward,
-                onTap: () => null,
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 760),
+                child: MyText(
+                  text: controller.res["story"],
+                  fontSize: 16,
+                  height: 1.6,
+                  color: MyColors.white2,
+                ),
               ),
             ],
           ),

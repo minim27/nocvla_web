@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:nocvla_web/modules/collection/collection_controller.dart';
-import 'package:nocvla_web/modules/collection/widgets/mobile/m_collection_body.dart';
-import 'package:nocvla_web/modules/collection/widgets/tab/t_collection_body.dart';
-import 'package:nocvla_web/modules/collection/widgets/web/collection_body.dart';
-import 'package:nocvla_web/modules/collection/widgets/web/collection_header.dart';
-import 'package:nocvla_web/shared/widgets/my_scaffold.dart';
+import 'package:get/get.dart';
 
+import '../../shared/widgets/my_scaffold.dart';
 import '../main_layout/widgets/footer/footer.dart';
 import '../main_layout/widgets/footer/m_footer.dart';
 import '../main_layout/widgets/footer/t_footer.dart';
-import 'widgets/mobile/m_collection_bottom.dart';
-import 'widgets/tab/t_collection_bottom.dart';
-import 'widgets/web/collection_bottom.dart';
+import 'collection_controller.dart';
+import 'widgets/mobile/m_collection_body.dart';
+import 'widgets/mobile/m_collection_filter.dart';
+import 'widgets/mobile/m_collection_header.dart';
+import 'widgets/tab/t_collection_body.dart';
+import 'widgets/tab/t_collection_filter.dart';
+import 'widgets/tab/t_collection_header.dart';
+import 'widgets/web/collection_body.dart';
+import 'widgets/web/collection_filter.dart';
+import 'widgets/web/collection_header.dart';
 
 class CollectionPage extends GetView<CollectionController> {
   const CollectionPage({super.key});
@@ -25,27 +27,37 @@ class CollectionPage extends GetView<CollectionController> {
           final isDesktop = constraints.maxWidth >= 1280;
           final isTab = constraints.maxWidth >= 768;
 
-          return ListView(
-            children: isDesktop
-                ? [
-                    CollectionHeader(),
-                    CollectionBody(),
-                    CollectionBottom(),
-                    Footer(),
-                  ]
-                : isTab
-                ? [
-                    CollectionHeader(),
-                    TCollectionBody(),
-                    TCollectionBottom(),
-                    TFooter(),
-                  ]
-                : [
-                    CollectionHeader(),
-                    MCollectionBody(),
-                    MCollectionBottom(),
-                    MFooter(),
-                  ],
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: isDesktop
+                    ? CollectionHeader()
+                    : isTab
+                    ? TCollectionHeader()
+                    : MCollectionHeader(),
+              ),
+              PinnedHeaderSliver(
+                child: isDesktop
+                    ? CollectionFilter()
+                    : isTab
+                    ? TCollectionFilter()
+                    : MCollectionFilter(),
+              ),
+              SliverToBoxAdapter(
+                child: isDesktop
+                    ? CollectionBody()
+                    : isTab
+                    ? TCollectionBody()
+                    : MCollectionBody(),
+              ),
+              SliverToBoxAdapter(
+                child: isDesktop
+                    ? Footer()
+                    : isTab
+                    ? TFooter()
+                    : MFooter(),
+              ),
+            ],
           );
         },
       ),

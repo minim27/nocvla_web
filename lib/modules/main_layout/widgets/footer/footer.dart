@@ -5,128 +5,141 @@ import '../../../../app/routes/my_routes.dart';
 import '../../../../app/services/my_config.dart';
 import '../../../../shared/utils/my_colors.dart';
 import '../../../../shared/utils/my_fonts.dart';
-import '../../../../shared/utils/my_icons.dart';
+import '../../../../shared/utils/my_images.dart';
 import '../../../../shared/utils/my_utility.dart';
+import '../../../../shared/widgets/my_button.dart';
+import '../../../../shared/widgets/my_divider.dart';
 import '../../../../shared/widgets/my_image.dart';
 import '../../../../shared/widgets/my_text.dart';
+import '../../main_layout_controller.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: .fromLTRB(60, 60, 60, 24),
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: MyColors.white.withValues(alpha: 0.08)),
-        ),
-      ),
-      child: Column(
-        children: [
-          Row(
+    final controller = Get.find<MainLayoutController>();
+
+    return Column(
+      children: [
+        MyDivider(),
+        Obx(() {
+          if (controller.linkDiscord.value.isEmpty) return SizedBox();
+
+          return Container(
+            color: MyColors.black2,
+            padding: .symmetric(horizontal: 60, vertical: 40),
+            child: Row(
+              spacing: 24,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    spacing: 4,
+                    children: [
+                      MyText(
+                        text: "JOIN NOCVLA",
+                        fontSize: 32,
+                        fontWeight: .w600,
+                        fontFamily: MyFonts.grenzeGotisch,
+                      ),
+                      MyText(
+                        text: "Be the first to know",
+                        color: MyColors.white2,
+                      ),
+                    ],
+                  ),
+                ),
+                MyButton(
+                  "GABUNG DISCORD",
+                  width: 220,
+                  onTap: controller.openDiscordLink,
+                ),
+              ],
+            ),
+          );
+        }),
+        MyDivider(),
+        Padding(
+          padding: .fromLTRB(60, 56, 60, 24),
+          child: Column(
             crossAxisAlignment: .start,
             children: [
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    MyText(
-                      text: "NOCVLA",
-                      fontSize: 32,
-                      fontFamily: MyFonts.grenzeGotisch,
-                    ),
-                    SizedBox(height: 12),
-                    MyText(
-                      text:
-                          "Performance gear designed for discipline, focus, and progress.",
-                      color: MyColors.white.withValues(alpha: 0.6),
-                    ),
-                  ],
-                ),
+              Row(
+                crossAxisAlignment: .start,
+                children: [
+                  Expanded(flex: 2, child: brand()),
+                  Expanded(child: shopMenu(controller)),
+                  Expanded(child: companyMenu()),
+                  Expanded(child: followMenu()),
+                ],
               ),
-              Expanded(
-                child: footerMenu(
-                  title: "SHOP",
-                  items: {
-                    "Compression": () => Get.toNamed(MyRoutes.collection),
-                    "Oversized": () => Get.toNamed(MyRoutes.collection),
-                    "Accessories": () => Get.toNamed(MyRoutes.collection),
-                  },
-                ),
-              ),
-              Expanded(
-                child: footerMenu(
-                  title: "COMPANY",
-                  items: {
-                    "About": () => Get.toNamed(MyRoutes.about),
-                    "Athlete": () => Get.toNamed(MyRoutes.athlete),
-                    // "FAQ": () => Get.toNamed(MyRoutes.faq),
-                    "Contact": () => Get.toNamed(MyRoutes.contact),
-                  },
-                ),
-              ),
-              // Expanded(
-              //   child: footerMenu(
-              //     title: "SUPPORT",
-              //     items: {
-              //       "Shipping": () {},
-              //       "Returns": () {},
-              //       "Size Guide": () {},
-              //       "Privacy Policy": () {},
-              //     },
-              //   ),
-              // ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    MyText(text: "FOLLOW US", fontWeight: .w600),
-                    SizedBox(height: 20),
-                    Row(
-                      spacing: 12,
-                      children: [
-                        GestureDetector(
-                          onTap: () => execUri(
-                            "https://instagram.com/${MyConfig.instagramUsername}",
-                          ),
-                          child: MyImageAssets(MyIcons.icInstagram),
-                        ),
-                        GestureDetector(
-                          onTap: () => execUri(
-                            "https://www.tiktok.com/@${MyConfig.tiktokUsername}",
-                          ),
-                          child: MyImageAssets(MyIcons.icTikTok),
-                        ),
-                        // MyImageAssets(MyIcons.icWhatsapp),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 48),
-          Divider(color: MyColors.white.withValues(alpha: 0.08)),
-          SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: MyText(
-                  text: "© 2026 NOCVLA. All Rights Reserved.",
-                  color: MyColors.white.withValues(alpha: 0.5),
-                ),
-              ),
+              SizedBox(height: 40),
+              MyDivider(bottomGap: 20),
               MyText(
-                text: "Built Different. Train NOCVLA.",
-                color: MyColors.white.withValues(alpha: 0.5),
+                text: "© 2026 NOCVLA. All Rights Reserved.",
+                fontSize: 12,
+                color: MyColors.white2,
               ),
             ],
           ),
-        ],
+        ),
+      ],
+    );
+  }
+
+  Widget brand() {
+    return Column(
+      crossAxisAlignment: .start,
+      spacing: 12,
+      children: [
+        SizedBox(
+          width: 165,
+          height: 56,
+          child: MyImageAssets(
+            MyImages.imgNocvla,
+            fit: .contain,
+            alignment: .centerLeft,
+          ),
+        ),
+        MyText(text: "Built Different. Train NOCVLA.", color: MyColors.white2),
+      ],
+    );
+  }
+
+  Widget shopMenu(MainLayoutController controller) {
+    return Obx(
+      () => footerMenu(
+        title: "BELANJA",
+        items: {
+          for (final e in controller.resType)
+            "${e.name}".toLowerCase().capitalizeFirst!: () =>
+                controller.openCollection(e.name),
+        },
       ),
+    );
+  }
+
+  Widget companyMenu() {
+    return footerMenu(
+      title: "NOCVLA",
+      items: {
+        "Tentang": () => Get.toNamed(MyRoutes.about),
+        "Atlet": () => Get.toNamed(MyRoutes.athlete),
+        "Kontak": () => Get.toNamed(MyRoutes.contact),
+      },
+    );
+  }
+
+  Widget followMenu() {
+    return footerMenu(
+      title: "IKUTI",
+      items: {
+        "Instagram": () =>
+            execUri("https://instagram.com/${MyConfig.instagramUsername}"),
+        "TikTok": () =>
+            execUri("https://www.tiktok.com/@${MyConfig.tiktokUsername}"),
+      },
     );
   }
 
@@ -137,17 +150,21 @@ class Footer extends StatelessWidget {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        MyText(text: title, fontWeight: .w600),
-        SizedBox(height: 20),
+        MyText(
+          text: title,
+          fontFamily: MyFonts.archivoNarrow,
+          fontWeight: .w700,
+          letterSpacing: 14 * 0.12,
+        ),
+        SizedBox(height: 8),
         ...items.entries.map(
-          (e) => Padding(
-            padding: .only(bottom: 12),
-            child: GestureDetector(
-              onTap: e.value,
-              child: MyText(
-                text: e.key,
-                color: MyColors.white.withValues(alpha: 0.6),
-              ),
+          (e) => GestureDetector(
+            behavior: .opaque,
+            onTap: e.value,
+            child: Container(
+              height: 44,
+              alignment: .centerLeft,
+              child: MyText(text: e.key, color: MyColors.white2),
             ),
           ),
         ),

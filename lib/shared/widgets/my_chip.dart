@@ -24,18 +24,20 @@ class MyChip extends StatelessWidget {
       child: Container(
         height: 44,
         padding: const .symmetric(horizontal: 16),
-        alignment: .center,
         decoration: BoxDecoration(
           color: isSelected ? MyColors.white : null,
           border: .all(color: isSelected ? MyColors.white : MyColors.line),
         ),
-        child: MyText(
-          text: text.toUpperCase(),
-          color: isSelected ? MyColors.black : MyColors.white,
-          fontFamily: MyFonts.archivoNarrow,
-          fontSize: 13,
-          fontWeight: .w600,
-          letterSpacing: 13 * 0.12,
+        child: Center(
+          widthFactor: 1,
+          child: MyText(
+            text: text.toUpperCase(),
+            color: isSelected ? MyColors.black : MyColors.white,
+            fontFamily: MyFonts.archivoNarrow,
+            fontSize: 13,
+            fontWeight: .w600,
+            letterSpacing: 13 * 0.12,
+          ),
         ),
       ),
     );

@@ -5,7 +5,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../app/services/my_config.dart';
 import '../utils/my_colors.dart';
 import '../utils/my_images.dart';
-import 'my_loading.dart';
+import 'my_skeleton.dart';
+
+String myImageUrl(dynamic image) =>
+    "${MyConfig.apiUrl}/${dotenv.env["API_STORAGE"]}/$image";
 
 class MyImage extends StatelessWidget {
   const MyImage(
@@ -33,13 +36,11 @@ class MyImage extends StatelessWidget {
       child: (image == null)
           ? _placeholder()
           : CachedNetworkImage(
-              imageUrl:
-                  "${MyConfig.apiUrl}/${dotenv.env["API_STORAGE"]}/$image",
+              imageUrl: myImageUrl(image),
               fit: fit,
               scale: scale,
               alignment: alignment,
-              placeholder: (context, url) =>
-                  MyLoading(backgroundColor: Colors.transparent),
+              placeholder: (context, url) => MySkeleton(height: null),
               errorWidget: (context, url, error) =>
                   errorWidget ?? _placeholder(),
             ),

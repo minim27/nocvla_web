@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../../shared/utils/my_colors.dart';
+import '../../../../../shared/utils/my_fonts.dart';
 import '../../../../../shared/widgets/my_athlete_card.dart';
-import '../../../../../shared/widgets/my_loading.dart';
+import '../../../../../shared/widgets/my_grid.dart';
+import '../../../../../shared/widgets/my_skeleton.dart';
+import '../../../../../shared/widgets/my_text.dart';
 import '../../athlete_controller.dart';
 
 class MAthleteBody extends StatelessWidget {
@@ -12,70 +16,58 @@ class MAthleteBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<AthleteController>();
 
-    return Obx(() {
-      if (controller.isLoadingAthlete.value) return MyLoading();
+    return Padding(
+      padding: .all(24),
+      child: Obx(() {
+        if (controller.isLoadingAthlete.value) {
+          return MyGrid(
+            crossAxisCount: 2,
+            children: [
+              for (var i = 0; i < 2; i++)
+                AspectRatio(aspectRatio: 1, child: MySkeleton(height: null)),
+            ],
+          );
+        }
 
-      if (controller.resAthlete.isEmpty) return SizedBox();
-
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          const crossAxisCount = 2;
-          const crossAxisSpacing = 8.0;
-          const horizontalPadding = 24.0;
-          const textAreaHeight = 90.0;
-          final columnWidth =
-              (constraints.maxWidth -
-                  horizontalPadding * 2 -
-                  crossAxisSpacing * (crossAxisCount - 1)) /
-              crossAxisCount;
-
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: .fromLTRB(horizontalPadding, 32, horizontalPadding, 0),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: crossAxisSpacing,
-              mainAxisSpacing: 8,
-              crossAxisCount: crossAxisCount,
-              mainAxisExtent: columnWidth + textAreaHeight,
-            ),
-            itemCount: controller.resAthlete.length,
-            itemBuilder: (context, index) {
-              // final isLast = index == controller.resAthlete.length;
-
-              // if (isLast) {
-              //   return GestureDetector(
-              //     onTap: () => null,
-              //     child: Container(
-              //       decoration: BoxDecoration(color: MyColors.black2),
-              //       child: Center(
-              //         child: Column(
-              //           mainAxisSize: .min,
-              //           spacing: 12,
-              //           children: [
-              //             Icon(Icons.arrow_forward, color: MyColors.white, size: 32),
-              //             MyText(
-              //               text: "ALL ATHLETES",
-              //               fontSize: 20,
-              //               fontWeight: .w700,
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //   );
-              // }
-
-              final items = controller.resAthlete[index];
-
-              return MyAthleteCard(
+        return MyGrid(
+          crossAxisCount: 2,
+          children: [
+            for (final items in controller.resAthlete)
+              MyAthleteCard(
                 item: items,
                 onTap: () => controller.openDetail(items.id),
-              );
-            },
-          );
-        },
-      );
-    });
+                onCopy: () => controller.copyCode(items.code),
+              ),
+            GestureDetector(
+              onTap: controller.openApplication,
+              child: Container(
+                constraints: BoxConstraints(minHeight: 200),
+                alignment: .center,
+                padding: .all(16),
+                decoration: BoxDecoration(border: .all(color: MyColors.line)),
+                child: Column(
+                  mainAxisSize: .min,
+                  spacing: 8,
+                  children: [
+                    MyText(
+                      text: "YOUR NAME HERE",
+                      textAlign: .center,
+                      fontFamily: MyFonts.grenzeGotisch,
+                      fontSize: 24,
+                      fontWeight: .w600,
+                    ),
+                    MyText(
+                      text: "Daftar jadi atlet",
+                      textAlign: .center,
+                      color: MyColors.white2,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
   }
 }

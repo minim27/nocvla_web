@@ -4,9 +4,9 @@ class OrderRepo extends BaseRepository {
   Future<ResponseHandler<dynamic>> createOrder({
     required List<Map<String, dynamic>> items,
     String? athleteCode,
-    required String customerName,
-    required String customerPhone,
-    required String address,
+    String? customerName,
+    String? customerPhone,
+    String? address,
   }) async => ResponseHandler(
     supabase.rpc(
       "create_wa_order",
