@@ -25,6 +25,8 @@ class MyButton extends StatelessWidget {
     this.enable = true,
     this.prefix,
     this.suffix,
+    this.prefixIcon,
+    this.suffixIcon,
     required this.onTap,
   });
 
@@ -33,6 +35,7 @@ class MyButton extends StatelessWidget {
   final double height, fontSize, borderRadius, borderWidth, scale;
   final String text;
   final String? prefix, suffix;
+  final IconData? prefixIcon, suffixIcon;
   final Color color, textColor;
   final Color? borderColor;
   final FontWeight fontWeight;
@@ -60,6 +63,8 @@ class MyButton extends StatelessWidget {
           mainAxisAlignment: .center,
           children: [
             if (prefix != null) MyImageAssets(prefix!, scale: scale),
+            if (prefixIcon != null)
+              Icon(prefixIcon, color: textColor, size: fontSize + 2),
             Flexible(
               child: MyText(
                 textAlign: .center,
@@ -74,6 +79,8 @@ class MyButton extends StatelessWidget {
               ),
             ),
             if (suffix != null) MyImageAssets(suffix!, scale: scale),
+            if (suffixIcon != null)
+              Icon(suffixIcon, color: textColor, size: fontSize + 2),
           ],
         ),
       ),

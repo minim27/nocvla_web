@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../shared/utils/my_colors.dart';
 import '../../../../shared/utils/my_fonts.dart';
+import '../../../../shared/utils/my_images.dart';
 import '../../../../shared/widgets/my_image.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../home_controller.dart';
@@ -18,8 +19,8 @@ class MHomeCategories extends StatelessWidget {
       padding: .fromLTRB(24, 32, 24, 0),
       child: Obx(
         () => Column(
-          spacing: 16,
           crossAxisAlignment: .stretch,
+          spacing: 16,
           children: [
             for (final items in controller.resCategories)
               category(controller, items),
@@ -34,20 +35,28 @@ class MHomeCategories extends StatelessWidget {
     final image = type == null ? null : controller.resTypeImages[type];
 
     return GestureDetector(
-      onTap: () => controller.openCategory(items["type"]),
+      onTap: () => controller.openCategory(type),
       child: AspectRatio(
-        aspectRatio: 3 / 2,
+        aspectRatio: 16 / 9,
         child: Container(
           decoration: BoxDecoration(
-            color: MyColors.black2,
-            border: .all(color: MyColors.line),
+            color: MyColors.black5,
+            border: .all(color: MyColors.line3),
           ),
           child: Stack(
             fit: .expand,
             children: [
-              if (image != null) MyImage(image),
-              if (image != null)
-                Container(color: MyColors.black.withValues(alpha: 0.45)),
+              if (image != null) ...[
+                MyImage(image),
+                Container(color: MyColors.black.withValues(alpha: 0.5)),
+              ] else
+                Padding(
+                  padding: .fromLTRB(60, 16, 60, 56),
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: MyImageAssets(MyImages.imgNocvla, fit: .contain),
+                  ),
+                ),
               Padding(
                 padding: .all(20),
                 child: Column(
@@ -60,7 +69,13 @@ class MHomeCategories extends StatelessWidget {
                       fontSize: 28,
                       fontWeight: .w600,
                     ),
-                    MyText(text: items["desc"], color: MyColors.white),
+                    MyText(
+                      text: items["desc"],
+                      fontFamily: MyFonts.archivoNarrow,
+                      fontSize: 12,
+                      fontWeight: .w600,
+                      letterSpacing: 12 * 0.12,
+                    ),
                   ],
                 ),
               ),

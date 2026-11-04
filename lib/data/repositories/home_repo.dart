@@ -29,4 +29,12 @@ class HomeRepo extends BaseRepository {
         .order("name", referencedTable: "colors", ascending: true)
         .order("name", ascending: true),
   );
+
+  Future<ResponseHandler<dynamic>> series() async => ResponseHandler(
+    supabase
+        .from("m_series")
+        .select("*, product:m_products(colors:m_product_color(id))")
+        .eq("is_active", true)
+        .order("sort_order", ascending: true),
+  );
 }

@@ -9,6 +9,7 @@ import '../../../../shared/utils/my_images.dart';
 import '../../../../shared/utils/my_utility.dart';
 import '../../../../shared/widgets/my_button.dart';
 import '../../../../shared/widgets/my_divider.dart';
+import '../../../../shared/widgets/my_grid.dart';
 import '../../../../shared/widgets/my_image.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../main_layout_controller.dart';
@@ -22,70 +23,85 @@ class Footer extends StatelessWidget {
 
     return Column(
       children: [
-        MyDivider(),
-        Obx(() {
-          if (controller.linkDiscord.value.isEmpty) return SizedBox();
-
-          return Container(
-            color: MyColors.black2,
-            padding: .symmetric(horizontal: 60, vertical: 40),
-            child: Row(
-              spacing: 24,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: .start,
-                    spacing: 4,
-                    children: [
-                      MyText(
-                        text: "JOIN NOCVLA",
-                        fontSize: 32,
-                        fontWeight: .w600,
-                        fontFamily: MyFonts.grenzeGotisch,
-                      ),
-                      MyText(
-                        text: "Be the first to know",
-                        color: MyColors.white2,
-                      ),
-                    ],
-                  ),
-                ),
-                MyButton(
-                  "GABUNG DISCORD",
-                  width: 220,
-                  onTap: controller.openDiscordLink,
-                ),
-              ],
-            ),
-          );
-        }),
-        MyDivider(),
-        Padding(
-          padding: .fromLTRB(60, 56, 60, 24),
+        MyDivider(color: MyColors.line2),
+        band(controller),
+        MyDivider(color: MyColors.line2),
+        Container(
+          width: .infinity,
+          color: MyColors.black,
+          padding: .fromLTRB(60, 48, 60, 24),
           child: Column(
             crossAxisAlignment: .start,
             children: [
-              Row(
-                crossAxisAlignment: .start,
+              MyGrid(
+                crossAxisCount: 4,
+                spacing: 32,
                 children: [
-                  Expanded(flex: 2, child: brand()),
-                  Expanded(child: shopMenu(controller)),
-                  Expanded(child: companyMenu()),
-                  Expanded(child: followMenu()),
+                  brand(),
+                  shopMenu(controller),
+                  companyMenu(controller),
+                  followMenu(controller),
                 ],
               ),
-              SizedBox(height: 40),
-              MyDivider(bottomGap: 20),
-              MyText(
-                text: "© 2026 NOCVLA. All Rights Reserved.",
-                fontSize: 12,
-                color: MyColors.white2,
-              ),
+              SizedBox(height: 32),
+              MyDivider(color: MyColors.line2, bottomGap: 20),
+              bottom(),
             ],
           ),
         ),
       ],
     );
+  }
+
+  Widget band(MainLayoutController controller) {
+    return Obx(() {
+      if (controller.linkDiscord.value.isEmpty) return SizedBox();
+
+      final text = Column(
+        crossAxisAlignment: .start,
+        spacing: 6,
+        children: [
+          MyText(
+            text: "JOIN NOCVLA",
+            fontFamily: MyFonts.archivoNarrow,
+            fontSize: 12,
+            fontWeight: .w700,
+            letterSpacing: 12 * 0.2,
+            color: MyColors.redText,
+          ),
+          MyText(
+            text: "Be the first to know.",
+            fontFamily: MyFonts.grenzeGotisch,
+            fontSize: 36,
+            fontWeight: .w600,
+          ),
+          MyText(
+            text:
+                "Info drop, kata sandi early access, dan restock dibagikan duluan di Discord NOCVLA.",
+            color: MyColors.white2,
+          ),
+        ],
+      );
+      final button = MyButton(
+        "GABUNG DISCORD",
+        width: 240,
+        prefixIcon: Icons.discord,
+        onTap: controller.openDiscordLink,
+      );
+
+      return Container(
+        width: .infinity,
+        color: MyColors.black4,
+        padding: .symmetric(horizontal: 60, vertical: 48),
+        child: Row(
+          spacing: 24,
+          children: [
+            Expanded(child: text),
+            button,
+          ],
+        ),
+      );
+    });
   }
 
   Widget brand() {
@@ -94,15 +110,42 @@ class Footer extends StatelessWidget {
       spacing: 12,
       children: [
         SizedBox(
-          width: 165,
-          height: 56,
+          width: 130,
+          height: 44,
           child: MyImageAssets(
             MyImages.imgNocvla,
             fit: .contain,
             alignment: .centerLeft,
           ),
         ),
-        MyText(text: "Built Different. Train NOCVLA.", color: MyColors.white2),
+        MyText(
+          text:
+              "Gothic training apparel. Dibuat untuk disiplin, fokus, dan progres.",
+          height: 1.5,
+          color: MyColors.white2,
+        ),
+      ],
+    );
+  }
+
+  Widget bottom() {
+    return Row(
+      spacing: 16,
+      children: [
+        Expanded(
+          child: MyText(
+            text: "© 2026 NOCVLA TEMPLE",
+            fontSize: 12,
+            color: MyColors.white2,
+          ),
+        ),
+        MyText(
+          text: "Built Different. Train Nocvla.",
+          fontFamily: MyFonts.grenzeGotisch,
+          fontSize: 16,
+          fontWeight: .w600,
+          color: MyColors.white2,
+        ),
       ],
     );
   }
@@ -112,34 +155,92 @@ class Footer extends StatelessWidget {
       () => footerMenu(
         title: "BELANJA",
         items: {
-          for (final e in controller.resType)
-            "${e.name}".capitalize!: () =>
-                controller.openCollection(e.name),
+          for (final type in controller.resShopType)
+            type.capitalize!: () => controller.openCollection(type),
+          if (!controller.resShopType.contains("ACCESSORIES"))
+            "Accessories": () => controller.openCollection("ACCESSORIES"),
         },
       ),
     );
   }
 
-  Widget companyMenu() {
+  Widget companyMenu(MainLayoutController controller) {
     return footerMenu(
       title: "NOCVLA",
       items: {
-        "Tentang": () => Get.toNamed(MyRoutes.about),
+        "Tentang kami": () => Get.toNamed(MyRoutes.about),
         "Atlet": () => Get.toNamed(MyRoutes.athlete),
-        "Kontak": () => Get.toNamed(MyRoutes.contact),
+        "Kontak & cara order": () => Get.toNamed(MyRoutes.contact),
+        "nocvla.apparel@gmail.com": controller.openEmail,
       },
     );
   }
 
-  Widget followMenu() {
-    return footerMenu(
-      title: "IKUTI",
-      items: {
-        "Instagram": () =>
-            execUri("https://instagram.com/${MyConfig.instagramUsername}"),
-        "TikTok": () =>
-            execUri("https://www.tiktok.com/@${MyConfig.tiktokUsername}"),
-      },
+  Widget followMenu(MainLayoutController controller) {
+    return Column(
+      crossAxisAlignment: .start,
+      spacing: 16,
+      children: [
+        footerMenu(
+          title: "IKUTI",
+          items: {
+            "Instagram @${MyConfig.instagramUsername}": () =>
+                execUri("https://instagram.com/${MyConfig.instagramUsername}"),
+            "TikTok @${MyConfig.tiktokUsername}": () =>
+                execUri("https://www.tiktok.com/@${MyConfig.tiktokUsername}"),
+            "Discord NOCVLA": controller.openDiscordLink,
+          },
+        ),
+        Obx(() {
+          if (controller.resMarketplace.isEmpty) return SizedBox();
+
+          return Column(
+            crossAxisAlignment: .start,
+            spacing: 4,
+            children: [
+              menuTitle("MARKETPLACE"),
+              Wrap(
+                crossAxisAlignment: .center,
+                children: [
+                  marketplace(controller, "Shopee", "shopee_url"),
+                  MyText(text: " · ", color: MyColors.white2),
+                  marketplace(controller, "TikTok Shop", "tiktok_url"),
+                  MyText(text: " · ", color: MyColors.white2),
+                  marketplace(controller, "Tokopedia", "tokopedia_url"),
+                ],
+              ),
+            ],
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget marketplace(
+    MainLayoutController controller,
+    String label,
+    String key,
+  ) {
+    return GestureDetector(
+      behavior: .opaque,
+      onTap: () => controller.openMarketplace(key),
+      child: SizedBox(
+        height: 36,
+        child: Center(
+          widthFactor: 1,
+          child: MyText(text: label, color: MyColors.white2),
+        ),
+      ),
+    );
+  }
+
+  Widget menuTitle(String title) {
+    return MyText(
+      text: title,
+      fontFamily: MyFonts.archivoNarrow,
+      fontSize: 12,
+      fontWeight: .w700,
+      letterSpacing: 12 * 0.2,
     );
   }
 
@@ -150,19 +251,14 @@ class Footer extends StatelessWidget {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        MyText(
-          text: title,
-          fontFamily: MyFonts.archivoNarrow,
-          fontWeight: .w700,
-          letterSpacing: 14 * 0.12,
-        ),
+        menuTitle(title),
         SizedBox(height: 8),
         ...items.entries.map(
           (e) => GestureDetector(
             behavior: .opaque,
             onTap: e.value,
             child: Container(
-              height: 44,
+              constraints: BoxConstraints(minHeight: 36),
               alignment: .centerLeft,
               child: MyText(text: e.key, color: MyColors.white2),
             ),

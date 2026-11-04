@@ -5,7 +5,7 @@ import '../utils/my_colors.dart';
 class MyScaffold extends StatelessWidget {
   const MyScaffold({
     super.key,
-    this.backgroundColor = MyColors.black,
+    this.backgroundColor = MyColors.black3,
     this.appBar,
     this.drawer,
     this.endDrawer,

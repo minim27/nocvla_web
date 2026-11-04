@@ -6,7 +6,7 @@ import '../../../../shared/utils/my_fonts.dart';
 import '../../../../shared/widgets/my_button.dart';
 import '../../../../shared/widgets/my_grid.dart';
 import '../../../../shared/widgets/my_image.dart';
-import '../../../../shared/widgets/my_athlete_card.dart';
+import '../../../../shared/widgets/my_skeleton.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../home_controller.dart';
 
@@ -20,50 +20,175 @@ class MHomeAthletes extends StatelessWidget {
     return Padding(
       padding: .fromLTRB(24, 64, 24, 0),
       child: Column(
-        crossAxisAlignment: .start,
-        spacing: 32,
+        crossAxisAlignment: .stretch,
+        spacing: 24,
+        children: [image(controller), info(controller)],
+      ),
+    );
+  }
+
+  Widget image(HomeController controller) {
+    return Obx(() {
+      final athletes = controller.resAthlete.toList();
+
+      return Column(
+        spacing: 12,
         children: [
-          MyText(
-            text: "THE CONGREGATION",
-            fontFamily: MyFonts.grenzeGotisch,
-            fontSize: 32,
-            fontWeight: .w600,
+          AspectRatio(
+            aspectRatio: 4 / 5,
+            child: athletes.isEmpty
+                ? MySkeleton(height: null)
+                : PageView.builder(
+                    controller: controller.athletePage,
+                    itemCount: athletes.length,
+                    onPageChanged: controller.onAthleteChanged,
+                    itemBuilder: (context, index) {
+                      final athlete = athletes[index];
+
+                      return Stack(
+                        fit: .expand,
+                        children: [
+                          MyImage(athlete.picture, alignment: .topCenter),
+                          Positioned(
+                            left: 16,
+                            bottom: 16,
+                            child: Container(
+                              padding: .symmetric(horizontal: 14, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: MyColors.black,
+                                border: .all(color: MyColors.line3),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: .start,
+                                spacing: 2,
+                                children: [
+                                  MyText(
+                                    text: "${athlete.name}".capitalize!,
+                                    fontFamily: MyFonts.grenzeGotisch,
+                                    fontSize: 20,
+                                    fontWeight: .w600,
+                                  ),
+                                  eyebrow("KODE ATLET: ${athlete.code}"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
           ),
-          Obx(
-            () => MyGrid(
-              crossAxisCount: 2,
+          if (athletes.length > 1)
+            Row(
+              mainAxisAlignment: .center,
               children: [
-                for (final items in controller.resAthlete.take(2))
-                  MyAthleteCard(
-                    item: items,
-                    onTap: () => controller.openAthleteDetail(items.id),
+                for (var i = 0; i < athletes.length; i++)
+                  GestureDetector(
+                    behavior: .opaque,
+                    onTap: () => controller.tapAthleteDot(i),
+                    child: Container(
+                      width: 24,
+                      height: 24,
+                      alignment: .center,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: controller.athleteIndex.value == i
+                              ? MyColors.white
+                              : MyColors.swatchBorder,
+                        ),
+                      ),
+                    ),
                   ),
               ],
             ),
-          ),
-          MyGrid(
-            crossAxisCount: 2,
-            children: [
-              for (final items in controller.resBenefits)
-                Column(
+        ],
+      );
+    });
+  }
+
+  Widget info(HomeController controller) {
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        eyebrow("NOCVLA ATHLETE"),
+        SizedBox(height: 12),
+        title("They Represent. We Support."),
+        SizedBox(height: 16),
+        MyText(
+          text:
+              "Kami mencari individu yang berkomitmen pada disiplin, konsistensi, dan progres tanpa kompromi. Wakili standar yang lebih tinggi bersama NOCVLA.",
+          height: 1.6,
+          color: MyColors.white,
+        ),
+        SizedBox(height: 20),
+        MyGrid(
+          crossAxisCount: 2,
+          spacing: 0,
+          children: [
+            for (final items in controller.resBenefits)
+              Container(
+                constraints: BoxConstraints(minHeight: 88),
+                padding: .all(16),
+                decoration: BoxDecoration(border: .all(color: MyColors.line3)),
+                child: Column(
                   crossAxisAlignment: .start,
-                  spacing: 8,
+                  spacing: 6,
                   children: [
-                    MyImageAssets(items["icon"], alignment: .centerLeft),
-                    MyText(text: items["label"], fontWeight: .w600),
-                    MyText(text: items["desc"], color: MyColors.white2),
+                    MyText(
+                      text: items["label"],
+                      fontFamily: MyFonts.archivoNarrow,
+                      fontSize: 13,
+                      fontWeight: .w700,
+                      letterSpacing: 13 * 0.12,
+                    ),
+                    MyText(
+                      text: items["desc"],
+                      fontSize: 12,
+                      color: MyColors.white2,
+                    ),
                   ],
                 ),
-            ],
-          ),
-          MyButtonBorder(
-            "DAFTAR JADI ATLET",
+              ),
+          ],
+        ),
+        SizedBox(height: 20),
+        Column(
+          crossAxisAlignment: .stretch,
+          spacing: 12,
+          children: [
+            MyButton("DAFTAR JADI ATLET", onTap: controller.openApplication),
+            MyButtonBorder(
+              "LIHAT ATLET",
+              borderColor: MyColors.line2,
+              onTap: controller.openAthlete,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
-            borderColor: MyColors.white,
-            onTap: controller.openAthlete,
-          ),
-        ],
-      ),
+  Widget eyebrow(String text, {Color color = MyColors.white2}) {
+    return MyText(
+      text: text,
+      fontFamily: MyFonts.archivoNarrow,
+      fontSize: 12,
+      fontWeight: .w600,
+      letterSpacing: 12 * 0.2,
+      color: color,
+    );
+  }
+
+  Widget title(String text) {
+    return MyText(
+      text: text,
+      fontFamily: MyFonts.grenzeGotisch,
+      fontSize: 32,
+      fontWeight: .w600,
+      height: 1.1,
     );
   }
 }

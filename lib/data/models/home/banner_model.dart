@@ -1,6 +1,8 @@
 class BannerModel {
   dynamic id,
       imageUrl,
+      eyebrow,
+      ctaProductId,
       title,
       description,
       startDate,
@@ -13,6 +15,8 @@ class BannerModel {
   BannerModel({
     this.id,
     this.imageUrl,
+    this.eyebrow,
+    this.ctaProductId,
     this.title,
     this.description,
     this.startDate,
@@ -26,6 +30,8 @@ class BannerModel {
   BannerModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     imageUrl = json["image_url"];
+    eyebrow = json["eyebrow"];
+    ctaProductId = json["cta_product_id"];
     title = json["title"];
     description = json["description"];
     startDate = json["start_date"];

@@ -8,6 +8,7 @@ class ListProductsModel {
       price,
       stock,
       colors,
+      badge,
       linkAffShopee,
       linkAffTktkshop,
       linkAffTokped;
@@ -22,6 +23,7 @@ class ListProductsModel {
     this.price,
     this.stock,
     this.colors,
+    this.badge,
     this.linkAffShopee,
     this.linkAffTktkshop,
     this.linkAffTokped,
@@ -37,6 +39,7 @@ class ListProductsModel {
     price = json["price"] ?? 0;
     stock = json["stock"];
     colors = json["colors"];
+    badge = json["badge"];
     linkAffShopee = json["link_aff_shopee"];
     linkAffTktkshop = json["link_aff_tktkshop"];
     linkAffTokped = json["link_aff_tokped"];

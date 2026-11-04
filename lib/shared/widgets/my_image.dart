@@ -37,6 +37,7 @@ class MyImage extends StatelessWidget {
           ? _placeholder()
           : CachedNetworkImage(
               imageUrl: myImageUrl(image),
+              imageRenderMethodForWeb: .HttpGet,
               fit: fit,
               scale: scale,
               alignment: alignment,

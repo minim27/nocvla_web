@@ -5,4 +5,9 @@ class ConfigRepo extends BaseRepository {
       ResponseHandler(
         supabase.from("m_configurations").select().eq("name", name).single(),
       );
+
+  Future<ResponseHandler<dynamic>> listConfigs(List<String> names) async =>
+      ResponseHandler(
+        supabase.from("m_configurations").select().inFilter("name", names),
+      );
 }

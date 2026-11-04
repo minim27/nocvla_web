@@ -17,7 +17,7 @@ class TCollectionFilter extends StatelessWidget {
     return Container(
       padding: .symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: MyColors.black,
+        color: MyColors.black3,
         border: Border(bottom: BorderSide(color: MyColors.line)),
       ),
       child: Obx(

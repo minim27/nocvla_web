@@ -129,57 +129,81 @@ class MyFeaturedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = (item.colors as List?) ?? [];
 
-    return Container(
-      decoration: BoxDecoration(
-        color: MyColors.black2,
-        border: .all(color: MyColors.line),
-      ),
-      child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          GestureDetector(
-            onTap: onTap,
-            child: AspectRatio(aspectRatio: 1, child: MyImage(item.imageUrl)),
-          ),
-          Padding(
-            padding: .all(12),
-            child: Column(
-              crossAxisAlignment: .start,
-              spacing: 8,
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        GestureDetector(
+          onTap: onTap,
+          child: AspectRatio(
+            aspectRatio: 4 / 5,
+            child: Stack(
+              fit: .expand,
               children: [
-                MyText(
-                  text: "${item.name}",
-                  fontWeight: .w600,
-                  maxLines: 2,
-                  overflow: .ellipsis,
-                ),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: [
-                    for (final color in colors)
-                      GestureDetector(
-                        onTap: () => onColorTap(color["id"]),
-                        child: ClipOval(
-                          child: SizedBox(
-                            width: 28,
-                            height: 28,
-                            child: MyImage(color["image_url"]),
-                          ),
-                        ),
+                MyImage(item.imageUrl),
+                if (item.badge != null)
+                  Positioned(
+                    top: 12,
+                    left: 12,
+                    child: Container(
+                      padding: .symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: MyColors.black,
+                        border: .all(color: MyColors.line3),
                       ),
-                  ],
-                ),
-                MyText(
-                  text: "Mulai ${parsingCurrency(item.price)}",
-                  fontSize: 13,
-                  color: MyColors.white2,
-                ),
+                      child: MyText(
+                        text: "${item.badge}",
+                        fontFamily: MyFonts.archivoNarrow,
+                        fontSize: 11,
+                        fontWeight: .w700,
+                        letterSpacing: 11 * 0.12,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: 12),
+        MyText(
+          text: "${item.name}",
+          fontWeight: .w600,
+          maxLines: 1,
+          overflow: .ellipsis,
+        ),
+        SizedBox(height: 4),
+        MyText(
+          text: "${item.type} · ${colors.length} warna",
+          fontSize: 13,
+          color: MyColors.white2,
+        ),
+        SizedBox(height: 8),
+        Row(
+          spacing: 4,
+          children: [
+            Expanded(
+              child: MyText(
+                text: parsingCurrency(item.price),
+                fontWeight: .w600,
+                maxLines: 1,
+                overflow: .ellipsis,
+              ),
+            ),
+            for (final color in colors)
+              GestureDetector(
+                onTap: () => onColorTap(color["id"]),
+                child: Container(
+                  width: 14,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    color: color["swatch"],
+                    shape: BoxShape.circle,
+                    border: .all(color: MyColors.swatchBorder),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

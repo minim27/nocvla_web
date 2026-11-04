@@ -11,16 +11,19 @@ import 'widgets/mobile/m_home_categories.dart';
 import 'widgets/mobile/m_home_featured.dart';
 import 'widgets/mobile/m_home_header.dart';
 import 'widgets/mobile/m_home_order.dart';
+import 'widgets/mobile/m_home_scriptures.dart';
 import 'widgets/tab/t_home_athletes.dart';
 import 'widgets/tab/t_home_categories.dart';
 import 'widgets/tab/t_home_featured.dart';
 import 'widgets/tab/t_home_header.dart';
 import 'widgets/tab/t_home_order.dart';
+import 'widgets/tab/t_home_scriptures.dart';
 import 'widgets/web/home_athletes.dart';
 import 'widgets/web/home_categories.dart';
 import 'widgets/web/home_featured.dart';
 import 'widgets/web/home_header.dart';
 import 'widgets/web/home_order.dart';
+import 'widgets/web/home_scriptures.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -39,6 +42,7 @@ class HomePage extends GetView<HomeController> {
                     HomeHeader(),
                     HomeCategories(),
                     HomeFeatured(),
+                    HomeScriptures(),
                     HomeAthletes(),
                     HomeOrder(),
                     Footer(),
@@ -48,6 +52,7 @@ class HomePage extends GetView<HomeController> {
                     THomeHeader(),
                     THomeCategories(),
                     THomeFeatured(),
+                    THomeScriptures(),
                     THomeAthletes(),
                     THomeOrder(),
                     TFooter(),
@@ -56,6 +61,7 @@ class HomePage extends GetView<HomeController> {
                     MHomeHeader(),
                     MHomeCategories(),
                     MHomeFeatured(),
+                    MHomeScriptures(),
                     MHomeAthletes(),
                     MHomeOrder(),
                     MFooter(),
