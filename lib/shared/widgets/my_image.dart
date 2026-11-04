@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../app/services/my_config.dart';
 import '../utils/my_colors.dart';
 import '../utils/my_images.dart';
 import 'my_loading.dart';
@@ -33,7 +34,7 @@ class MyImage extends StatelessWidget {
           ? _placeholder()
           : CachedNetworkImage(
               imageUrl:
-                  "${dotenv.env["API_URL"]}/${dotenv.env["API_STORAGE"]}/$image",
+                  "${MyConfig.apiUrl}/${dotenv.env["API_STORAGE"]}/$image",
               fit: fit,
               scale: scale,
               alignment: alignment,

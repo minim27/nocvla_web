@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nocvla_web/data/models/cart/cart_item_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/core/base_controller.dart';
 import '../../app/services/my_config.dart';
@@ -15,6 +16,7 @@ class CheckoutController extends BaseController {
   final resItems = <CartItemModel>[].obs;
   final appliedCode = RxnString();
   final discountProductIds = <String>[].obs;
+  final isPlacingOrder = false.obs;
 
   final txtName = TextEditingController();
   final txtPhone = TextEditingController();
@@ -51,10 +53,7 @@ class CheckoutController extends BaseController {
 
     final anchorTotal = resItems
         .where((item) => discountProductIds.contains(item.productBaseId))
-        .fold(
-          0,
-          (total, item) => total + (item.price as int) * item.qty.value,
-        );
+        .fold(0, (total, item) => total + (item.price as int) * item.qty.value);
 
     return (anchorTotal * 0.08).round();
   }
@@ -79,11 +78,40 @@ class CheckoutController extends BaseController {
     return true;
   }
 
-  void placeOrder() {
-    if (!validOrder()) return;
+  Future<void> placeOrder() async {
+    if (!validOrder() || isPlacingOrder.value) return;
 
-    execUri(
-      "https://wa.me/${MyConfig.whatsappNumber}?text=${Uri.encodeComponent(buildMessage())}",
+    isPlacingOrder.value = true;
+    String? code;
+
+    final req = await orderRepo.createOrder(
+      items: resItems
+          .map(
+            (item) => {
+              "color_id": item.productId,
+              "size": item.size,
+              "qty": item.qty.value,
+            },
+          )
+          .toList(),
+      athleteCode: appliedCode.value,
+      customerName: txtName.text.trim(),
+      customerPhone: txtPhone.text.trim(),
+      address: txtAddress.text.trim(),
+    );
+    await req.responseHandler(res: (res) => code = res["code"], err: (err) {});
+
+    isPlacingOrder.value = false;
+
+    final message = code == null
+        ? buildMessage()
+        : "Kode order: $code\n\n${buildMessage()}";
+
+    launchUrl(
+      .parse(
+        "https://wa.me/${MyConfig.whatsappNumber}?text=${Uri.encodeComponent(message)}",
+      ),
+      webOnlyWindowName: "_self",
     );
   }
 

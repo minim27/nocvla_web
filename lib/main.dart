@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app/routes/my_pages.dart';
 import 'app/routes/my_routes.dart';
+import 'app/services/my_config.dart';
 import 'modules/early_access/early_access_controller.dart';
 import 'modules/main_layout/main_layout.dart';
 import 'shared/utils/my_colors.dart';
@@ -16,8 +17,8 @@ void main() async {
   await GetStorage.init();
 
   await Supabase.initialize(
-    url: dotenv.env["API_URL"]!,
-    publishableKey: dotenv.env["SUPABASE_KEY"],
+    url: MyConfig.apiUrl,
+    publishableKey: MyConfig.supabaseKey,
   );
 
   final earlyAccessController = Get.put(
