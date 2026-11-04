@@ -6,7 +6,6 @@ import 'package:nocvla_web/data/models/cart/cart_item_model.dart';
 import 'package:flutter/services.dart';
 import 'package:nocvla_web/data/models/collections/list_products_model.dart';
 import 'package:nocvla_web/modules/product_detail/widgets/product_detail_image_viewer_dialog.dart';
-import 'package:nocvla_web/modules/product_detail/widgets/product_detail_order_dialog.dart';
 import 'package:nocvla_web/shared/utils/my_colors.dart';
 
 import '../../app/core/base_controller.dart';
@@ -24,7 +23,6 @@ class ProductDetailController extends BaseController {
 
   final qty = 0.obs;
   final isLoading = false.obs;
-  final isSending = false.obs;
 
   Map<String, dynamic>? athleteLinks;
 
@@ -239,45 +237,12 @@ class ProductDetailController extends BaseController {
     );
   }
 
-  String get orderPreview =>
-      buildOrderPreview([selectedItem()], appliedCode.value);
-
-  void openOrderDialog() {
-    if (!validSelection()) return;
-
-    Get.dialog(const ProductDetailOrderDialog());
+  void orderNow() {
+    if (saveToCart()) Get.toNamed(MyRoutes.checkout);
   }
 
-  void sendOrder() async {
-    if (isSending.value) return;
-    isSending.value = true;
-
-    String? text;
-
-    final req = await orderRepo.createOrder(
-      items: [
-        {
-          "color_id": res["id"],
-          "size": selectedStock.value!["size"],
-          "qty": qty.value,
-        },
-      ],
-      athleteCode: appliedCode.value,
-    );
-    await req.responseHandler(
-      res: (data) => text = data["wa_text"],
-      err: (err) => showMyErrAPISnackbar({
-        "message": "Order gagal dikirim. Stok mungkin tidak mencukupi.",
-      }),
-    );
-
-    isSending.value = false;
-
-    if (text != null) openWhatsapp(text!);
-  }
-
-  void addToCart() {
-    if (!validSelection()) return;
+  bool saveToCart() {
+    if (!validSelection()) return false;
 
     final box = GetStorage();
     final data = box.read(MyConfig.keyCart) as Map<String, dynamic>?;
@@ -287,14 +252,24 @@ class ProductDetailController extends BaseController {
         .toList();
 
     final stock = selectedStock.value!;
-    final images = res["images"] as List;
 
     final existingIndex = items.indexWhere(
       (item) => item.productId == res["id"] && item.size == stock["size"],
     );
 
     if (existingIndex != -1) {
-      items[existingIndex].qty.value += qty.value;
+      final total = items[existingIndex].qty.value + qty.value;
+
+      if (total > stock["qty"]) {
+        showMyErrAPISnackbar({
+          "message":
+              "Stok ${res["name"]} ${res["color"]} ukuran ${stock["size"]} tidak cukup",
+        });
+        return false;
+      }
+
+      items[existingIndex].qty.value = total;
+      items[existingIndex].maxQty = stock["qty"];
     } else {
       items.add(selectedItem());
     }
@@ -307,10 +282,18 @@ class ProductDetailController extends BaseController {
 
     WidgetsBinding.instance.addPostFrameCallback((_) => Get.appUpdate());
 
+    return true;
+  }
+
+  void addToCart() {
+    if (!saveToCart()) return;
+
+    final images = res["images"] as List;
+
     showAddedToCartSnackbar(
       name: res["name"],
       color: res["color"],
-      size: stock["size"],
+      size: selectedStock.value!["size"],
       imageUrl: images.isEmpty ? null : images.first,
     );
   }

@@ -35,8 +35,8 @@ class CheckoutPage extends GetView<CheckoutController> {
                   children: [
                     MyText(
                       text: "CHECKOUT",
-                      fontSize: 42,
-                      letterSpacing: 2,
+                      fontSize: isDesktop ? 64 : 44,
+                      fontWeight: .w600,
                       fontFamily: MyFonts.grenzeGotisch,
                     ),
                     SizedBox(height: 20),

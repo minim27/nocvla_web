@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nocvla_web/data/models/cart/cart_item_model.dart';
+import 'package:nocvla_web/modules/cart/cart_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/core/base_controller.dart';
@@ -99,13 +100,29 @@ class CheckoutController extends BaseController {
       customerPhone: txtPhone.text.trim(),
       address: txtAddress.text.trim(),
     );
-    await req.responseHandler(res: (res) => code = res["code"], err: (err) {});
+    await req.responseHandler(
+      res: (res) => code = res["code"],
+      err: (err) {
+        final stock = RegExp(
+          r"Stok .+? tidak cukup",
+        ).stringMatch(err["message"]);
+
+        showMyErrAPISnackbar({
+          "message": stock ?? "Order gagal dikirim, silakan coba lagi",
+        });
+      },
+    );
 
     isPlacingOrder.value = false;
 
-    final message = code == null
-        ? buildMessage()
-        : "Kode order: $code\n\n${buildMessage()}";
+    if (code == null) return;
+
+    final message = "Kode order: $code\n\n${buildMessage()}";
+
+    box.remove(MyConfig.keyCart);
+    if (Get.isRegistered<CartController>()) {
+      Get.find<CartController>().loadCart();
+    }
 
     launchUrl(
       .parse(

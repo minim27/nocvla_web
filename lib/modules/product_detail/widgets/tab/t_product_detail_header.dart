@@ -245,7 +245,7 @@ class TProductDetailHeader extends StatelessWidget {
                 "LANGSUNG ORDER VIA WHATSAPP",
                 color: MyColors.red,
                 textColor: MyColors.nativeWhite,
-                onTap: controller.openOrderDialog,
+                onTap: controller.orderNow,
               ),
               marketplace(
                 "BELI DI SHOPEE",

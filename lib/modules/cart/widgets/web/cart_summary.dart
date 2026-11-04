@@ -33,19 +33,7 @@ class CartSummary extends StatelessWidget {
             row("Ongkir", "Dihitung admin via WhatsApp"),
             MyDivider(),
             row("Total", parsingCurrency(controller.total)),
-            MyText(text: "PRATINJAU PESAN", color: MyColors.white2),
-            Container(
-              padding: .all(12),
-              color: MyColors.black,
-              child: MyText(text: controller.orderPreview, fontSize: 13),
-            ),
-            MyButton(
-              "KIRIM ORDER KE WHATSAPP",
-              color: MyColors.red,
-              textColor: MyColors.nativeWhite,
-              enable: !controller.isSending.value,
-              onTap: controller.sendOrder,
-            ),
+            MyButton("LANJUT KE CHECKOUT", onTap: controller.checkout),
           ],
         );
       }),

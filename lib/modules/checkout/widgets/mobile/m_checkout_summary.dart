@@ -21,13 +21,14 @@ class MCheckoutSummary extends StatelessWidget {
     return Container(
       padding: .all(24),
       decoration: BoxDecoration(
-        border: .all(color: MyColors.white.withValues(alpha: 0.1)),
+        color: MyColors.black2,
+        border: .all(color: MyColors.line),
       ),
       child: Column(
         spacing: 16,
         crossAxisAlignment: .start,
         children: [
-          MyText(text: "ORDER SUMMARY", fontWeight: .w600, fontSize: 16),
+          MyText(text: "RINGKASAN ORDER", fontWeight: .w600, fontSize: 16),
           ...products(controller),
           MyDivider(),
           Row(
@@ -48,18 +49,21 @@ class MCheckoutSummary extends StatelessWidget {
             return Row(
               mainAxisAlignment: .spaceBetween,
               children: [
-                MyText(text: "DISCOUNT (${controller.appliedCode.value})"),
-                MyText(
-                  text: "- ${parsingCurrency(controller.discountAmount)}",
-                ),
+                MyText(text: "DISKON (${controller.appliedCode.value})"),
+                MyText(text: "- ${parsingCurrency(controller.discountAmount)}"),
               ],
             );
           }),
           Row(
             mainAxisAlignment: .spaceBetween,
             children: [
-              MyText(text: "SHIPPING"),
-              MyText(text: "CALCULATED BY ADMIN"),
+              MyText(text: "ONGKIR"),
+              Flexible(
+                child: MyText(
+                  text: "DIHITUNG ADMIN VIA WHATSAPP",
+                  textAlign: .end,
+                ),
+              ),
             ],
           ),
           MyDivider(),
@@ -80,19 +84,24 @@ class MCheckoutSummary extends StatelessWidget {
           Column(
             spacing: 12,
             children: [
-              MyButton(
-                "ORDER VIA WHATSAPP",
-                textColor: MyColors.white,
-                prefix: MyIcons.icWhatsapp,
-                color: MyColors.whatsApp,
-                scale: 6,
-                onTap: () => controller.placeOrder(),
+              Obx(
+                () => MyButton(
+                  "ORDER VIA WHATSAPP",
+                  textColor: MyColors.nativeWhite,
+                  prefix: MyIcons.icWhatsapp,
+                  color: MyColors.red,
+                  scale: 6,
+                  enable: !controller.isPlacingOrder.value,
+                  onTap: controller.placeOrder,
+                ),
               ),
               MyButton(
                 "ORDER VIA INSTAGRAM",
                 textColor: MyColors.white,
                 prefix: MyIcons.icInstagram,
-                color: MyColors.instagram,
+                color: MyColors.black2,
+                borderColor: MyColors.line,
+                borderWidth: 1,
                 scale: 6,
                 onTap: () => controller.placeOrderViaInstagram(),
               ),
@@ -100,7 +109,9 @@ class MCheckoutSummary extends StatelessWidget {
                 "ORDER VIA TIKTOK",
                 textColor: MyColors.white,
                 prefix: MyIcons.icTikTok2,
-                color: MyColors.nativeBlack,
+                color: MyColors.black2,
+                borderColor: MyColors.line,
+                borderWidth: 1,
                 scale: 10,
                 onTap: () => controller.placeOrderViaTiktok(),
               ),
