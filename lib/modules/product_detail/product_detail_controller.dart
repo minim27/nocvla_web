@@ -67,7 +67,7 @@ class ProductDetailController extends BaseController {
     isLoading.value = true;
 
     final req = await collectionsRepo.getProduct(id.value!);
-    req.responseHandler(
+    await req.responseHandler(
       res: (data) {
         final product = data["product"];
 
@@ -80,6 +80,7 @@ class ProductDetailController extends BaseController {
           "name": product["name"],
           "description": product["description"],
           "color": data["name"],
+          "colors": product["colors"],
           "stock": (data["stock"] as List)
               .map(
                 (e) => {
@@ -205,7 +206,7 @@ class ProductDetailController extends BaseController {
     ];
 
     final req = await athleteRepo.validateCode(code, productIds);
-    req.responseHandler(
+    await req.responseHandler(
       res: (data) {
         if (data == null) {
           showMyErrAPISnackbar({

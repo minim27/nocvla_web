@@ -29,7 +29,7 @@ class CollectionController extends BaseController {
 
   void fetchDiscordLink() async {
     final req = await configRepo.getConfig("LINK_DISCORD");
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) => txtEmail.text = res["value"] ?? "",
       err: (err) => showMyErrAPISnackbar(err),
     );
@@ -39,7 +39,7 @@ class CollectionController extends BaseController {
     isLoadingType.value = true;
 
     final req = await collectionsRepo.productType();
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) {
         resType.value = [
           ProductTypeModel(name: "ALL", value: ""),
@@ -55,7 +55,7 @@ class CollectionController extends BaseController {
     isLoadingProd.value = true;
 
     final req = await collectionsRepo.listProducts(selectedType.value);
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) {
         resProducts.value = (res as List).expand((e) {
           final colors = (e["colors"] as List?) ?? [];
@@ -73,11 +73,13 @@ class CollectionController extends BaseController {
 
             return ListProductsModel.fromJson({
               "id": c["id"],
+              "product_id": e["id"],
               "name": e["name"],
               "image_url": mainImage?["image_url"],
               "color": c["name"],
               "type": e["product_type"]?["name"],
               "price": minPrice,
+              "stock": c["stock"],
             });
           });
         }).toList();

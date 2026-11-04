@@ -43,7 +43,7 @@ class AthleteController extends BaseController {
     isLoadingAthlete.value = true;
 
     final req = await athleteRepo.listAthlete();
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) {
         resAthlete.value = (res as List)
             .map((e) => AthleteModel.fromJson(e))

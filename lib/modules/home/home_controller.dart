@@ -68,7 +68,7 @@ class HomeController extends BaseController {
     isLoadingBanners.value = true;
 
     final req = await homeRepo.banners();
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) {
         resBanners.value = (res as List).map((e) {
           // print(e);
@@ -84,7 +84,7 @@ class HomeController extends BaseController {
     isLoadingFeatured.value = true;
 
     final req = await homeRepo.featuredProducts();
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) {
         resFeatured.value = (res as List).expand((e) {
           final colors = (e["colors"] as List?) ?? [];
@@ -102,10 +102,12 @@ class HomeController extends BaseController {
 
             return ListProductsModel.fromJson({
               "id": c["id"],
+              "product_id": e["id"],
               "name": e["name"],
               "image_url": mainImage?["image_url"],
               "color": c["name"],
               "price": minPrice,
+              "stock": c["stock"],
             });
           });
         }).toList();

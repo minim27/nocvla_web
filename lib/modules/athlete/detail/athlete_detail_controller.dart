@@ -29,7 +29,7 @@ class AthleteDetailController extends BaseController {
     isLoadingAthlete.value = true;
 
     final req = await athleteRepo.getAthlete(id.value!);
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) => resAthlete.value = AthleteModel.fromJson(res),
       err: (err) => showMyErrAPISnackbar(err),
     );
@@ -42,7 +42,7 @@ class AthleteDetailController extends BaseController {
     isLoadingProducts.value = true;
 
     final req = await athleteRepo.assignedProducts(id.value!);
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) {
         resProducts.value = (res as List).expand((e) {
           final product = e["product"];
@@ -61,10 +61,12 @@ class AthleteDetailController extends BaseController {
 
             return ListProductsModel.fromJson({
               "id": c["id"],
+              "product_id": product["id"],
               "name": product["name"],
               "image_url": mainImage?["image_url"],
               "color": c["name"],
               "price": minPrice,
+              "stock": c["stock"],
               "link_aff_shopee": e["link_aff_shopee"],
               "link_aff_tktkshop": e["link_aff_tktkshop"],
               "link_aff_tokped": e["link_aff_tokped"],

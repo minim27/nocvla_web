@@ -81,7 +81,7 @@ class EarlyAccessController extends BaseController {
 
   void _fetchImages() async {
     final req = await earlyAccessRepo.images();
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) => images.value = (res as List)
           .map((e) => EarlyAccessImageModel.fromJson(e))
           .toList(),

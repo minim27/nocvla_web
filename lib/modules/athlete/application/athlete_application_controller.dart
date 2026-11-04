@@ -43,7 +43,7 @@ class AthleteApplicationController extends BaseController {
       city: txtCity.text.trim(),
       reason: txtReason.text.trim(),
     );
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) {
         Get.back();
         showMySnackbar("Berhasil", "Aplikasi kamu berhasil dikirim");

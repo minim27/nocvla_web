@@ -115,7 +115,7 @@ class CartController extends BaseController {
         .whereType<String>()
         .toList();
     final req = await athleteRepo.validateCode(code, productIds);
-    req.responseHandler(
+    await req.responseHandler(
       res: (res) {
         if (res == null) {
           showMyErrAPISnackbar({
