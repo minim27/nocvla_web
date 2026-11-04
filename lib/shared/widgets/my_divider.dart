@@ -6,7 +6,7 @@ class MyDivider extends StatelessWidget {
   const MyDivider({
     super.key,
     this.height = 1,
-    this.color = MyColors.white,
+    this.color = MyColors.line,
     this.topGap = 0,
     this.bottomGap = 0,
   });
@@ -21,7 +21,7 @@ class MyDivider extends StatelessWidget {
       margin: .only(top: topGap, bottom: bottomGap),
       width: .infinity,
       height: height,
-      color: color.withValues(alpha: 0.1),
+      color: color,
     );
   }
 }

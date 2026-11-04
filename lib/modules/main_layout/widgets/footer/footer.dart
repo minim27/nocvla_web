@@ -36,7 +36,7 @@ class Footer extends StatelessWidget {
                     MyText(
                       text: "NOCVLA",
                       fontSize: 32,
-                      fontFamily: MyFonts.bebasNeue,
+                      fontFamily: MyFonts.grenzeGotisch,
                     ),
                     SizedBox(height: 12),
                     MyText(

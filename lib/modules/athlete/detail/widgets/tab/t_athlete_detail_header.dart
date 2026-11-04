@@ -44,7 +44,7 @@ class TAthleteDetailHeader extends StatelessWidget {
                   text: items.name,
                   fontSize: 42,
                   letterSpacing: 2,
-                  fontFamily: MyFonts.bebasNeue,
+                  fontFamily: MyFonts.grenzeGotisch,
                 ),
                 Row(
                   spacing: 8,

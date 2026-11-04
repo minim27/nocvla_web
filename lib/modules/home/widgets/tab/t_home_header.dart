@@ -52,7 +52,7 @@ class THomeHeader extends StatelessWidget {
                 children: [
                   MyText(
                     text: "BUILT DIFFERENT.\nTRAIN NOCVLA.",
-                    fontFamily: MyFonts.bebasNeue,
+                    fontFamily: MyFonts.grenzeGotisch,
                     fontSize: 48,
                     height: 0.9,
                     letterSpacing: 2,

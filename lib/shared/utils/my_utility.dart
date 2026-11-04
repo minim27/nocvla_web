@@ -101,6 +101,7 @@ void showMySnackbar(String title, String message) => Get.snackbar(
   titleText: MyText(text: title, fontWeight: .w600, color: MyColors.black),
   messageText: MyText(text: message, color: MyColors.black),
   backgroundColor: MyColors.white,
+  borderRadius: 0,
 );
 
 void showMyErrAPISnackbar(dynamic err) {
@@ -115,14 +116,15 @@ void showMyErrAPISnackbar(dynamic err) {
     titleText: MyText(
       text: (err["errors"] == null) ? "Oopsss..." : err["message"],
       fontWeight: .w600,
-      color: MyColors.white,
+      color: MyColors.nativeWhite,
     ),
     messageText: MyText(
       text: (err["errors"] == null)
           ? (err["message"] ?? err["detail"])
           : "${err["errors"].first["field"]} ${err["errors"].first["message"]}",
-      color: MyColors.white,
+      color: MyColors.nativeWhite,
     ),
     backgroundColor: MyColors.red,
+    borderRadius: 0,
   );
 }

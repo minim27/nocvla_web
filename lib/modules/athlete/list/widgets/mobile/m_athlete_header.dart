@@ -18,7 +18,7 @@ class MAthleteHeader extends StatelessWidget {
             text: "NOCVLA ATHLETE",
             fontSize: 42,
             letterSpacing: 2,
-            fontFamily: MyFonts.bebasNeue,
+            fontFamily: MyFonts.grenzeGotisch,
           ),
           MyText(
             text: "They Represent. We Support.",

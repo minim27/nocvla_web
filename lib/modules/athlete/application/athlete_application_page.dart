@@ -38,7 +38,7 @@ class AthleteApplicationPage extends GetView<AthleteApplicationController> {
                           text: "ATHLETE APPLICATION",
                           fontSize: 42,
                           letterSpacing: 2,
-                          fontFamily: MyFonts.bebasNeue,
+                          fontFamily: MyFonts.grenzeGotisch,
                         ),
                         SizedBox(height: 20),
                         isDesktop

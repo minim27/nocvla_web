@@ -39,7 +39,7 @@ class CartPage extends GetView<CartController> {
                       text: "YOUR CART",
                       fontSize: 42,
                       letterSpacing: 2,
-                      fontFamily: MyFonts.bebasNeue,
+                      fontFamily: MyFonts.grenzeGotisch,
                     ),
                     SizedBox(height: 40),
                     isDesktop

@@ -46,7 +46,7 @@ class MAboutHeader extends StatelessWidget {
             children: [
               MyText(
                 text: items["title"],
-                fontFamily: MyFonts.bebasNeue,
+                fontFamily: MyFonts.grenzeGotisch,
                 fontSize: 30,
                 height: 0.9,
                 letterSpacing: 2,

@@ -33,7 +33,7 @@ class Navbar extends StatelessWidget {
               child: MyText(
                 text: "NOCVLA",
                 fontSize: 28,
-                fontFamily: MyFonts.bebasNeue,
+                fontFamily: MyFonts.grenzeGotisch,
                 fontWeight: .w600,
               ),
             ),

@@ -48,7 +48,7 @@ class TAboutHeader extends StatelessWidget {
             children: [
               MyText(
                 text: items["title"],
-                fontFamily: MyFonts.bebasNeue,
+                fontFamily: MyFonts.grenzeGotisch,
                 fontSize: 48,
                 height: 0.9,
                 letterSpacing: 2,

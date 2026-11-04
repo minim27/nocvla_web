@@ -31,7 +31,7 @@ class TFooter extends StatelessWidget {
               MyText(
                 text: "NOCVLA",
                 fontSize: 28,
-                fontFamily: MyFonts.bebasNeue,
+                fontFamily: MyFonts.grenzeGotisch,
               ),
               SizedBox(height: 12),
               MyText(

@@ -20,6 +20,7 @@ class MyButton extends StatelessWidget {
     this.fontSize = 16,
     this.borderRadius = 0,
     this.fontWeight = .w600,
+    this.fontFamily = MyFonts.archivoNarrow,
     this.namedArgs,
     this.enable = true,
     this.prefix,
@@ -35,6 +36,7 @@ class MyButton extends StatelessWidget {
   final Color color, textColor;
   final Color? borderColor;
   final FontWeight fontWeight;
+  final String fontFamily;
   final Map<String, String>? namedArgs;
   final VoidCallback? onTap;
 
@@ -46,7 +48,7 @@ class MyButton extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: color,
+          color: color.withValues(alpha: enable ? 1 : 0.5),
           borderRadius: .circular(borderRadius),
           border: borderColor == null
               ? null
@@ -58,13 +60,18 @@ class MyButton extends StatelessWidget {
           mainAxisAlignment: .center,
           children: [
             if (prefix != null) MyImageAssets(prefix!, scale: scale),
-            MyText(
-              textAlign: .center,
-              text: text.tr,
-              color: textColor,
-              fontSize: fontSize,
-              fontWeight: fontWeight,
-              namedArgs: namedArgs,
+            Flexible(
+              child: MyText(
+                textAlign: .center,
+                text: (namedArgs == null)
+                    ? text.tr.toUpperCase()
+                    : text.tr.trParams(namedArgs!).toUpperCase(),
+                color: textColor,
+                fontSize: fontSize,
+                fontWeight: fontWeight,
+                fontFamily: fontFamily,
+                letterSpacing: fontSize * 0.12,
+              ),
             ),
             if (suffix != null) MyImageAssets(suffix!, scale: scale),
           ],
@@ -80,13 +87,13 @@ class MyButtonBorder extends StatelessWidget {
     super.key,
     this.width,
     this.height = 56,
-    this.borderColor = MyColors.white,
-    this.borderWidth = 2,
+    this.borderColor = MyColors.line,
+    this.borderWidth = 1,
     this.textColor = MyColors.white,
     this.fontSize = 16,
     this.borderRadius = 0,
-    this.fontWeight = .w400,
-    this.fontFamily = MyFonts.stackSansHeadline,
+    this.fontWeight = .w600,
+    this.fontFamily = MyFonts.archivoNarrow,
     this.namedArgs,
     this.enable = true,
     this.prefix,
@@ -117,10 +124,7 @@ class MyButtonBorder extends StatelessWidget {
           borderRadius: .circular(borderRadius),
           border: borderColor == null
               ? null
-              : .all(
-                  color: borderColor!.withValues(alpha: 0.16),
-                  width: borderWidth,
-                ),
+              : .all(color: borderColor!, width: borderWidth),
         ),
         alignment: .center,
         child: Row(
@@ -128,14 +132,18 @@ class MyButtonBorder extends StatelessWidget {
           mainAxisAlignment: .center,
           children: [
             if (prefix != null) MyImageAssets(prefix!),
-            MyText(
-              textAlign: .center,
-              text: text.tr,
-              color: textColor,
-              fontSize: fontSize,
-              fontWeight: fontWeight,
-              namedArgs: namedArgs,
-              fontFamily: fontFamily,
+            Flexible(
+              child: MyText(
+                textAlign: .center,
+                text: (namedArgs == null)
+                    ? text.tr.toUpperCase()
+                    : text.tr.trParams(namedArgs!).toUpperCase(),
+                color: textColor,
+                fontSize: fontSize,
+                fontWeight: fontWeight,
+                fontFamily: fontFamily,
+                letterSpacing: fontSize * 0.12,
+              ),
             ),
             if (suffix != null) MyImageAssets(suffix!),
           ],

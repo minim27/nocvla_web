@@ -1,4 +1,5 @@
 class MyFonts {
-  static const String bebasNeue = "BebasNeue";
-  static const String stackSansHeadline = "StackSansHeadline";
+  static const String grenzeGotisch = "GrenzeGotisch";
+  static const String archivoNarrow = "ArchivoNarrow";
+  static const String archivo = "Archivo";
 }

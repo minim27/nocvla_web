@@ -25,10 +25,12 @@ class MHomeFeatured extends StatelessWidget {
             Row(
               mainAxisAlignment: .spaceBetween,
               children: [
-                MyText(
-                  text: "FEATURED PRODUCTS",
-                  fontSize: 32,
-                  fontWeight: .w700,
+                Expanded(
+                  child: MyText(
+                    text: "FEATURED PRODUCTS",
+                    fontSize: 32,
+                    fontWeight: .w700,
+                  ),
                 ),
                 // Opacity(
                 //   opacity: 0.6,

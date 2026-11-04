@@ -56,7 +56,7 @@ class AthleteBottom extends StatelessWidget {
                   MyText(
                     text: "JOIN NOCVLA ATHLETE",
                     fontWeight: .w600,
-                    fontFamily: MyFonts.bebasNeue,
+                    fontFamily: MyFonts.grenzeGotisch,
                     fontSize: 48,
                     letterSpacing: 2,
                   ),

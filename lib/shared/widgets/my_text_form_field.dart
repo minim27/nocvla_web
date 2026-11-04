@@ -10,7 +10,7 @@ class MyTextFormField extends StatelessWidget {
   const MyTextFormField({
     super.key,
     this.controller,
-    this.borderRadius = 12,
+    this.borderRadius = 0,
     this.label,
     this.hintText,
     this.maxLines = 1,
@@ -93,7 +93,7 @@ class MyTextFormField extends StatelessWidget {
             // width: width,
             // height: height,
             decoration: BoxDecoration(
-              border: .all(color: MyColors.white.withValues(alpha: 0.1)),
+              border: .all(color: MyColors.line),
             ),
             child: Padding(
               padding: .all(16),
@@ -106,7 +106,7 @@ class MyTextFormField extends StatelessWidget {
                 textAlign: textAlign,
                 style: TextStyle(
                   fontSize: fontSize,
-                  fontFamily: MyFonts.stackSansHeadline,
+                  fontFamily: MyFonts.archivo,
                   color: textColor,
                   fontWeight: fontWeight,
                 ),
@@ -117,8 +117,8 @@ class MyTextFormField extends StatelessWidget {
                   hintText: hintText,
                   hintStyle: TextStyle(
                     fontSize: fontSize,
-                    fontFamily: MyFonts.stackSansHeadline,
-                    color: MyColors.white.withValues(alpha: 0.2),
+                    fontFamily: MyFonts.archivo,
+                    color: MyColors.white2,
                     fontWeight: fontWeight,
                   ),
                   isDense: true,
@@ -185,7 +185,7 @@ class MyTextFormFieldNoBorder extends StatelessWidget {
       textAlign: textAlign,
       style: TextStyle(
         fontSize: fontSize,
-        fontFamily: MyFonts.stackSansHeadline,
+        fontFamily: MyFonts.archivo,
         color: textColor,
         fontWeight: fontWeight,
       ),
@@ -196,8 +196,8 @@ class MyTextFormFieldNoBorder extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyle(
           fontSize: fontSize,
-          fontFamily: MyFonts.stackSansHeadline,
-          color: hintTextColor ?? MyColors.white.withValues(alpha: 0.2),
+          fontFamily: MyFonts.archivo,
+          color: hintTextColor ?? MyColors.white2,
           fontWeight: fontWeight,
         ),
         isDense: true,

@@ -37,7 +37,7 @@ class TCollectionBottom extends StatelessWidget {
                       MyText(
                         text: "JOIN NOCVLA",
                         fontWeight: .w600,
-                        fontFamily: MyFonts.bebasNeue,
+                        fontFamily: MyFonts.grenzeGotisch,
                         fontSize: 20,
                         letterSpacing: 2,
                       ),

@@ -33,7 +33,7 @@ class TNavbar extends StatelessWidget {
               child: MyText(
                 text: "NOCVLA",
                 fontSize: 28,
-                fontFamily: MyFonts.bebasNeue,
+                fontFamily: MyFonts.grenzeGotisch,
                 fontWeight: .w600,
               ),
             ),
@@ -119,7 +119,7 @@ class TNavbar extends StatelessWidget {
     return GestureDetector(
       onTap: () => Get.offNamed(route),
       child: Container(
-        margin: .only(left: 32),
+        margin: .only(left: 24),
         child: Column(
           mainAxisAlignment: .center,
           children: [

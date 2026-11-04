@@ -26,7 +26,7 @@ class MContactSosmed extends StatelessWidget {
               text: "CONTACT US",
               fontSize: 36,
               letterSpacing: 2,
-              fontFamily: MyFonts.bebasNeue,
+              fontFamily: MyFonts.grenzeGotisch,
             ),
             MyText(
               text:

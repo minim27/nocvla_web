@@ -48,7 +48,7 @@ class AboutHeader extends StatelessWidget {
             children: [
               MyText(
                 text: items["title"],
-                fontFamily: MyFonts.bebasNeue,
+                fontFamily: MyFonts.grenzeGotisch,
                 fontSize: 104,
                 height: 0.9,
                 letterSpacing: 2,

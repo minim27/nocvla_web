@@ -8,7 +8,7 @@ class MyLoading extends StatelessWidget {
     super.key,
     this.isStack = false,
     this.size = 50,
-    this.backgroundColor = MyColors.white,
+    this.backgroundColor = MyColors.black,
   });
 
   final bool isStack;

@@ -26,7 +26,7 @@ class MFooter extends StatelessWidget {
       child: Column(
         crossAxisAlignment: .start,
         children: [
-          MyText(text: "NOCVLA", fontSize: 26, fontFamily: MyFonts.bebasNeue),
+          MyText(text: "NOCVLA", fontSize: 26, fontFamily: MyFonts.grenzeGotisch),
           SizedBox(height: 12),
           MyText(
             text:

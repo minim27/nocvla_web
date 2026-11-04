@@ -10,6 +10,7 @@ import 'app/services/my_config.dart';
 import 'modules/early_access/early_access_controller.dart';
 import 'modules/main_layout/main_layout.dart';
 import 'shared/utils/my_colors.dart';
+import 'shared/utils/my_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +39,31 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: MyFonts.archivo,
+        colorScheme: const .dark(
+          primary: MyColors.white,
+          onPrimary: MyColors.black,
+          secondary: MyColors.white,
+          onSecondary: MyColors.black,
+          surface: MyColors.black2,
+          onSurface: MyColors.white,
+          error: MyColors.redText,
+        ),
         scaffoldBackgroundColor: MyColors.black,
+        dividerTheme: const DividerThemeData(color: MyColors.line),
+        dialogTheme: const DialogThemeData(
+          backgroundColor: MyColors.black2,
+          surfaceTintColor: MyColors.black2,
+          shape: RoundedRectangleBorder(),
+        ),
+        drawerTheme: const DrawerThemeData(
+          shape: RoundedRectangleBorder(),
+          endShape: RoundedRectangleBorder(),
+        ),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: MyColors.white,
+          selectionColor: MyColors.red.withValues(alpha: 0.4),
+        ),
         appBarTheme: AppBarTheme(
           backgroundColor: MyColors.black,
           surfaceTintColor: MyColors.black,

@@ -118,7 +118,7 @@ class MProductDetailHeader extends StatelessWidget {
               color: MyColors.white2,
               fontSize: 16,
               fontWeight: .w100,
-              fontFamily: MyFonts.stackSansHeadline,
+              fontFamily: MyFonts.archivo,
             ),
             child: IgnorePointer(
               child: quill.QuillEditor(

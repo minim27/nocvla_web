@@ -50,7 +50,7 @@ class FAQHeader extends StatelessWidget {
                 text: "FREQUENTLY ASKED\nQUESTIONS",
                 fontSize: 42,
                 letterSpacing: 2,
-                fontFamily: MyFonts.bebasNeue,
+                fontFamily: MyFonts.grenzeGotisch,
                 height: 0.9,
               ),
               MyText(

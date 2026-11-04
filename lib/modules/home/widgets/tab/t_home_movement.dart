@@ -52,7 +52,7 @@ class THomeMovement extends StatelessWidget {
                 children: [
                   MyText(
                     text: "DISCIPLINE TODAY.\nSTRENGTH TOMORROW.",
-                    fontFamily: MyFonts.bebasNeue,
+                    fontFamily: MyFonts.grenzeGotisch,
                     fontSize: 36,
                     height: 0.9,
                     letterSpacing: 1,
