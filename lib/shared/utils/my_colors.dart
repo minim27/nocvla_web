@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class MyColors {
   static const Color black = Color(0xFF0B0A0B);
   static const Color black2 = Color(0xFF100E10);
-  static const Color black3 = Color(0xFF0E0D0E);
-  static const Color black4 = Color(0xFF111011);
+  static const Color black3 = Color(0xFF0B0A0B);
+  static const Color black4 = Color(0xFF100E10);
+  static const Color black6 = Color(0xFF080708);
   static const Color black5 = Color(0xFF141314);
 
   static const Color nativeBlack = Color(0xFF000000);
@@ -15,7 +16,7 @@ class MyColors {
   static const Color nativeWhite = Color(0xFFFFFFFF);
 
   static const Color line = Color(0xFF2A2528);
-  static const Color line2 = Color(0xFF252124);
+  static const Color line2 = Color(0xFF2A2528);
   static const Color line3 = Color(0xFF1F1B1E);
   static const Color swatchBorder = Color(0xFF4A4245);
 

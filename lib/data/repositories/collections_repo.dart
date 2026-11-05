@@ -14,7 +14,7 @@ class CollectionsRepo extends BaseRepository {
     final base = supabase
         .from("m_products")
         .select(
-          "id, name, is_featured, badge, product_type:m_product_type!inner(name), "
+          "*, product_type:m_product_type!inner(name), "
           "colors:m_product_color(id, name, hex, "
           "images:m_product_images(image_url, sort_order), "
           "stock:m_product_stock(size, qty, price, sort_order))",

@@ -11,6 +11,7 @@ import '../../../../shared/widgets/my_button.dart';
 import '../../../../shared/widgets/my_divider.dart';
 import '../../../../shared/widgets/my_grid.dart';
 import '../../../../shared/widgets/my_image.dart';
+import '../../../../shared/widgets/my_max_width.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../main_layout_controller.dart';
 
@@ -28,25 +29,27 @@ class Footer extends StatelessWidget {
         MyDivider(color: MyColors.line2),
         Container(
           width: .infinity,
-          color: MyColors.black,
-          padding: .fromLTRB(60, 48, 60, 24),
-          child: Column(
-            crossAxisAlignment: .start,
-            children: [
-              MyGrid(
-                crossAxisCount: 4,
-                spacing: 32,
-                children: [
-                  brand(),
-                  shopMenu(controller),
-                  companyMenu(controller),
-                  followMenu(controller),
-                ],
-              ),
-              SizedBox(height: 32),
-              MyDivider(color: MyColors.line2, bottomGap: 20),
-              bottom(),
-            ],
+          color: MyColors.black6,
+          padding: .fromLTRB(0, 72, 0, 40),
+          child: MyMaxWidth(
+            child: Column(
+              crossAxisAlignment: .start,
+              children: [
+                MyGrid(
+                  crossAxisCount: 4,
+                  spacing: 40,
+                  children: [
+                    brand(),
+                    shopMenu(controller),
+                    companyMenu(controller),
+                    followMenu(controller),
+                  ],
+                ),
+                SizedBox(height: 32),
+                MyDivider(color: MyColors.line2, bottomGap: 20),
+                bottom(),
+              ],
+            ),
           ),
         ),
       ],
@@ -59,25 +62,28 @@ class Footer extends StatelessWidget {
 
       final text = Column(
         crossAxisAlignment: .start,
-        spacing: 6,
         children: [
           MyText(
             text: "JOIN NOCVLA",
             fontFamily: MyFonts.archivoNarrow,
             fontSize: 12,
             fontWeight: .w700,
-            letterSpacing: 12 * 0.2,
+            letterSpacing: 12 * 0.3,
             color: MyColors.redText,
           ),
+          SizedBox(height: 11),
           MyText(
             text: "Be the first to know.",
             fontFamily: MyFonts.grenzeGotisch,
-            fontSize: 36,
+            fontSize: 47.5,
             fontWeight: .w600,
+            height: 1.0,
           ),
+          SizedBox(height: 13),
           MyText(
             text:
                 "Info drop, kata sandi early access, dan restock dibagikan duluan di Discord NOCVLA.",
+            fontSize: 14.4,
             color: MyColors.white2,
           ),
         ],
@@ -92,13 +98,15 @@ class Footer extends StatelessWidget {
       return Container(
         width: .infinity,
         color: MyColors.black4,
-        padding: .symmetric(horizontal: 60, vertical: 48),
-        child: Row(
-          spacing: 24,
-          children: [
-            Expanded(child: text),
-            button,
-          ],
+        padding: .symmetric(vertical: 56),
+        child: MyMaxWidth(
+          child: Row(
+            spacing: 24,
+            children: [
+              Expanded(child: text),
+              button,
+            ],
+          ),
         ),
       );
     });
@@ -155,10 +163,9 @@ class Footer extends StatelessWidget {
       () => footerMenu(
         title: "BELANJA",
         items: {
-          for (final type in controller.resShopType)
-            type.capitalize!: () => controller.openCollection(type),
-          if (!controller.resShopType.contains("ACCESSORIES"))
-            "Accessories": () => controller.openCollection("ACCESSORIES"),
+          for (final e in controller.resType)
+            if (controller.resShopType.contains(e.name))
+              "${e.name}".capitalize!: () => controller.openCollection(e.name),
         },
       ),
     );
@@ -225,7 +232,7 @@ class Footer extends StatelessWidget {
       behavior: .opaque,
       onTap: () => controller.openMarketplace(key),
       child: SizedBox(
-        height: 36,
+        height: 27,
         child: Center(
           widthFactor: 1,
           child: MyText(text: label, color: MyColors.white2),
@@ -258,7 +265,7 @@ class Footer extends StatelessWidget {
             behavior: .opaque,
             onTap: e.value,
             child: Container(
-              constraints: BoxConstraints(minHeight: 36),
+              constraints: BoxConstraints(minHeight: 27),
               alignment: .centerLeft,
               child: MyText(text: e.key, color: MyColors.white2),
             ),

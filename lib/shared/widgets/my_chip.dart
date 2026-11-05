@@ -10,11 +10,15 @@ class MyChip extends StatelessWidget {
     required this.text,
     this.isSelected = false,
     this.onTap,
+    this.width,
+    this.height = 44,
   });
 
   final String text;
   final bool isSelected;
   final VoidCallback? onTap;
+  final double? width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +26,12 @@ class MyChip extends StatelessWidget {
       behavior: .opaque,
       onTap: onTap,
       child: Container(
-        height: 44,
-        padding: const .symmetric(horizontal: 16),
+        width: width,
+        height: height,
+        padding: width == null ? const .symmetric(horizontal: 16) : null,
         decoration: BoxDecoration(
           color: isSelected ? MyColors.white : null,
-          border: .all(color: isSelected ? MyColors.white : MyColors.line),
+          border: .all(color: isSelected ? MyColors.white : MyColors.line2),
         ),
         child: Center(
           widthFactor: 1,
@@ -35,7 +40,7 @@ class MyChip extends StatelessWidget {
             color: isSelected ? MyColors.black : MyColors.white,
             fontFamily: MyFonts.archivoNarrow,
             fontSize: 13,
-            fontWeight: .w600,
+            fontWeight: .w700,
             letterSpacing: 13 * 0.12,
           ),
         ),

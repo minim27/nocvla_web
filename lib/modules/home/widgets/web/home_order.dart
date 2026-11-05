@@ -6,6 +6,7 @@ import '../../../../shared/utils/my_colors.dart';
 import '../../../../shared/utils/my_fonts.dart';
 import '../../../../shared/widgets/my_button.dart';
 import '../../../../shared/widgets/my_grid.dart';
+import '../../../../shared/widgets/my_max_width.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../home_controller.dart';
 
@@ -18,72 +19,74 @@ class HomeOrder extends StatelessWidget {
     final layout = Get.find<MainLayoutController>();
 
     return Padding(
-      padding: .fromLTRB(48, 96, 48, 96),
-      child: Container(
-        decoration: BoxDecoration(
-          color: MyColors.black4,
-          border: .all(color: MyColors.line3),
-        ),
-        padding: .all(40),
-        child: Column(
-          crossAxisAlignment: .stretch,
-          spacing: 24,
-          children: [
-            Row(
-              spacing: 24,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: .start,
-                    spacing: 8,
-                    children: [
-                      MyText(
-                        text: "Order langsung, lebih hemat.",
-                        fontFamily: MyFonts.grenzeGotisch,
-                        fontSize: 48,
-                        fontWeight: .w600,
-                      ),
-                      MyText(
-                        text:
-                            "Pesan via WhatsApp untuk harga terbaik, atau checkout di marketplace favoritmu. Pakai kode atlet saat order WhatsApp.",
-                        height: 1.5,
-                        color: MyColors.white2,
-                      ),
-                    ],
-                  ),
-                ),
-                MyButton(
-                  "ORDER VIA WHATSAPP",
-                  width: 260,
-                  color: MyColors.red,
-                  textColor: MyColors.nativeWhite,
-                  prefixIcon: Icons.chat_bubble_outline,
-                  onTap: controller.orderViaWhatsapp,
-                ),
-              ],
-            ),
-            Obx(
-              () => layout.resMarketplace.isEmpty
-                  ? SizedBox()
-                  : MyGrid(
-                      crossAxisCount: 3,
+      padding: .symmetric(vertical: 112),
+      child: MyMaxWidth(
+        child: Container(
+          decoration: BoxDecoration(
+            color: MyColors.black4,
+            border: .all(color: MyColors.line3),
+          ),
+          padding: .all(52),
+          child: Column(
+            crossAxisAlignment: .stretch,
+            spacing: 24,
+            children: [
+              Row(
+                spacing: 24,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: .start,
                       spacing: 8,
                       children: [
-                        marketplace(layout, "BELI DI SHOPEE", "shopee_url"),
-                        marketplace(
-                          layout,
-                          "BELI DI TIKTOK SHOP",
-                          "tiktok_url",
+                        MyText(
+                          text: "Order langsung, lebih hemat.",
+                          fontFamily: MyFonts.grenzeGotisch,
+                          fontSize: 48,
+                          fontWeight: .w600,
                         ),
-                        marketplace(
-                          layout,
-                          "BELI DI TOKOPEDIA",
-                          "tokopedia_url",
+                        MyText(
+                          text:
+                              "Pesan via WhatsApp untuk harga terbaik, atau checkout di marketplace favoritmu. Pakai kode atlet saat order WhatsApp.",
+                          height: 1.5,
+                          color: MyColors.white2,
                         ),
                       ],
                     ),
-            ),
-          ],
+                  ),
+                  MyButton(
+                    "ORDER VIA WHATSAPP",
+                    width: 260,
+                    color: MyColors.red,
+                    textColor: MyColors.nativeWhite,
+                    prefixIcon: Icons.chat_bubble_outline,
+                    onTap: controller.orderViaWhatsapp,
+                  ),
+                ],
+              ),
+              Obx(
+                () => layout.resMarketplace.isEmpty
+                    ? SizedBox()
+                    : MyGrid(
+                        crossAxisCount: 3,
+                        spacing: 8,
+                        children: [
+                          marketplace(layout, "BELI DI SHOPEE", "shopee_url"),
+                          marketplace(
+                            layout,
+                            "BELI DI TIKTOK SHOP",
+                            "tiktok_url",
+                          ),
+                          marketplace(
+                            layout,
+                            "BELI DI TOKOPEDIA",
+                            "tokopedia_url",
+                          ),
+                        ],
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -94,8 +97,8 @@ class HomeOrder extends StatelessWidget {
       behavior: .opaque,
       onTap: () => layout.openMarketplace(key),
       child: Container(
-        height: 48,
-        padding: .symmetric(horizontal: 16),
+        height: 64,
+        padding: .symmetric(horizontal: 20),
         decoration: BoxDecoration(
           color: MyColors.black3,
           border: .all(color: MyColors.line3),

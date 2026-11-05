@@ -8,6 +8,7 @@ import '../../../../shared/utils/my_linears.dart';
 import '../../../../shared/widgets/my_button.dart';
 import '../../../../shared/widgets/my_image.dart';
 import '../../../../shared/widgets/my_skeleton.dart';
+import '../../../../shared/widgets/my_max_width.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../home_controller.dart';
 
@@ -18,14 +19,17 @@ class HomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
 
-    return SizedBox(
-      height: 640,
-      child: Obx(() {
-        final slides = controller.heroSlides.toList();
+    return Obx(() {
+      if (controller.isLoadingBanner.value) {
+        return MySkeleton(height: 640);
+      }
 
-        if (slides.isEmpty) return MySkeleton(height: null);
+      final slides = controller.resBanners.toList();
+      if (slides.isEmpty) return SizedBox();
 
-        return Stack(
+      return SizedBox(
+        height: 640,
+        child: Stack(
           fit: .expand,
           children: [
             PageView.builder(
@@ -36,37 +40,40 @@ class HomeHeader extends StatelessWidget {
             ),
             if (slides.length > 1)
               Positioned(
-                left: 40,
+                left: 0,
+                right: 0,
                 bottom: 16,
-                child: Row(
-                  children: [
-                    for (var i = 0; i < slides.length; i++)
-                      GestureDetector(
-                        behavior: .opaque,
-                        onTap: () => controller.tapHeroDot(i),
-                        child: Container(
-                          width: 24,
-                          height: 24,
-                          alignment: .center,
+                child: MyMaxWidth(
+                  child: Row(
+                    children: [
+                      for (var i = 0; i < slides.length; i++)
+                        GestureDetector(
+                          behavior: .opaque,
+                          onTap: () => controller.tapHeroDot(i),
                           child: Container(
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: controller.heroIndex.value == i
-                                  ? MyColors.white
-                                  : MyColors.swatchBorder,
+                            width: 24,
+                            height: 24,
+                            alignment: .center,
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: controller.heroIndex.value == i
+                                    ? MyColors.white
+                                    : MyColors.swatchBorder,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
           ],
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 
   Widget slide(HomeController controller, BannerModel banner) {
@@ -83,8 +90,7 @@ class HomeHeader extends StatelessWidget {
         ),
         Container(decoration: BoxDecoration(gradient: MyLinears.linear1)),
         Container(color: MyColors.black.withValues(alpha: 0.2)),
-        Padding(
-          padding: .symmetric(horizontal: 48),
+        MyMaxWidth(
           child: Column(
             mainAxisAlignment: .center,
             crossAxisAlignment: .start,
@@ -100,7 +106,7 @@ class HomeHeader extends StatelessWidget {
                         fontFamily: MyFonts.archivoNarrow,
                         fontSize: 12,
                         fontWeight: .w600,
-                        letterSpacing: 12 * 0.2,
+                        letterSpacing: 12 * 0.3,
                         color: MyColors.redText,
                       ),
                     ),

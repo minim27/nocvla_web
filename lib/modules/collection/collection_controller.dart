@@ -4,6 +4,7 @@ import 'package:nocvla_web/data/models/collections/list_products_model.dart';
 import 'package:nocvla_web/data/models/collections/product_type_model.dart';
 
 import '../../app/core/base_controller.dart';
+import '../main_layout/main_layout_controller.dart';
 import '../../shared/utils/my_utility.dart';
 
 class CollectionController extends BaseController {
@@ -34,12 +35,7 @@ class CollectionController extends BaseController {
             .map((e) => ProductTypeModel.fromJson(e))
             .toList();
 
-        resType.value = [
-          ProductTypeModel(name: "ALL", value: ""),
-          ...types,
-          if (!types.any((e) => e.name == "ACCESSORIES"))
-            ProductTypeModel(name: "ACCESSORIES", value: "accessories"),
-        ];
+        resType.value = [ProductTypeModel(name: "SEMUA", value: ""), ...types];
       },
       err: (err) => showMyErrAPISnackbar(err),
     );
@@ -75,6 +71,8 @@ class CollectionController extends BaseController {
               "type": e["product_type"]?["name"],
               "price": minPrice,
               "stock": c["stock"],
+              "badge": e["badge"],
+              "subtitle": e["subtitle"],
             });
           });
         }).toList();
@@ -83,6 +81,14 @@ class CollectionController extends BaseController {
     );
 
     isLoadingProd.value = false;
+  }
+
+  List<ProductTypeModel> get types {
+    final shopTypes = Get.find<MainLayoutController>().resShopType;
+
+    return resType
+        .where((e) => e.value.isEmpty || shopTypes.contains(e.name))
+        .toList();
   }
 
   List<String> get sizes {
@@ -110,6 +116,15 @@ class CollectionController extends BaseController {
     }
 
     return groups.values.toList();
+  }
+
+  String groupEyebrow(ListProductsModel item) =>
+      [if (item.badge != null) item.badge, item.type].join(" · ").toUpperCase();
+
+  String? groupDesc(ListProductsModel item) {
+    final subtitle = "${item.subtitle ?? ""}".trim();
+
+    return subtitle.isEmpty ? null : subtitle;
   }
 
   void selectType(String value) {

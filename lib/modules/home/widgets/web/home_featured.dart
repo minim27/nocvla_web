@@ -6,6 +6,7 @@ import '../../../../shared/utils/my_fonts.dart';
 import '../../../../shared/widgets/my_grid.dart';
 import '../../../../shared/widgets/my_product_card.dart';
 import '../../../../shared/widgets/my_skeleton.dart';
+import '../../../../shared/widgets/my_max_width.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../home_controller.dart';
 
@@ -17,71 +18,75 @@ class HomeFeatured extends StatelessWidget {
     final controller = Get.find<HomeController>();
 
     return Padding(
-      padding: .fromLTRB(48, 96, 48, 0),
-      child: Column(
-        crossAxisAlignment: .start,
-        spacing: 24,
-        children: [
-          Row(
-            crossAxisAlignment: .end,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: .start,
-                  spacing: 4,
-                  children: [eyebrow("PILIHAN TEMPLE"), title("Featured")],
+      padding: .only(top: 112),
+      child: MyMaxWidth(
+        child: Column(
+          crossAxisAlignment: .start,
+          spacing: 40,
+          children: [
+            Row(
+              crossAxisAlignment: .end,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    spacing: 4,
+                    children: [eyebrow("PILIHAN TEMPLE"), title("Featured")],
+                  ),
                 ),
-              ),
-              GestureDetector(
-                behavior: .opaque,
-                onTap: controller.openCollection,
-                child: Container(
-                  height: 44,
-                  alignment: .bottomCenter,
+                GestureDetector(
+                  behavior: .opaque,
+                  onTap: controller.openCollection,
                   child: Container(
-                    padding: .only(bottom: 6),
-                    decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: MyColors.line2)),
-                    ),
-                    child: MyText(
-                      text: "SEMUA PRODUK",
-                      fontFamily: MyFonts.archivoNarrow,
-                      fontSize: 12,
-                      fontWeight: .w700,
-                      letterSpacing: 12 * 0.2,
+                    height: 44,
+                    alignment: .bottomCenter,
+                    child: Container(
+                      padding: .only(bottom: 6),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(color: MyColors.line2),
+                        ),
+                      ),
+                      child: MyText(
+                        text: "SEMUA PRODUK",
+                        fontFamily: MyFonts.archivoNarrow,
+                        fontSize: 12,
+                        fontWeight: .w700,
+                        letterSpacing: 12 * 0.3,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Obx(() {
-            if (controller.isLoadingFeatured.value) {
+              ],
+            ),
+            Obx(() {
+              if (controller.isLoadingFeatured.value) {
+                return MyGrid(
+                  crossAxisCount: 4,
+                  children: [
+                    for (var i = 0; i < 4; i++)
+                      AspectRatio(
+                        aspectRatio: 4 / 5,
+                        child: MySkeleton(height: null),
+                      ),
+                  ],
+                );
+              }
+
               return MyGrid(
                 crossAxisCount: 4,
                 children: [
-                  for (var i = 0; i < 4; i++)
-                    AspectRatio(
-                      aspectRatio: 4 / 5,
-                      child: MySkeleton(height: null),
+                  for (final items in controller.resFeatured)
+                    MyFeaturedCard(
+                      item: items,
+                      onTap: () => controller.openDetail(items.id),
+                      onColorTap: controller.openDetail,
                     ),
                 ],
               );
-            }
-
-            return MyGrid(
-              crossAxisCount: 4,
-              children: [
-                for (final items in controller.resFeatured)
-                  MyFeaturedCard(
-                    item: items,
-                    onTap: () => controller.openDetail(items.id),
-                    onColorTap: controller.openDetail,
-                  ),
-              ],
-            );
-          }),
-        ],
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -92,7 +97,7 @@ class HomeFeatured extends StatelessWidget {
       fontFamily: MyFonts.archivoNarrow,
       fontSize: 12,
       fontWeight: .w600,
-      letterSpacing: 12 * 0.2,
+      letterSpacing: 12 * 0.3,
       color: color,
     );
   }

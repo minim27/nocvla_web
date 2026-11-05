@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../shared/utils/my_colors.dart';
-import '../../../../shared/utils/my_fonts.dart';
 import '../../../../shared/widgets/my_chip.dart';
+import '../../../../shared/widgets/my_max_width.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../collection_controller.dart';
 
@@ -15,62 +15,63 @@ class CollectionFilter extends StatelessWidget {
     final controller = Get.find<CollectionController>();
 
     return Container(
-      padding: .symmetric(vertical: 12),
       decoration: BoxDecoration(
         color: MyColors.black3,
-        border: Border(bottom: BorderSide(color: MyColors.line)),
+        border: Border.symmetric(horizontal: BorderSide(color: MyColors.line2)),
       ),
-      child: Obx(
-        () => Column(
-          crossAxisAlignment: .start,
-          spacing: 8,
-          children: [
-            chips(
+      child: MyMaxWidth(
+        child: Padding(
+          padding: .symmetric(vertical: 14),
+          child: Obx(
+            () => Row(
+              spacing: 8,
               children: [
-                for (final items in controller.resType)
-                  MyChip(
-                    text: items.name,
-                    isSelected:
-                        controller.selectedType.value ==
-                        (items.value.isEmpty ? items.value : items.name),
-                    onTap: () => controller.selectType(
-                      items.value.isEmpty ? items.value : items.name,
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: .horizontal,
+                    child: Row(
+                      spacing: 8,
+                      children: [
+                        for (final items in controller.types)
+                          MyChip(
+                            text: items.name,
+                            height: 40,
+                            isSelected:
+                                controller.selectedType.value ==
+                                (items.value.isEmpty
+                                    ? items.value
+                                    : items.name),
+                            onTap: () => controller.selectType(
+                              items.value.isEmpty ? items.value : items.name,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
-              ],
-            ),
-            if (controller.sizes.isNotEmpty)
-              chips(
-                children: [
-                  Center(
+                ),
+                if (controller.sizes.isNotEmpty) ...[
+                  Padding(
+                    padding: .only(right: 4),
                     child: MyText(
-                      text: "UKURAN READY",
-                      fontFamily: MyFonts.archivoNarrow,
+                      text: "Ukuran ready",
                       fontSize: 13,
-                      fontWeight: .w600,
-                      letterSpacing: 13 * 0.12,
                       color: MyColors.white2,
                     ),
                   ),
                   for (final size in controller.sizes)
                     MyChip(
                       text: size,
+                      width: 48,
+                      height: 40,
                       isSelected: controller.selectedSize.value == size,
                       onTap: () => controller.selectSize(size),
                     ),
                 ],
-              ),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
-    );
-  }
-
-  Widget chips({required List<Widget> children}) {
-    return SingleChildScrollView(
-      scrollDirection: .horizontal,
-      padding: .symmetric(horizontal: 40),
-      child: SizedBox(height: 44, child: Row(spacing: 8, children: children)),
     );
   }
 }

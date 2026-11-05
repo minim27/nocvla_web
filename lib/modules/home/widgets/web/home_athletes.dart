@@ -7,6 +7,7 @@ import '../../../../shared/widgets/my_button.dart';
 import '../../../../shared/widgets/my_grid.dart';
 import '../../../../shared/widgets/my_image.dart';
 import '../../../../shared/widgets/my_skeleton.dart';
+import '../../../../shared/widgets/my_max_width.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../home_controller.dart';
 
@@ -18,19 +19,15 @@ class HomeAthletes extends StatelessWidget {
     final controller = Get.find<HomeController>();
 
     return Padding(
-      padding: .fromLTRB(48, 96, 48, 0),
-      child: Row(
-        mainAxisAlignment: .center,
-        spacing: 48,
-        children: [
-          SizedBox(width: 466, child: image(controller)),
-          Flexible(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 520),
-              child: info(controller),
-            ),
-          ),
-        ],
+      padding: .only(top: 112),
+      child: MyMaxWidth(
+        child: Row(
+          spacing: 48,
+          children: [
+            Expanded(child: image(controller)),
+            Expanded(child: info(controller)),
+          ],
+        ),
       ),
     );
   }
@@ -128,7 +125,8 @@ class HomeAthletes extends StatelessWidget {
         MyText(
           text:
               "Kami mencari individu yang berkomitmen pada disiplin, konsistensi, dan progres tanpa kompromi. Wakili standar yang lebih tinggi bersama NOCVLA.",
-          height: 1.6,
+          fontSize: 16,
+          height: 1.8,
           color: MyColors.white,
         ),
         SizedBox(height: 20),
@@ -138,8 +136,8 @@ class HomeAthletes extends StatelessWidget {
           children: [
             for (final items in controller.resBenefits)
               Container(
-                constraints: BoxConstraints(minHeight: 88),
-                padding: .all(16),
+                constraints: BoxConstraints(minHeight: 95),
+                padding: .all(22),
                 decoration: BoxDecoration(border: .all(color: MyColors.line3)),
                 child: Column(
                   crossAxisAlignment: .start,
@@ -148,13 +146,13 @@ class HomeAthletes extends StatelessWidget {
                     MyText(
                       text: items["label"],
                       fontFamily: MyFonts.archivoNarrow,
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: .w700,
-                      letterSpacing: 13 * 0.12,
+                      letterSpacing: 14 * 0.12,
                     ),
                     MyText(
                       text: items["desc"],
-                      fontSize: 12,
+                      fontSize: 14,
                       color: MyColors.white2,
                     ),
                   ],
@@ -166,18 +164,16 @@ class HomeAthletes extends StatelessWidget {
         Row(
           spacing: 12,
           children: [
-            Expanded(
-              child: MyButton(
-                "DAFTAR JADI ATLET",
-                onTap: controller.openApplication,
-              ),
+            MyButton(
+              "DAFTAR JADI ATLET",
+              width: 228,
+              onTap: controller.openApplication,
             ),
-            Expanded(
-              child: MyButtonBorder(
-                "LIHAT ATLET",
-                borderColor: MyColors.line2,
-                onTap: controller.openAthlete,
-              ),
+            MyButtonBorder(
+              "LIHAT ATLET",
+              borderColor: MyColors.line2,
+              width: 168,
+              onTap: controller.openAthlete,
             ),
           ],
         ),
@@ -191,7 +187,7 @@ class HomeAthletes extends StatelessWidget {
       fontFamily: MyFonts.archivoNarrow,
       fontSize: 12,
       fontWeight: .w600,
-      letterSpacing: 12 * 0.2,
+      letterSpacing: 12 * 0.3,
       color: color,
     );
   }
@@ -200,7 +196,7 @@ class HomeAthletes extends StatelessWidget {
     return MyText(
       text: text,
       fontFamily: MyFonts.grenzeGotisch,
-      fontSize: 48,
+      fontSize: 60,
       fontWeight: .w600,
       height: 1.1,
     );

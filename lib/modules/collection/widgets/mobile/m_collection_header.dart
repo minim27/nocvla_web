@@ -10,20 +10,36 @@ class MCollectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: .fromLTRB(24, 40, 24, 24),
+      padding: .fromLTRB(24, 32, 24, 24),
       child: Column(
         crossAxisAlignment: .start,
         children: [
           MyText(
-            text: "THE ARMORY",
-            fontFamily: MyFonts.grenzeGotisch,
-            fontSize: 44,
+            text: "KOLEKSI",
+            fontFamily: MyFonts.archivoNarrow,
+            fontSize: 12,
             fontWeight: .w600,
-          ),
-          MyText(
-            text: "Engineered for performance.",
-            fontSize: 16,
+            letterSpacing: 12 * 0.3,
             color: MyColors.white2,
+          ),
+          SizedBox(height: 12),
+          MyText(
+            text: "The Armory",
+            fontFamily: MyFonts.grenzeGotisch,
+            fontSize: 46,
+            fontWeight: .w700,
+            height: 1.05,
+          ),
+          SizedBox(height: 12),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 560),
+            child: MyText(
+              text:
+                  "Setiap seri punya beberapa colorway dengan artwork sablon berbeda. Pilih warnanya, lalu order via WhatsApp atau marketplace.",
+              fontSize: 15,
+              height: 1.6,
+              color: MyColors.white2,
+            ),
           ),
         ],
       ),

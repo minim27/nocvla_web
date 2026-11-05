@@ -97,7 +97,7 @@ class MHomeScriptures extends StatelessWidget {
       fontFamily: MyFonts.archivoNarrow,
       fontSize: 12,
       fontWeight: .w600,
-      letterSpacing: 12 * 0.2,
+      letterSpacing: 12 * 0.3,
       color: color,
     );
   }

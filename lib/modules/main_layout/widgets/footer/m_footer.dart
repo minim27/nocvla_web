@@ -27,7 +27,7 @@ class MFooter extends StatelessWidget {
         MyDivider(color: MyColors.line2),
         Container(
           width: .infinity,
-          color: MyColors.black,
+          color: MyColors.black6,
           padding: .fromLTRB(24, 48, 24, 24),
           child: Column(
             crossAxisAlignment: .start,
@@ -58,25 +58,28 @@ class MFooter extends StatelessWidget {
 
       final text = Column(
         crossAxisAlignment: .start,
-        spacing: 6,
         children: [
           MyText(
             text: "JOIN NOCVLA",
             fontFamily: MyFonts.archivoNarrow,
             fontSize: 12,
             fontWeight: .w700,
-            letterSpacing: 12 * 0.2,
+            letterSpacing: 12 * 0.3,
             color: MyColors.redText,
           ),
+          SizedBox(height: 11),
           MyText(
             text: "Be the first to know.",
             fontFamily: MyFonts.grenzeGotisch,
-            fontSize: 30,
+            fontSize: 34,
             fontWeight: .w600,
+            height: 1.0,
           ),
+          SizedBox(height: 13),
           MyText(
             text:
                 "Info drop, kata sandi early access, dan restock dibagikan duluan di Discord NOCVLA.",
+            fontSize: 14.4,
             color: MyColors.white2,
           ),
         ],
@@ -152,10 +155,9 @@ class MFooter extends StatelessWidget {
       () => footerMenu(
         title: "BELANJA",
         items: {
-          for (final type in controller.resShopType)
-            type.capitalize!: () => controller.openCollection(type),
-          if (!controller.resShopType.contains("ACCESSORIES"))
-            "Accessories": () => controller.openCollection("ACCESSORIES"),
+          for (final e in controller.resType)
+            if (controller.resShopType.contains(e.name))
+              "${e.name}".capitalize!: () => controller.openCollection(e.name),
         },
       ),
     );

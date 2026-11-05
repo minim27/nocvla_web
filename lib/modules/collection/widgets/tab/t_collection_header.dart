@@ -10,20 +10,36 @@ class TCollectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: .fromLTRB(40, 48, 40, 24),
+      padding: .fromLTRB(40, 40, 40, 28),
       child: Column(
         crossAxisAlignment: .start,
         children: [
           MyText(
-            text: "THE ARMORY",
-            fontFamily: MyFonts.grenzeGotisch,
-            fontSize: 56,
+            text: "KOLEKSI",
+            fontFamily: MyFonts.archivoNarrow,
+            fontSize: 12,
             fontWeight: .w600,
-          ),
-          MyText(
-            text: "Engineered for performance.",
-            fontSize: 16,
+            letterSpacing: 12 * 0.3,
             color: MyColors.white2,
+          ),
+          SizedBox(height: 12),
+          MyText(
+            text: "The Armory",
+            fontFamily: MyFonts.grenzeGotisch,
+            fontSize: 60,
+            fontWeight: .w700,
+            height: 1.05,
+          ),
+          SizedBox(height: 12),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 560),
+            child: MyText(
+              text:
+                  "Setiap seri punya beberapa colorway dengan artwork sablon berbeda. Pilih warnanya, lalu order via WhatsApp atau marketplace.",
+              fontSize: 15,
+              height: 1.6,
+              color: MyColors.white2,
+            ),
           ),
         ],
       ),

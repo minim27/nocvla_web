@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../shared/utils/my_colors.dart';
-import '../../../../shared/utils/my_fonts.dart';
 import '../../../../shared/widgets/my_chip.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../collection_controller.dart';
@@ -18,7 +17,7 @@ class MCollectionFilter extends StatelessWidget {
       padding: .symmetric(vertical: 12),
       decoration: BoxDecoration(
         color: MyColors.black3,
-        border: Border(bottom: BorderSide(color: MyColors.line)),
+        border: Border.symmetric(horizontal: BorderSide(color: MyColors.line2)),
       ),
       child: Obx(
         () => Column(
@@ -27,9 +26,10 @@ class MCollectionFilter extends StatelessWidget {
           children: [
             chips(
               children: [
-                for (final items in controller.resType)
+                for (final items in controller.types)
                   MyChip(
                     text: items.name,
+
                     isSelected:
                         controller.selectedType.value ==
                         (items.value.isEmpty ? items.value : items.name),
@@ -44,17 +44,16 @@ class MCollectionFilter extends StatelessWidget {
                 children: [
                   Center(
                     child: MyText(
-                      text: "UKURAN READY",
-                      fontFamily: MyFonts.archivoNarrow,
+                      text: "Ukuran ready",
                       fontSize: 13,
-                      fontWeight: .w600,
-                      letterSpacing: 13 * 0.12,
                       color: MyColors.white2,
                     ),
                   ),
                   for (final size in controller.sizes)
                     MyChip(
                       text: size,
+                      width: 48,
+
                       isSelected: controller.selectedSize.value == size,
                       onTap: () => controller.selectSize(size),
                     ),

@@ -28,7 +28,6 @@ class HomeController extends BaseController {
   final athletePage = PageController();
   final athleteIndex = 0.obs;
   Timer? _athleteTimer;
-  final fallbackImage = RxnString();
   final productColorIds = <String, String>{};
 
   final resBenefits = <Map<String, dynamic>>[
@@ -39,6 +38,7 @@ class HomeController extends BaseController {
   ];
 
   final isLoadingFeatured = false.obs;
+  final isLoadingBanner = true.obs;
 
   @override
   void onInit() {
@@ -60,6 +60,8 @@ class HomeController extends BaseController {
       },
       err: (err) => showMyErrAPISnackbar(err),
     );
+
+    isLoadingBanner.value = false;
   }
 
   void _startHeroTimer() {
@@ -113,9 +115,6 @@ class HomeController extends BaseController {
         for (final e in products) {
           productColorIds["${e["id"]}"] = (e["colors"] as List).first["id"];
         }
-        if (products.isNotEmpty) {
-          fallbackImage.value = firstImage((products.first["colors"]).first);
-        }
       },
       err: (err) => showMyErrAPISnackbar(err),
     );
@@ -143,8 +142,6 @@ class HomeController extends BaseController {
             "desc": names[type]!.take(2).join(" · "),
             "type": type,
           },
-      if (!types.contains("ACCESSORIES"))
-        {"label": "Accessories", "desc": "SEGERA HADIR", "type": null},
     ];
   }
 
@@ -251,18 +248,6 @@ class HomeController extends BaseController {
   }
 
   void onAthleteChanged(int index) => athleteIndex.value = index;
-
-  List<BannerModel> get heroSlides {
-    if (resBanners.isNotEmpty) return resBanners;
-    if (fallbackImage.value == null) return [];
-
-    return [
-      BannerModel(
-        imageUrl: fallbackImage.value,
-        title: "Built Different.\nTrain Nocvla.",
-      ),
-    ];
-  }
 
   void openDetail(String id) =>
       Get.toNamed(MyRoutes.productDetail, parameters: {"id": id});

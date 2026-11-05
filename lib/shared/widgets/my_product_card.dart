@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../data/models/collections/list_products_model.dart';
 import '../utils/my_colors.dart';
@@ -12,7 +13,7 @@ class MyProductCard extends StatelessWidget {
     super.key,
     required this.item,
     required this.onTap,
-    this.colorFontSize = 24,
+    this.colorFontSize = 28,
   });
 
   final ListProductsModel item;
@@ -24,13 +25,18 @@ class MyProductCard extends StatelessWidget {
     final totalQty = item.totalQty;
     final isSoldOut = totalQty <= 0;
     final isLimited = !isSoldOut && totalQty <= 3;
+    final statusColor = isSoldOut
+        ? MyColors.white2
+        : isLimited
+        ? MyColors.orange
+        : MyColors.green;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: MyColors.black2,
-          border: .all(color: MyColors.line),
+          color: MyColors.black4,
+          border: .all(color: MyColors.line3),
         ),
         child: Column(
           crossAxisAlignment: .start,
@@ -50,26 +56,39 @@ class MyProductCard extends StatelessWidget {
                         )
                       : MyImage(item.imageUrl),
                   Positioned(
-                    top: 8,
-                    left: 8,
+                    top: 10,
+                    left: 10,
                     child: Container(
-                      padding: .symmetric(horizontal: 8, vertical: 4),
-                      color: MyColors.black,
-                      child: MyText(
-                        text: isSoldOut
-                            ? "HABIS"
-                            : isLimited
-                            ? "STOK TERBATAS"
-                            : "READY",
-                        fontFamily: MyFonts.archivoNarrow,
-                        fontSize: 11,
-                        fontWeight: .w600,
-                        letterSpacing: 11 * 0.12,
-                        color: isSoldOut
-                            ? MyColors.white2
-                            : isLimited
-                            ? MyColors.orange
-                            : MyColors.green,
+                      padding: .symmetric(horizontal: 9, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: MyColors.black3,
+                        border: .all(color: MyColors.line2),
+                      ),
+                      child: Row(
+                        mainAxisSize: .min,
+                        spacing: 6,
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: statusColor,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          MyText(
+                            text: isSoldOut
+                                ? "HABIS"
+                                : isLimited
+                                ? "STOK TERBATAS"
+                                : "READY",
+                            fontFamily: MyFonts.archivoNarrow,
+                            fontSize: 11,
+                            fontWeight: .w600,
+                            letterSpacing: 11 * 0.14,
+                            color: statusColor,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -77,28 +96,36 @@ class MyProductCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: .all(12),
+              padding: .all(16),
               child: Column(
                 crossAxisAlignment: .start,
-                spacing: 4,
                 children: [
                   MyText(
-                    text: "${item.name}",
-                    fontSize: 12,
+                    text: "${item.name}"
+                        .replaceAll(RegExp(r" (T Shirt|Tee)$"), "")
+                        .toUpperCase(),
+                    fontFamily: MyFonts.archivoNarrow,
+                    fontSize: 11,
+                    fontWeight: .w600,
+                    letterSpacing: 11 * 0.155,
                     maxLines: 1,
                     overflow: .ellipsis,
                     color: MyColors.white2,
                   ),
+                  SizedBox(height: 4),
                   MyText(
-                    text: "${item.color}",
+                    text: "${item.color}".capitalize!,
                     fontFamily: MyFonts.grenzeGotisch,
                     fontSize: colorFontSize,
                     fontWeight: .w600,
+                    height: 1.1,
                     maxLines: 1,
                     overflow: .ellipsis,
                   ),
+                  SizedBox(height: 8),
                   MyText(
                     text: parsingCurrency(item.price),
+                    fontSize: 13.6,
                     fontWeight: .w600,
                     maxLines: 1,
                     overflow: .ellipsis,

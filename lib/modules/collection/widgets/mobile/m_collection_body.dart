@@ -43,7 +43,7 @@ class MCollectionBody extends StatelessWidget {
             for (final items in groups)
               Column(
                 crossAxisAlignment: .start,
-                spacing: 16,
+                spacing: 20,
                 children: [
                   header(controller, items),
                   MyGrid(
@@ -52,7 +52,7 @@ class MCollectionBody extends StatelessWidget {
                       for (final item in items)
                         MyProductCard(
                           item: item,
-                          colorFontSize: 20,
+                          colorFontSize: 22,
                           onTap: () => controller.openDetail(item.id),
                         ),
                     ],
@@ -69,45 +69,93 @@ class MCollectionBody extends StatelessWidget {
     final minPrice = items
         .map((e) => e.price as int)
         .reduce((a, b) => a < b ? a : b);
+    final desc = controller.groupDesc(items.first);
 
-    return Row(
-      spacing: 16,
-      children: [
-        Expanded(
-          child: Column(
+    return Container(
+      width: .infinity,
+      padding: .only(bottom: 14),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: MyColors.line2)),
+      ),
+      child: Column(
+        crossAxisAlignment: .start,
+        children: [
+          MyText(
+            text: controller.groupEyebrow(items.first),
+            fontFamily: MyFonts.archivoNarrow,
+            fontSize: 12,
+            fontWeight: .w600,
+            letterSpacing: 12 * 0.22,
+            color: MyColors.redText,
+          ),
+          SizedBox(height: 9),
+          MyText(
+            text: items.first.name,
+            fontFamily: MyFonts.grenzeGotisch,
+            fontSize: 28,
+            fontWeight: .w600,
+            height: 1.0,
+          ),
+          SizedBox(height: 15),
+          Column(
             crossAxisAlignment: .start,
+            spacing: 12,
             children: [
-              MyText(
-                text: items.first.name,
-                fontFamily: MyFonts.grenzeGotisch,
-                fontSize: 26,
-                fontWeight: .w600,
-              ),
-              MyText(
-                text:
-                    "${items.length} warna · Mulai ${parsingCurrency(minPrice)}",
-                color: MyColors.white2,
+              if (desc != null)
+                MyText(text: desc, fontSize: 14, color: MyColors.white2),
+              Row(
+                crossAxisAlignment: .baseline,
+                textBaseline: .alphabetic,
+                spacing: 16,
+                children: [
+                  Expanded(child: info(items.length, minPrice)),
+                  detail(controller, items),
+                ],
               ),
             ],
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget info(int count, int minPrice) {
+    return Row(
+      mainAxisSize: .min,
+      crossAxisAlignment: .baseline,
+      textBaseline: .alphabetic,
+      children: [
+        MyText(
+          text: "$count warna · mulai ",
+          fontSize: 13.5,
+          color: MyColors.white2,
         ),
-        GestureDetector(
-          behavior: .opaque,
-          onTap: () => controller.openDetail(items.first.id),
-          child: SizedBox(
-            height: 44,
-            child: Center(
-              child: MyText(
-                text: "LIHAT DETAIL",
-                fontFamily: MyFonts.archivoNarrow,
-                fontSize: 13,
-                fontWeight: .w600,
-                letterSpacing: 13 * 0.12,
-              ),
-            ),
-          ),
+        MyText(
+          text: parsingCurrency(minPrice),
+          fontSize: 13.5,
+          fontWeight: .w600,
         ),
       ],
+    );
+  }
+
+  Widget detail(CollectionController controller, List items) {
+    return GestureDetector(
+      behavior: .opaque,
+      onTap: () => controller.openDetail(items.first.id),
+      child: Container(
+        padding: .only(bottom: 7),
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: MyColors.swatchBorder)),
+        ),
+        child: MyText(
+          text: "DETAIL SERI",
+          fontFamily: MyFonts.archivoNarrow,
+          fontSize: 12,
+          fontWeight: .w700,
+          letterSpacing: 12 * 0.19,
+        ),
+      ),
     );
   }
 }

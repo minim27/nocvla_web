@@ -5,6 +5,7 @@ import '../../../../shared/utils/my_colors.dart';
 import '../../../../shared/utils/my_fonts.dart';
 import '../../../../shared/utils/my_images.dart';
 import '../../../../shared/widgets/my_image.dart';
+import '../../../../shared/widgets/my_max_width.dart';
 import '../../../../shared/widgets/my_text.dart';
 import '../../home_controller.dart';
 
@@ -16,14 +17,16 @@ class HomeCategories extends StatelessWidget {
     final controller = Get.find<HomeController>();
 
     return Padding(
-      padding: .fromLTRB(48, 48, 48, 0),
-      child: Obx(
-        () => Row(
-          spacing: 16,
-          children: [
-            for (final items in controller.resCategories)
-              Expanded(child: category(controller, items)),
-          ],
+      padding: .only(top: 48),
+      child: MyMaxWidth(
+        child: Obx(
+          () => Row(
+            spacing: 16,
+            children: [
+              for (final items in controller.resCategories)
+                Expanded(child: category(controller, items)),
+            ],
+          ),
         ),
       ),
     );
@@ -36,7 +39,7 @@ class HomeCategories extends StatelessWidget {
     return GestureDetector(
       onTap: () => controller.openCategory(type),
       child: AspectRatio(
-        aspectRatio: 16 / 9,
+        aspectRatio: 1.83,
         child: Container(
           decoration: BoxDecoration(
             color: MyColors.black5,
@@ -57,7 +60,7 @@ class HomeCategories extends StatelessWidget {
                   ),
                 ),
               Padding(
-                padding: .all(20),
+                padding: .all(28),
                 child: Column(
                   mainAxisAlignment: .end,
                   crossAxisAlignment: .start,

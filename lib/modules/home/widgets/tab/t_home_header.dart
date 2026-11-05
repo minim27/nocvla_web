@@ -18,14 +18,17 @@ class THomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
 
-    return SizedBox(
-      height: 520,
-      child: Obx(() {
-        final slides = controller.heroSlides.toList();
+    return Obx(() {
+      if (controller.isLoadingBanner.value) {
+        return MySkeleton(height: 520);
+      }
 
-        if (slides.isEmpty) return MySkeleton(height: null);
+      final slides = controller.resBanners.toList();
+      if (slides.isEmpty) return SizedBox();
 
-        return Stack(
+      return SizedBox(
+        height: 520,
+        child: Stack(
           fit: .expand,
           children: [
             PageView.builder(
@@ -64,9 +67,9 @@ class THomeHeader extends StatelessWidget {
                 ),
               ),
           ],
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 
   Widget slide(HomeController controller, BannerModel banner) {
@@ -100,7 +103,7 @@ class THomeHeader extends StatelessWidget {
                         fontFamily: MyFonts.archivoNarrow,
                         fontSize: 12,
                         fontWeight: .w600,
-                        letterSpacing: 12 * 0.2,
+                        letterSpacing: 12 * 0.3,
                         color: MyColors.redText,
                       ),
                     ),
