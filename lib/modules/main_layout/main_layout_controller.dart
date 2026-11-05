@@ -93,7 +93,6 @@ class MainLayoutController extends BaseController {
       MyRoutes.collection => "The Armory",
       MyRoutes.productDetail => "Produk",
       MyRoutes.athlete || MyRoutes.athleteDetail => "The Congregation",
-      MyRoutes.athleteApplication => "Daftar Atlet",
       MyRoutes.about => "Tentang",
       MyRoutes.contact => "Kontak",
       MyRoutes.cart => "Keranjang",

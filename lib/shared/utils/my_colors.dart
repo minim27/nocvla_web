@@ -12,6 +12,9 @@ class MyColors {
 
   static const Color white = Color(0xFFEDE8E3);
   static const Color white2 = Color(0xFFA29A94);
+  static const Color white3 = Color(0xFFC8C0BA);
+  static const Color white4 = Color(0xFF87807B);
+  static const Color placeholder = Color(0xFF757575);
 
   static const Color nativeWhite = Color(0xFFFFFFFF);
 

@@ -117,9 +117,10 @@ class Footer extends StatelessWidget {
       crossAxisAlignment: .start,
       spacing: 12,
       children: [
-        SizedBox(
-          width: 130,
+        Container(
+          width: 123,
           height: 44,
+          padding: .only(left: 3),
           child: MyImageAssets(
             MyImages.imgNocvla,
             fit: .contain,

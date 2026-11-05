@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla_web/shared/utils/my_fonts.dart';
-import 'package:nocvla_web/shared/widgets/my_image.dart';
-import 'package:nocvla_web/shared/widgets/my_text.dart';
 
 import '../../../../../shared/utils/my_colors.dart';
-import '../../../../../shared/widgets/my_loading.dart';
+import '../../../../../shared/utils/my_fonts.dart';
+import '../../../../../shared/widgets/my_button.dart';
+import '../../../../../shared/widgets/my_image.dart';
+import '../../../../../shared/widgets/my_skeleton.dart';
+import '../../../../../shared/widgets/my_text.dart';
 import '../../athlete_detail_controller.dart';
 
 class TAthleteDetailHeader extends StatelessWidget {
@@ -15,56 +16,70 @@ class TAthleteDetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<AthleteDetailController>();
 
-    return Padding(
-      padding: .fromLTRB(24, 80, 24, 0),
-      child: Obx(() {
-        if (controller.isLoadingAthlete.value) return MyLoading();
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: MyColors.line2)),
+      ),
+      child: Padding(
+        padding: .fromLTRB(40, 40, 40, 40),
+        child: Obx(() {
+          if (controller.isLoadingAthlete.value) {
+            return MySkeleton(height: 400);
+          }
 
-        final items = controller.resAthlete.value;
-        if (items == null) return SizedBox();
+          final items = controller.resAthlete.value;
+          if (items == null) return SizedBox();
 
-        return Row(
-          crossAxisAlignment: .center,
-          spacing: 24,
-          children: [
-            SizedBox(
-              width: 140,
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  color: MyColors.black2,
-                  child: MyImage(items.picture, fit: .cover),
+          return Row(
+            spacing: 32,
+            children: [
+              SizedBox(
+                width: 300,
+                child: AspectRatio(
+                  aspectRatio: 4 / 5,
+                  child: MyImage(items.picture, alignment: .topCenter),
                 ),
               ),
-            ),
-            Column(
-              crossAxisAlignment: .start,
-              children: [
-                MyText(
-                  text: items.name,
-                  fontSize: 42,
-                  letterSpacing: 2,
-                  fontFamily: MyFonts.grenzeGotisch,
-                ),
-                Row(
-                  spacing: 8,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: .start,
                   children: [
                     MyText(
-                      text: "CODE: ${items.code}",
-                      fontSize: 16,
+                      text: "NOCVLA ATHLETE",
+                      fontFamily: MyFonts.archivoNarrow,
+                      fontSize: 12,
+                      fontWeight: .w600,
+                      letterSpacing: 12 * 0.3,
                       color: MyColors.white2,
                     ),
-                    GestureDetector(
+                    SizedBox(height: 12),
+                    MyText(
+                      text: "${items.name}".capitalize!,
+                      fontFamily: MyFonts.grenzeGotisch,
+                      fontSize: 60,
+                      fontWeight: .w700,
+                      height: 1.05,
+                    ),
+                    SizedBox(height: 12),
+                    MyText(
+                      text: "Kode atlet: ${items.code}",
+                      fontSize: 15,
+                      color: MyColors.white2,
+                    ),
+                    SizedBox(height: 24),
+                    MyButtonBorder(
+                      "SALIN KODE",
+                      borderColor: MyColors.line2,
+                      width: 200,
                       onTap: controller.copyCode,
-                      child: Icon(Icons.copy, size: 16, color: MyColors.white2),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ],
-        );
-      }),
+              ),
+            ],
+          );
+        }),
+      ),
     );
   }
 }

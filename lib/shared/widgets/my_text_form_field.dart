@@ -40,8 +40,15 @@ class MyTextFormField extends StatelessWidget {
     this.fontWeight = .w400,
     this.width,
     this.height = 56,
+    this.fillColor,
+    this.borderColor = MyColors.line,
+    this.hintColor = MyColors.white2,
+    this.padding = const .all(16),
   });
 
+  final Color? fillColor;
+  final Color borderColor, hintColor;
+  final EdgeInsetsGeometry padding;
   final TextEditingController? controller;
   final int maxLines;
   final int? maxLength;
@@ -92,9 +99,12 @@ class MyTextFormField extends StatelessWidget {
             alignment: .center,
             // width: width,
             // height: height,
-            decoration: BoxDecoration(border: .all(color: MyColors.line)),
+            decoration: BoxDecoration(
+              color: fillColor,
+              border: .all(color: borderColor),
+            ),
             child: Padding(
-              padding: .all(16),
+              padding: padding,
               child: TextFormField(
                 maxLines: maxLines,
                 autofocus: autofocus,
@@ -117,7 +127,7 @@ class MyTextFormField extends StatelessWidget {
                   hintStyle: TextStyle(
                     fontSize: fontSize,
                     fontFamily: MyFonts.archivo,
-                    color: MyColors.white2,
+                    color: hintColor,
                     fontWeight: fontWeight,
                   ),
                   isDense: true,

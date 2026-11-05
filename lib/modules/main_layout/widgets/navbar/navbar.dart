@@ -71,8 +71,8 @@ class Navbar extends StatelessWidget {
                 GestureDetector(
                   onTap: () => Get.offNamed(MyRoutes.home),
                   child: SizedBox(
-                    width: 130,
-                    height: 44,
+                    width: 120,
+                    height: 41,
                     child: MyImageAssets(MyImages.imgNocvla, fit: .contain),
                   ),
                 ),

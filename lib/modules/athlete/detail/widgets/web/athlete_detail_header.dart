@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nocvla_web/shared/utils/my_fonts.dart';
-import 'package:nocvla_web/shared/widgets/my_image.dart';
-import 'package:nocvla_web/shared/widgets/my_text.dart';
 
 import '../../../../../shared/utils/my_colors.dart';
-import '../../../../../shared/widgets/my_loading.dart';
+import '../../../../../shared/utils/my_fonts.dart';
+import '../../../../../shared/widgets/my_button.dart';
+import '../../../../../shared/widgets/my_image.dart';
+import '../../../../../shared/widgets/my_max_width.dart';
+import '../../../../../shared/widgets/my_skeleton.dart';
+import '../../../../../shared/widgets/my_text.dart';
 import '../../athlete_detail_controller.dart';
 
 class AthleteDetailHeader extends StatelessWidget {
@@ -15,56 +17,72 @@ class AthleteDetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<AthleteDetailController>();
 
-    return Padding(
-      padding: .fromLTRB(40, 80, 40, 0),
-      child: Obx(() {
-        if (controller.isLoadingAthlete.value) return MyLoading();
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: MyColors.line2)),
+      ),
+      child: MyMaxWidth(
+        child: Padding(
+          padding: .only(top: 48, bottom: 48),
+          child: Obx(() {
+            if (controller.isLoadingAthlete.value) {
+              return MySkeleton(height: 400);
+            }
 
-        final items = controller.resAthlete.value;
-        if (items == null) return SizedBox();
+            final items = controller.resAthlete.value;
+            if (items == null) return SizedBox();
 
-        return Row(
-          crossAxisAlignment: .center,
-          spacing: 24,
-          children: [
-            SizedBox(
-              width: 160,
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  color: MyColors.black2,
-                  child: MyImage(items.picture, fit: .cover),
-                ),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: .start,
+            return Row(
+              spacing: 48,
               children: [
-                MyText(
-                  text: items.name,
-                  fontSize: 42,
-                  letterSpacing: 2,
-                  fontFamily: MyFonts.grenzeGotisch,
+                SizedBox(
+                  width: 466,
+                  child: AspectRatio(
+                    aspectRatio: 4 / 5,
+                    child: MyImage(items.picture, alignment: .topCenter),
+                  ),
                 ),
-                Row(
-                  spacing: 8,
-                  children: [
-                    MyText(
-                      text: "CODE: ${items.code}",
-                      fontSize: 16,
-                      color: MyColors.white2,
-                    ),
-                    GestureDetector(
-                      onTap: controller.copyCode,
-                      child: Icon(Icons.copy, size: 16, color: MyColors.white2),
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    children: [
+                      MyText(
+                        text: "NOCVLA ATHLETE",
+                        fontFamily: MyFonts.archivoNarrow,
+                        fontSize: 12,
+                        fontWeight: .w600,
+                        letterSpacing: 12 * 0.3,
+                        color: MyColors.white2,
+                      ),
+                      SizedBox(height: 12),
+                      MyText(
+                        text: "${items.name}".capitalize!,
+                        fontFamily: MyFonts.grenzeGotisch,
+                        fontSize: 86,
+                        fontWeight: .w700,
+                        height: 1.05,
+                      ),
+                      SizedBox(height: 12),
+                      MyText(
+                        text: "Kode atlet: ${items.code}",
+                        fontSize: 15.5,
+                        color: MyColors.white2,
+                      ),
+                      SizedBox(height: 24),
+                      MyButtonBorder(
+                        "SALIN KODE",
+                        borderColor: MyColors.line2,
+                        width: 200,
+                        onTap: controller.copyCode,
+                      ),
+                    ],
+                  ),
                 ),
               ],
-            ),
-          ],
-        );
-      }),
+            );
+          }),
+        ),
+      ),
     );
   }
 }

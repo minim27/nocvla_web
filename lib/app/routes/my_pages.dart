@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:nocvla_web/modules/about/about_binding.dart';
 import 'package:nocvla_web/modules/about/about_page.dart';
-import 'package:nocvla_web/modules/athlete/application/athlete_application_binding.dart';
-import 'package:nocvla_web/modules/athlete/application/athlete_application_page.dart';
 import 'package:nocvla_web/modules/athlete/detail/athlete_detail_binding.dart';
 import 'package:nocvla_web/modules/athlete/detail/athlete_detail_page.dart';
 import 'package:nocvla_web/modules/athlete/list/athlete_binding.dart';
@@ -58,12 +56,6 @@ class MyPages {
       name: MyRoutes.athleteDetail,
       page: () => AthleteDetailPage(),
       binding: AthleteDetailBinding(),
-      middlewares: [EarlyAccessMiddleware()],
-    ),
-    GetPage(
-      name: MyRoutes.athleteApplication,
-      page: () => AthleteApplicationPage(),
-      binding: AthleteApplicationBinding(),
       middlewares: [EarlyAccessMiddleware()],
     ),
     GetPage(

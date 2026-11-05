@@ -263,7 +263,8 @@ class HomeController extends BaseController {
 
   void openAthlete() => Get.toNamed(MyRoutes.athlete);
 
-  void openApplication() => Get.toNamed(MyRoutes.athleteApplication);
+  void openApplication() =>
+      Get.toNamed(MyRoutes.athlete, parameters: {"join": "1"});
 
   void openCategory(String? type) {
     if (type == null) return;
