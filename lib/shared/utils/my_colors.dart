@@ -37,7 +37,4 @@ class MyColors {
 
     return parsed == null ? swatchBorder : Color(0xFF000000 | parsed);
   }
-
-  static const Color whatsApp = Color(0xFF1fbd6a);
-  static const Color instagram = Color(0xFFfd2d4e);
 }

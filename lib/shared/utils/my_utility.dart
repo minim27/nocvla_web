@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../app/routes/my_routes.dart';
 import '../../app/services/my_config.dart';
 import '../../data/models/cart/cart_item_model.dart';
-import '../widgets/my_image.dart';
 import '../widgets/my_text.dart';
 import 'my_colors.dart';
 import 'my_parsing_currency.dart';
@@ -101,78 +98,6 @@ int getCartCount() {
 
 void execUri(String uri) {
   launchUrl(.parse(uri));
-}
-
-void showAddedToCartSnackbar({
-  required String name,
-  required String color,
-  required String size,
-  String? imageUrl,
-}) {
-  Get.snackbar(
-    "",
-    "",
-    titleText: SizedBox.shrink(),
-    messageText: Container(
-      padding: .symmetric(horizontal: 24, vertical: 16),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: MyColors.white.withValues(alpha: 0.1)),
-        ),
-      ),
-      child: Row(
-        children: [
-          GestureDetector(
-            behavior: .opaque,
-            onTap: () => Get.closeAllSnackbars(),
-            child: Icon(Icons.close, color: MyColors.white2, size: 20),
-          ),
-          Expanded(
-            child: Column(
-              spacing: 12,
-              children: [
-                MyText(
-                  text: "$name [$color]",
-                  textAlign: .center,
-                  fontWeight: .w600,
-                  color: MyColors.white,
-                ),
-                MyText(
-                  text: "$size / $color   •   DITAMBAHKAN KE KERANJANG",
-                  textAlign: .center,
-                  fontSize: 12,
-                  color: MyColors.white2,
-                ),
-                SizedBox(
-                  width: 64,
-                  height: 64,
-                  child: MyImage(imageUrl, fit: .cover),
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            behavior: .opaque,
-            onTap: () {
-              Get.closeAllSnackbars();
-              Get.toNamed(MyRoutes.cart);
-            },
-            child: MyText(
-              text: "LIHAT KERANJANG",
-              fontWeight: .w600,
-              color: MyColors.white2,
-            ),
-          ),
-        ],
-      ),
-    ),
-    backgroundColor: MyColors.black,
-    snackPosition: SnackPosition.TOP,
-    margin: EdgeInsets.zero,
-    borderRadius: 0,
-    padding: EdgeInsets.zero,
-    duration: const Duration(seconds: 4),
-  );
 }
 
 void showMySnackbar(String title, String message) => Get.snackbar(
