@@ -16,6 +16,7 @@ class EarlyAccessController extends BaseController {
   final isSubmitting = false.obs;
   final images = <EarlyAccessImageModel>[].obs;
   final remaining = Duration.zero.obs;
+  final resContent = <String, String>{}.obs;
 
   final passwordController = TextEditingController();
   final box = GetStorage();
@@ -57,6 +58,7 @@ class EarlyAccessController extends BaseController {
         if (isActive) {
           isGated.value = !unlocked;
           _fetchImages();
+          fetchApiContent();
           _startTicker();
         }
       },
@@ -89,6 +91,25 @@ class EarlyAccessController extends BaseController {
           .map((e) => EarlyAccessImageModel.fromJson(e))
           .toList(),
       err: (err) => showMyErrAPISnackbar(err),
+    );
+  }
+
+  void fetchApiContent() async {
+    final req = await configRepo.listConfigs([
+      "EARLY_ACCESS_EYEBROW",
+      "EARLY_ACCESS_TITLE",
+      "EARLY_ACCESS_DESCRIPTION",
+      "EARLY_ACCESS_IMAGE",
+    ]);
+    await req.responseHandler(
+      res: (res) {
+        resContent.value = {
+          for (final e in (res as List))
+            if ("${e["value"] ?? ""}".trim().isNotEmpty)
+              "${e["name"]}": "${e["value"]}".trim(),
+        };
+      },
+      err: (err) {},
     );
   }
 

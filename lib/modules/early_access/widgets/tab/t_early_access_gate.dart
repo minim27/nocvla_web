@@ -21,91 +21,209 @@ class TEarlyAccessGate extends GetView<EarlyAccessController> {
   Widget build(BuildContext context) {
     final layout = Get.find<MainLayoutController>();
 
-    return ListView(
-      padding: .symmetric(horizontal: 40, vertical: 40),
-      children: [
-        Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 640),
-            child: Column(
-              spacing: 24,
-              children: [
-                SizedBox(
-                  width: 200,
-                  height: 68,
-                  child: MyImageAssets(MyImages.imgNocvla, fit: .contain),
-                ),
-                Obx(() => countdown(controller.remaining.value)),
-                MyTextFormField(
-                  controller: controller.passwordController,
-                  hintText: "Password",
-                  isPassword: true,
-                  textInputAction: .done,
-                  onFieldSubmitted: (_) => controller.submitPassword(),
-                ),
-                Obx(
-                  () => MyButton(
-                    "MASUK",
-                    width: .infinity,
-                    enable: !controller.isSubmitting.value,
-                    onTap: controller.submitPassword,
+    return Obx(() {
+      final content = controller.resContent;
+
+      return Stack(
+        fit: .expand,
+        children: [
+          if (content["EARLY_ACCESS_IMAGE"] != null) ...[
+            MyImage(content["EARLY_ACCESS_IMAGE"], fit: .cover),
+            Container(color: MyColors.black3.withValues(alpha: 0.8)),
+          ],
+          ListView(
+            padding: .symmetric(horizontal: 40, vertical: 64),
+            children: [
+              Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 820),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 160,
+                        height: 54,
+                        child: MyImageAssets(MyImages.imgNocvla, fit: .contain),
+                      ),
+                      SizedBox(height: 36),
+                      if (content["EARLY_ACCESS_EYEBROW"] != null) ...[
+                        MyText(
+                          text: content["EARLY_ACCESS_EYEBROW"]!.toUpperCase(),
+                          fontFamily: MyFonts.archivoNarrow,
+                          fontSize: 12,
+                          fontWeight: .w700,
+                          letterSpacing: 12 * 0.3,
+                          color: MyColors.redText,
+                          textAlign: .center,
+                        ),
+                        SizedBox(height: 14),
+                      ],
+                      if (content["EARLY_ACCESS_TITLE"] != null) ...[
+                        MyText(
+                          text: content["EARLY_ACCESS_TITLE"]!,
+                          fontFamily: MyFonts.grenzeGotisch,
+                          fontSize: 64,
+                          fontWeight: .w700,
+                          height: 1.05,
+                          textAlign: .center,
+                        ),
+                        SizedBox(height: 12),
+                      ],
+                      if (content["EARLY_ACCESS_DESCRIPTION"] != null)
+                        ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: 460),
+                          child: MyText(
+                            text: content["EARLY_ACCESS_DESCRIPTION"]!,
+                            fontSize: 15.5,
+                            height: 1.7,
+                            color: MyColors.white3,
+                            textAlign: .center,
+                          ),
+                        ),
+                      SizedBox(height: 32),
+                      countdown(controller.remaining.value),
+                      SizedBox(height: 38),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 460),
+                        child: Column(
+                          crossAxisAlignment: .start,
+                          children: [
+                            MyText(
+                              text: "KATA SANDI EARLY ACCESS",
+                              fontFamily: MyFonts.archivoNarrow,
+                              fontSize: 12,
+                              fontWeight: .w700,
+                              letterSpacing: 12 * 0.18,
+                            ),
+                            SizedBox(height: 11),
+                            Row(
+                              spacing: 8,
+                              children: [
+                                Expanded(
+                                  child: MyTextFormField(
+                                    controller: controller.passwordController,
+                                    hintText: "Masukkan kata sandi",
+                                    isPassword: true,
+                                    textInputAction: .done,
+                                    fontSize: 14,
+                                    fillColor: MyColors.black3,
+                                    borderColor: MyColors.swatchBorder,
+                                    hintColor: MyColors.placeholder,
+                                    padding: .symmetric(
+                                      horizontal: 16,
+                                      vertical: 17,
+                                    ),
+                                    onFieldSubmitted: (_) =>
+                                        controller.submitPassword(),
+                                  ),
+                                ),
+                                MyButton(
+                                  "MASUK",
+                                  width: 96,
+                                  height: 52,
+                                  fontSize: 13,
+                                  fontWeight: .w700,
+                                  enable: !controller.isSubmitting.value,
+                                  onTap: controller.submitPassword,
+                                ),
+                              ],
+                            ),
+                            if (layout.linkDiscord.value.isNotEmpty) ...[
+                              SizedBox(height: 12),
+                              GestureDetector(
+                                behavior: .opaque,
+                                onTap: layout.openDiscordLink,
+                                child: MyText(
+                                  text:
+                                      "Belum punya kata sandi? Gabung Discord NOCVLA",
+                                  fontSize: 13,
+                                  color: MyColors.white2,
+                                  decoration: .underline,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      if (controller.images.isNotEmpty) ...[
+                        SizedBox(height: 40),
+                        MyGrid(
+                          crossAxisCount: 4,
+                          spacing: 14,
+                          children: [
+                            for (final image in controller.images)
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: .all(color: MyColors.line2),
+                                ),
+                                child: AspectRatio(
+                                  aspectRatio: 4 / 5,
+                                  child: ClipRect(
+                                    child: ImageFiltered(
+                                      imageFilter: ImageFilter.blur(
+                                        sigmaX: 12,
+                                        sigmaY: 12,
+                                      ),
+                                      child: MyImage(image.imageUrl),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ],
                   ),
                 ),
-                Obx(() {
-                  if (layout.linkDiscord.value.isEmpty) return SizedBox();
-
-                  return MyButtonBorder(
-                    "GABUNG DISCORD",
-                    width: .infinity,
-                    borderColor: MyColors.white,
-                    onTap: layout.openDiscordLink,
-                  );
-                }),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
-        SizedBox(height: 40),
-        Obx(
-          () => ImageFiltered(
-            imageFilter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-            child: MyGrid(
-              crossAxisCount: 3,
-              children: [
-                for (final image in controller.images)
-                  AspectRatio(aspectRatio: 1, child: MyImage(image.imageUrl)),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 
   Widget countdown(Duration remaining) {
     return Row(
       mainAxisAlignment: .center,
-      spacing: 16,
+      spacing: 12,
       children: [
-        unit(remaining.inDays, "Hari"),
-        unit(remaining.inHours % 24, "Jam"),
-        unit(remaining.inMinutes % 60, "Menit"),
-        unit(remaining.inSeconds % 60, "Detik"),
+        unit(remaining.inDays, "HARI"),
+        unit(remaining.inHours % 24, "JAM"),
+        unit(remaining.inMinutes % 60, "MENIT"),
+        unit(remaining.inSeconds % 60, "DETIK"),
       ],
     );
   }
 
   Widget unit(int value, String label) {
-    return Column(
-      children: [
-        MyText(
-          text: value.toString().padLeft(2, "0"),
-          fontFamily: MyFonts.grenzeGotisch,
-          fontSize: 40,
-          fontWeight: .w600,
-        ),
-        MyText(text: label, fontSize: 12, color: MyColors.white2),
-      ],
+    return Container(
+      width: 120,
+      height: 104,
+      decoration: BoxDecoration(
+        color: MyColors.black3.withValues(alpha: 0.6),
+        border: .all(color: MyColors.line2),
+      ),
+      child: Column(
+        mainAxisAlignment: .center,
+        children: [
+          MyText(
+            text: value.toString().padLeft(2, "0"),
+            fontFamily: MyFonts.grenzeGotisch,
+            fontSize: 40,
+            fontWeight: .w700,
+            height: 1.1,
+          ),
+          SizedBox(height: 4),
+          MyText(
+            text: label,
+            fontFamily: MyFonts.archivoNarrow,
+            fontSize: 11,
+            fontWeight: .w600,
+            letterSpacing: 11 * 0.2,
+            color: MyColors.white2,
+          ),
+        ],
+      ),
     );
   }
 }
