@@ -73,4 +73,14 @@ class CollectionsRepo extends BaseRepository {
         )
         .single(),
   );
+
+  Future<ResponseHandler<dynamic>> listProductFeatures(
+    String productId,
+  ) async => ResponseHandler(
+    supabase
+        .from("m_product_features")
+        .select("icon, title, description")
+        .eq("product_id", productId)
+        .order("sort_order", ascending: true),
+  );
 }

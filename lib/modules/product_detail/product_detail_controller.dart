@@ -6,6 +6,7 @@ import 'package:nocvla_web/data/models/cart/cart_item_model.dart';
 import 'package:flutter/services.dart';
 import 'package:nocvla_web/data/models/collections/list_products_model.dart';
 import 'package:nocvla_web/modules/product_detail/widgets/product_detail_image_viewer_dialog.dart';
+import 'package:nocvla_web/modules/product_detail/widgets/product_detail_size_chart_dialog.dart';
 import 'package:nocvla_web/shared/utils/my_colors.dart';
 
 import '../../app/core/base_controller.dart';
@@ -16,12 +17,16 @@ class ProductDetailController extends BaseController {
   final res = <String, dynamic>{}.obs;
 
   final resRelated = <ListProductsModel>[].obs;
+  final resFeatures = <Map<String, dynamic>>[].obs;
+  final openSection = 0.obs;
+  final addedMessage = RxnString();
+  final orderGuide = RxnString();
 
   final id = RxnString();
   final selectedImage = 0.obs;
   final selectedStock = Rxn<Map<String, dynamic>>();
 
-  final qty = 0.obs;
+  final qty = 1.obs;
   final isLoading = false.obs;
 
   Map<String, dynamic>? athleteLinks;
@@ -38,6 +43,7 @@ class ProductDetailController extends BaseController {
     athleteLinks = Get.arguments as Map<String, dynamic>?;
     if (athleteLinks != null) txtCode.text = athleteLinks?["code"] ?? "";
     fetchApiProduct();
+    fetchApiOrderGuide();
 
     final cart = GetStorage().read(MyConfig.keyCart) as Map<String, dynamic>?;
     appliedCode.value = cart?["appliedCode"];
@@ -82,6 +88,19 @@ class ProductDetailController extends BaseController {
           "name": product["name"],
           "description": product["description"],
           "color": data["name"],
+          "colorDescription": data["description"],
+          "badge": product["badge"],
+          "type": product["product_type"]?["name"],
+          "series": "${product["name"]}"
+              .replaceAll("VENOM TECH™ ", "")
+              .replaceAll(
+                RegExp(r" (Long Sleeve|Short Sleeve|Oversized T Shirt)$"),
+                "",
+              )
+              .toUpperCase(),
+          "material": product["material"],
+          "care": product["care_text"],
+          "sizeChart": product["size_chart_url"],
           "colors": (product["colors"] as List).map((c) {
             final images = c["images"] as List;
 
@@ -107,6 +126,7 @@ class ProductDetailController extends BaseController {
 
         if (athleteLinks?["code"] != null) applyCode();
         if (resRelated.isEmpty) fetchApiRelated(product);
+        if (resFeatures.isEmpty) fetchApiFeatures(product["id"]);
       },
       err: (err) => showMyErrAPISnackbar(err),
     );
@@ -115,42 +135,114 @@ class ProductDetailController extends BaseController {
   }
 
   void fetchApiRelated(Map<String, dynamic> product) async {
-    final type = product["product_type"]?["name"] ?? "";
-
-    final req = await collectionsRepo.listProducts(type);
+    final req = await collectionsRepo.listProducts("");
     await req.responseHandler(
       res: (data) {
-        resRelated.value = (data as List)
-            .where(
-              (e) =>
-                  e["id"] != product["id"] &&
-                  ((e["colors"] as List?) ?? []).isNotEmpty,
-            )
-            .take(4)
-            .map((e) {
-              final color = (e["colors"] as List).first;
-              final images = color["images"] as List;
-              final prices = (color["stock"] as List)
-                  .map((s) => s["price"] as int)
-                  .toList();
+        resRelated.value =
+            ((data as List)
+                    .where(
+                      (e) =>
+                          e["id"] != product["id"] &&
+                          ((e["colors"] as List?) ?? []).isNotEmpty,
+                    )
+                    .toList()
+                  ..sort(
+                    (a, b) => (b["is_featured"] == true ? 1 : 0).compareTo(
+                      a["is_featured"] == true ? 1 : 0,
+                    ),
+                  ))
+                .take(3)
+                .map((e) {
+                  final color = (e["colors"] as List).first;
+                  final images = color["images"] as List;
+                  final prices = (color["stock"] as List)
+                      .map((s) => s["price"] as int)
+                      .toList();
 
-              return ListProductsModel.fromJson({
-                "id": color["id"],
-                "product_id": e["id"],
-                "name": e["name"],
-                "image_url": images.isEmpty ? null : images.first["image_url"],
-                "color": color["name"],
-                "price": prices.isEmpty
-                    ? 0
-                    : prices.reduce((a, b) => a < b ? a : b),
-                "stock": color["stock"],
-              });
-            })
-            .toList();
+                  return ListProductsModel.fromJson({
+                    "id": color["id"],
+                    "product_id": e["id"],
+                    "name": e["name"],
+                    "image_url": images.isEmpty
+                        ? null
+                        : images.first["image_url"],
+                    "color": color["name"],
+                    "price": prices.isEmpty
+                        ? 0
+                        : prices.reduce((a, b) => a < b ? a : b),
+                    "stock": color["stock"],
+                  });
+                })
+                .toList();
       },
       err: (err) {},
     );
   }
+
+  void fetchApiOrderGuide() async {
+    final req = await configRepo.listConfigs(["ORDER_GUIDE"]);
+    await req.responseHandler(
+      res: (data) {
+        final value = "${(data as List).firstOrNull?["value"] ?? ""}".trim();
+        orderGuide.value = value.isEmpty ? null : value;
+      },
+      err: (err) {},
+    );
+  }
+
+  List<String> points(String value) => value
+      .split("\n")
+      .map((e) => e.trim().replaceFirst(RegExp(r"^[-•*]\s*"), ""))
+      .where((e) => e.isNotEmpty)
+      .toList();
+
+  void fetchApiFeatures(String productId) async {
+    final req = await collectionsRepo.listProductFeatures(productId);
+    await req.responseHandler(
+      res: (data) => resFeatures.value = List<Map<String, dynamic>>.from(data),
+      err: (err) {},
+    );
+  }
+
+  IconData featureIcon(String? icon) => switch (icon) {
+    "shirt" => Icons.checkroom_outlined,
+    "drop" => Icons.water_drop_outlined,
+    "collar" => Icons.waves,
+    "bolt" => Icons.bolt,
+    "shield" => Icons.shield_outlined,
+    "stitch" => Icons.content_cut,
+    "feather" => Icons.air,
+    _ => Icons.layers_outlined,
+  };
+
+  int get colorStock => ((res["stock"] ?? []) as List).fold(
+    0,
+    (total, e) => total + (e["qty"] as int),
+  );
+
+  List<(String, String)> get sections => [
+    if ("${res["description"] ?? ""}".isNotEmpty)
+      ("MATERIAL & FITUR LENGKAP", "description"),
+    if ("${res["colorDescription"] ?? ""}".trim().isNotEmpty)
+      ("DETAIL WARNA", "${res["colorDescription"]}".trim()),
+    if ("${res["care"] ?? ""}".trim().isNotEmpty)
+      ("PERAWATAN", "${res["care"]}".trim()),
+    if (orderGuide.value != null) ("CARA ORDER", orderGuide.value!),
+  ];
+
+  void toggleSection(int index) =>
+      openSection.value = openSection.value == index ? -1 : index;
+
+  void openSizeChart() {
+    if (res["sizeChart"] == null) return;
+
+    Get.dialog(
+      const ProductDetailSizeChartDialog(),
+      barrierColor: MyColors.black.withValues(alpha: 0.9),
+    );
+  }
+
+  void openCart() => Get.toNamed(MyRoutes.cart);
 
   void selectColor(String colorId) {
     if (colorId == id.value) return;
@@ -158,7 +250,8 @@ class ProductDetailController extends BaseController {
     id.value = colorId;
     selectedImage.value = 0;
     selectedStock.value = null;
-    qty.value = 0;
+    qty.value = 1;
+    addedMessage.value = null;
     fetchApiProduct();
 
     SystemNavigator.routeInformationUpdated(
@@ -288,14 +381,8 @@ class ProductDetailController extends BaseController {
   void addToCart() {
     if (!saveToCart()) return;
 
-    final images = res["images"] as List;
-
-    showAddedToCartSnackbar(
-      name: res["name"],
-      color: res["color"],
-      size: selectedStock.value!["size"],
-      imageUrl: images.isEmpty ? null : images.first,
-    );
+    addedMessage.value =
+        "Ditambahkan ke keranjang · ${"${res["color"]}".capitalize} / ${selectedStock.value!["size"]}";
   }
 
   void applyCode() async {
