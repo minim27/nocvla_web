@@ -7,8 +7,6 @@ import 'package:nocvla_web/modules/athlete/list/athlete_binding.dart';
 import 'package:nocvla_web/modules/athlete/list/athlete_page.dart';
 import 'package:nocvla_web/modules/cart/cart_binding.dart';
 import 'package:nocvla_web/modules/cart/cart_page.dart';
-import 'package:nocvla_web/modules/checkout/checkout_binding.dart';
-import 'package:nocvla_web/modules/checkout/checkout_page.dart';
 import 'package:nocvla_web/modules/collection/collection_binding.dart';
 import 'package:nocvla_web/modules/collection/collection_page.dart';
 import 'package:nocvla_web/modules/contact/contact_binding.dart';
@@ -86,12 +84,6 @@ class MyPages {
       name: MyRoutes.search,
       page: () => SearchPage(),
       binding: SearchBinding(),
-      middlewares: [EarlyAccessMiddleware()],
-    ),
-    GetPage(
-      name: MyRoutes.checkout,
-      page: () => CheckoutPage(),
-      binding: CheckoutBinding(),
       middlewares: [EarlyAccessMiddleware()],
     ),
     GetPage(name: MyRoutes.earlyAccess, page: () => const EarlyAccessPage()),

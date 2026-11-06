@@ -6,8 +6,10 @@ import 'package:nocvla_web/data/models/cart/cart_item_model.dart';
 import 'package:flutter/services.dart';
 import 'package:nocvla_web/data/models/collections/list_products_model.dart';
 import 'package:nocvla_web/modules/product_detail/widgets/product_detail_image_viewer_dialog.dart';
+import 'package:nocvla_web/modules/product_detail/widgets/product_detail_order_dialog.dart';
 import 'package:nocvla_web/modules/product_detail/widgets/product_detail_size_chart_dialog.dart';
 import 'package:nocvla_web/shared/utils/my_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/core/base_controller.dart';
 import '../../app/routes/my_routes.dart';
@@ -36,6 +38,9 @@ class ProductDetailController extends BaseController {
   final appliedCode = RxnString();
   final discountProductIds = <String>[].obs;
 
+  final resWa = <String, String>{}.obs;
+  final isPlacingOrder = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
@@ -44,6 +49,7 @@ class ProductDetailController extends BaseController {
     if (athleteLinks != null) txtCode.text = athleteLinks?["code"] ?? "";
     fetchApiProduct();
     fetchApiOrderGuide();
+    fetchApiWa();
 
     final cart = GetStorage().read(MyConfig.keyCart) as Map<String, dynamic>?;
     appliedCode.value = cart?["appliedCode"];
@@ -196,6 +202,22 @@ class ProductDetailController extends BaseController {
       .where((e) => e.isNotEmpty)
       .toList();
 
+  void fetchApiWa() async {
+    final req = await configRepo.listConfigs(["WA_NUMBER", "WA_TEMPLATE"]);
+    await req.responseHandler(
+      res: (res) {
+        resWa.value = {
+          for (final e in (res as List))
+            if ("${e["value"] ?? ""}".trim().isNotEmpty)
+              "${e["name"]}": "${e["value"]}".trim(),
+        };
+      },
+      err: (err) {},
+    );
+  }
+
+  String get waNumber => resWa["WA_NUMBER"] ?? MyConfig.whatsappNumber;
+
   void fetchApiFeatures(String productId) async {
     final req = await collectionsRepo.listProductFeatures(productId);
     await req.responseHandler(
@@ -331,7 +353,70 @@ class ProductDetailController extends BaseController {
   }
 
   void orderNow() {
-    if (saveToCart()) Get.toNamed(MyRoutes.checkout);
+    if (!validSelection()) return;
+
+    Get.generalDialog(
+      barrierDismissible: true,
+      barrierLabel: "order",
+      barrierColor: MyColors.black.withValues(alpha: 0.7),
+      transitionDuration: const Duration(milliseconds: 250),
+      pageBuilder: (_, _, _) => const ProductDetailOrderDialog(),
+      transitionBuilder: (_, animation, _, child) => SlideTransition(
+        position: Tween(
+          begin: const Offset(1, 0),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+        child: child,
+      ),
+    );
+  }
+
+  String buildMessage() => buildOrderMessage(
+    template: resWa["WA_TEMPLATE"],
+    items: [selectedItem()],
+    code: appliedCode.value,
+    discount: discountAmount,
+  );
+
+  Future<void> placeOrder() async {
+    if (!validSelection() || isPlacingOrder.value) return;
+
+    isPlacingOrder.value = true;
+
+    final req = await orderRepo.createOrder(
+      items: [
+        {
+          "color_id": res["id"],
+          "size": selectedStock.value!["size"],
+          "qty": qty.value,
+        },
+      ],
+      athleteCode: appliedCode.value,
+    );
+    await req.responseHandler(
+      res: (data) {
+        final message = "Kode order: ${data["code"]}\n\n${buildMessage()}";
+
+        Get.back();
+        launchUrl(
+          .parse(
+            "https://wa.me/$waNumber?text=${Uri.encodeComponent(message)}",
+          ),
+          webOnlyWindowName: "_blank",
+        );
+      },
+      err: (err) {
+        final stock = RegExp(
+          r"Stok .+? tidak cukup",
+        ).stringMatch(err["message"]);
+
+        showMyErrAPISnackbar({
+          "message": stock ?? "Order gagal dikirim, silakan coba lagi",
+        });
+      },
+    );
+
+    isPlacingOrder.value = false;
   }
 
   bool saveToCart() {

@@ -9,6 +9,5 @@ class MyRoutes {
   static const productDetail = '/product/detail';
   static const cart = '/cart';
   static const search = '/search';
-  static const checkout = '/cart/checkout';
   static const earlyAccess = '/drop';
 }

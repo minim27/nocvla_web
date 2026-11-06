@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:nocvla_web/app/routes/my_routes.dart';
 import 'package:nocvla_web/app/services/my_config.dart';
 import 'package:nocvla_web/data/models/cart/cart_item_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/core/base_controller.dart';
 import '../../shared/utils/my_utility.dart';
@@ -20,11 +21,32 @@ class CartController extends BaseController {
   final isValidatingCode = false.obs;
   final refreshSubtotal = 0.obs;
 
+  final resWa = <String, String>{}.obs;
+  final isShowMessage = false.obs;
+  final isPlacingOrder = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     loadCart();
+    fetchApiWa();
   }
+
+  void fetchApiWa() async {
+    final req = await configRepo.listConfigs(["WA_NUMBER", "WA_TEMPLATE"]);
+    await req.responseHandler(
+      res: (res) {
+        resWa.value = {
+          for (final e in (res as List))
+            if ("${e["value"] ?? ""}".trim().isNotEmpty)
+              "${e["name"]}": "${e["value"]}".trim(),
+        };
+      },
+      err: (err) {},
+    );
+  }
+
+  String get waNumber => resWa["WA_NUMBER"] ?? MyConfig.whatsappNumber;
 
   void loadCart() {
     final data = box.read(MyConfig.keyCart) as Map<String, dynamic>?;
@@ -62,6 +84,8 @@ class CartController extends BaseController {
   }
 
   int get total => subTotal - discountAmount;
+
+  int get totalQty => resItems.fold(0, (total, item) => total + item.qty.value);
 
   void decrease(RxInt val) {
     if (val.value > 1) {
@@ -143,5 +167,58 @@ class CartController extends BaseController {
 
   void continueShopping() => Get.toNamed(MyRoutes.collection);
 
-  void checkout() => Get.toNamed(MyRoutes.checkout);
+  void toggleMessage() => isShowMessage.toggle();
+
+  String buildMessage() => buildOrderMessage(
+    template: resWa["WA_TEMPLATE"],
+    items: resItems,
+    code: appliedCode.value,
+    discount: discountAmount,
+  );
+
+  Future<void> placeOrder() async {
+    if (resItems.isEmpty || isPlacingOrder.value) return;
+
+    isPlacingOrder.value = true;
+
+    final req = await orderRepo.createOrder(
+      items: resItems
+          .map(
+            (item) => {
+              "color_id": item.productId,
+              "size": item.size,
+              "qty": item.qty.value,
+            },
+          )
+          .toList(),
+      athleteCode: appliedCode.value,
+    );
+    await req.responseHandler(
+      res: (res) {
+        final message = "Kode order: ${res["code"]}\n\n${buildMessage()}";
+
+        resItems.clear();
+        removeCode();
+        refreshCartBadge();
+
+        launchUrl(
+          .parse(
+            "https://wa.me/$waNumber?text=${Uri.encodeComponent(message)}",
+          ),
+          webOnlyWindowName: "_blank",
+        );
+      },
+      err: (err) {
+        final stock = RegExp(
+          r"Stok .+? tidak cukup",
+        ).stringMatch(err["message"]);
+
+        showMyErrAPISnackbar({
+          "message": stock ?? "Order gagal dikirim, silakan coba lagi",
+        });
+      },
+    );
+
+    isPlacingOrder.value = false;
+  }
 }

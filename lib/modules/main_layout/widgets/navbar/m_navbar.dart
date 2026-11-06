@@ -71,11 +71,11 @@ class MNavbar extends StatelessWidget {
                                 width: 18,
                                 height: 18,
                                 alignment: .center,
-                                color: MyColors.white,
+                                color: MyColors.red,
                                 child: MyText(
                                   text: "$cartCount",
                                   fontSize: 10,
-                                  color: MyColors.black,
+                                  color: MyColors.nativeWhite,
                                   fontWeight: .w600,
                                 ),
                               ),

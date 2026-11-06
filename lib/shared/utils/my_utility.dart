@@ -5,11 +5,85 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/routes/my_routes.dart';
 import '../../app/services/my_config.dart';
+import '../../data/models/cart/cart_item_model.dart';
 import '../widgets/my_image.dart';
 import '../widgets/my_text.dart';
 import 'my_colors.dart';
+import 'my_parsing_currency.dart';
 
 void changeStatusBool(RxBool val) => val.toggle();
+
+String buildOrderMessage({
+  String? template,
+  required List<CartItemModel> items,
+  String? code,
+  int discount = 0,
+}) {
+  final subTotal = items.fold(
+    0,
+    (total, item) => total + (item.price as int) * item.qty.value,
+  );
+  final values = {
+    "nama penerima": "",
+    "wa penerima": "",
+    "alamat penerima": "",
+    "notes": "",
+    "kode": code ?? "",
+    "subtotal": parsingCurrency(subTotal),
+    "diskon": discount > 0 ? parsingCurrency(discount) : "",
+    "total": parsingCurrency(subTotal - discount),
+  };
+
+  if (template == null) {
+    return [
+      "Halo NOCVLA, saya mau order:",
+      for (final item in items)
+        "• ${item.name} — ${"${item.color}".capitalize} / ${item.size} × ${item.qty.value}",
+      "Subtotal: ${values["subtotal"]}",
+      if (discount > 0) "Diskon ($code): - ${values["diskon"]}",
+      if (discount > 0) "Total: ${values["total"]}",
+      if (code != null) "Kode atlet: $code",
+    ].join("\n");
+  }
+
+  const itemKeys = {"item", "warna", "ukuran", "qty", "harga"};
+  final placeholder = RegExp(r"\{([^}]+)\}");
+
+  String fill(String line, Map<String, String> data) => line.replaceAllMapped(
+    placeholder,
+    (m) => data[m.group(1)!.trim().toLowerCase()] ?? m.group(0)!,
+  );
+
+  final lines = <String>[];
+  for (final line in template.split("\n")) {
+    final keys = placeholder
+        .allMatches(line)
+        .map((m) => m.group(1)!.trim().toLowerCase())
+        .toList();
+
+    if (keys.any(itemKeys.contains)) {
+      for (final item in items) {
+        lines.add(
+          fill(line, {
+            ...values,
+            "item": "${item.name}",
+            "warna": "${item.color}".capitalize ?? "",
+            "ukuran": "${item.size}",
+            "qty": "${item.qty.value}",
+            "harga": parsingCurrency((item.price as int) * item.qty.value),
+          }),
+        );
+      }
+      continue;
+    }
+
+    if (keys.any((key) => values[key]?.isEmpty ?? false)) continue;
+
+    lines.add(fill(line, values));
+  }
+
+  return lines.join("\n").trim();
+}
 
 int sizeRank(String size) {
   const sizes = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"];

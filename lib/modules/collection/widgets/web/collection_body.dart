@@ -92,32 +92,44 @@ class CollectionBody extends StatelessWidget {
             color: MyColors.redText,
           ),
           SizedBox(height: 9),
-          MyText(
-            text: items.first.name,
-            fontFamily: MyFonts.grenzeGotisch,
-            fontSize: 47.5,
-            fontWeight: .w600,
-            height: 1.0,
-          ),
-          SizedBox(height: 15),
           Row(
-            crossAxisAlignment: .baseline,
-            textBaseline: .alphabetic,
+            crossAxisAlignment: .end,
             spacing: 20,
             children: [
               Expanded(
-                child: desc == null
-                    ? SizedBox()
-                    : MyText(
-                        text: desc,
-                        fontSize: 14.4,
-                        color: MyColors.white2,
-                      ),
+                child: MyText(
+                  text: items.first.name,
+                  fontFamily: MyFonts.grenzeGotisch,
+                  fontSize: 47.5,
+                  fontWeight: .w600,
+                  height: 1.0,
+                ),
               ),
-              info(items.length, minPrice),
-              detail(controller, items),
+              if (desc == null) ...[
+                info(items.length, minPrice),
+                detail(controller, items),
+              ],
             ],
           ),
+          if (desc != null) ...[
+            SizedBox(height: 15),
+            Row(
+              crossAxisAlignment: .baseline,
+              textBaseline: .alphabetic,
+              spacing: 20,
+              children: [
+                Expanded(
+                  child: MyText(
+                    text: desc,
+                    fontSize: 14.4,
+                    color: MyColors.white2,
+                  ),
+                ),
+                info(items.length, minPrice),
+                detail(controller, items),
+              ],
+            ),
+          ],
         ],
       ),
     );

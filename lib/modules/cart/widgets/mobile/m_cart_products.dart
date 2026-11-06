@@ -19,21 +19,32 @@ class MCartProducts extends StatelessWidget {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        for (final items in controller.resItems) item(controller, items),
-        SizedBox(height: 16),
+        Container(
+          decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: MyColors.line2)),
+          ),
+          child: Column(
+            crossAxisAlignment: .stretch,
+            children: [
+              for (final items in controller.resItems) item(controller, items),
+            ],
+          ),
+        ),
+        SizedBox(height: 28),
         GestureDetector(
           behavior: .opaque,
           onTap: controller.continueShopping,
-          child: SizedBox(
-            height: 44,
-            child: Center(
-              widthFactor: 1,
-              child: MyText(
-                text: "← LANJUT BELANJA",
-                fontFamily: MyFonts.archivoNarrow,
-                fontWeight: .w600,
-                letterSpacing: 14 * 0.12,
-              ),
+          child: Container(
+            padding: .only(bottom: 5),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: MyColors.swatchBorder)),
+            ),
+            child: MyText(
+              text: "LANJUT BELANJA",
+              fontFamily: MyFonts.archivoNarrow,
+              fontSize: 13,
+              fontWeight: .w700,
+              letterSpacing: 13 * 0.15,
             ),
           ),
         ),
@@ -43,57 +54,76 @@ class MCartProducts extends StatelessWidget {
 
   Widget item(CartController controller, CartItemModel items) {
     return Container(
-      padding: .symmetric(vertical: 16),
+      padding: .symmetric(vertical: 20),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: MyColors.line)),
+        border: Border(bottom: BorderSide(color: MyColors.line2)),
       ),
       child: Row(
         crossAxisAlignment: .start,
-        spacing: 12,
+        spacing: 14,
         children: [
-          SizedBox(width: 72, height: 72, child: MyImage(items.imageUrl)),
+          SizedBox(width: 88, height: 110, child: MyImage(items.imageUrl)),
           Expanded(
             child: Column(
               crossAxisAlignment: .start,
-              spacing: 8,
               children: [
-                MyText(text: "${items.name}", fontWeight: .w600),
                 MyText(
-                  text: "${items.color} / ${items.size}",
-                  fontSize: 13,
+                  text: "${items.name}",
+                  fontSize: 14.5,
+                  fontWeight: .w600,
+                ),
+                SizedBox(height: 7),
+                MyText(
+                  text: "${"${items.color}".capitalize} · Ukuran ${items.size}",
+                  fontSize: 13.5,
                   color: MyColors.white2,
                 ),
-                MyText(text: parsingCurrency(items.price)),
-                Row(
-                  children: [
-                    qtyButton(
-                      Icons.remove,
-                      () => controller.decrease(items.qty),
-                    ),
-                    Container(
-                      alignment: .center,
-                      width: 48,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        border: .all(color: MyColors.line),
-                      ),
-                      child: Obx(() => MyText(text: "${items.qty.value}")),
-                    ),
-                    qtyButton(Icons.add, () => controller.increase(items)),
-                  ],
+                SizedBox(height: 4),
+                MyText(
+                  text: "${parsingCurrency(items.price)} / pcs",
+                  fontSize: 13.5,
+                  color: MyColors.white2,
                 ),
+                SizedBox(height: 8),
+                GestureDetector(
+                  behavior: .opaque,
+                  onTap: () =>
+                      controller.removeItem(items.productId, items.size),
+                  child: MyText(
+                    text: "Hapus",
+                    fontSize: 12.5,
+                    color: MyColors.white2,
+                    decoration: .underline,
+                  ),
+                ),
+                SizedBox(height: 14),
+                Row(children: [qty(controller, items), Spacer(), total(items)]),
               ],
             ),
           ),
-          GestureDetector(
-            behavior: .opaque,
-            onTap: () => controller.removeItem(items.productId, items.size),
-            child: SizedBox(
-              width: 44,
-              height: 44,
-              child: Icon(Icons.close, color: MyColors.white2, size: 20),
+        ],
+      ),
+    );
+  }
+
+  Widget qty(CartController controller, CartItemModel items) {
+    return Container(
+      width: 126,
+      height: 46,
+      decoration: BoxDecoration(border: .all(color: MyColors.line2)),
+      child: Row(
+        children: [
+          qtyButton(Icons.remove, () => controller.decrease(items.qty)),
+          Expanded(
+            child: Obx(
+              () => MyText(
+                text: "${items.qty.value}",
+                fontSize: 14,
+                textAlign: .center,
+              ),
             ),
           ),
+          qtyButton(Icons.add, () => controller.increase(items)),
         ],
       ),
     );
@@ -103,12 +133,20 @@ class MCartProducts extends StatelessWidget {
     return GestureDetector(
       behavior: .opaque,
       onTap: onTap,
-      child: Container(
-        alignment: .center,
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(border: .all(color: MyColors.line)),
-        child: Icon(icon, color: MyColors.white2, size: 18),
+      child: SizedBox(
+        width: 42,
+        height: 46,
+        child: Icon(icon, color: MyColors.white, size: 14),
+      ),
+    );
+  }
+
+  Widget total(CartItemModel items) {
+    return Obx(
+      () => MyText(
+        text: parsingCurrency((items.price as int) * items.qty.value),
+        fontSize: 15,
+        fontWeight: .w700,
       ),
     );
   }
