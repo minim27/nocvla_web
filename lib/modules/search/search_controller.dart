@@ -80,6 +80,16 @@ class SearchPageController extends BaseController {
     query.value = value;
   }
 
+  void clearQuery() {
+    txtQuery.clear();
+    query.value = "";
+  }
+
+  void close() =>
+      Get.previousRoute.isEmpty ? Get.offAllNamed(MyRoutes.home) : Get.back();
+
+  void openCollection() => Get.toNamed(MyRoutes.collection);
+
   void openDetail(String id) =>
       Get.toNamed(MyRoutes.productDetail, parameters: {"id": id});
 }

@@ -14,16 +14,18 @@ class MyProductCard extends StatelessWidget {
     required this.item,
     required this.onTap,
     this.colorFontSize = 28,
+    this.showStatus = true,
   });
 
   final ListProductsModel item;
   final VoidCallback onTap;
   final double colorFontSize;
+  final bool showStatus;
 
   @override
   Widget build(BuildContext context) {
     final totalQty = item.totalQty;
-    final isSoldOut = totalQty <= 0;
+    final isSoldOut = showStatus && totalQty <= 0;
     final isLimited = !isSoldOut && totalQty <= 3;
     final statusColor = isSoldOut
         ? MyColors.white2
@@ -55,43 +57,44 @@ class MyProductCard extends StatelessWidget {
                           child: MyImage(item.imageUrl),
                         )
                       : MyImage(item.imageUrl),
-                  Positioned(
-                    top: 10,
-                    left: 10,
-                    child: Container(
-                      padding: .symmetric(horizontal: 9, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: MyColors.black3,
-                        border: .all(color: MyColors.line2),
-                      ),
-                      child: Row(
-                        mainAxisSize: .min,
-                        spacing: 6,
-                        children: [
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: statusColor,
-                              shape: BoxShape.circle,
+                  if (showStatus)
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: Container(
+                        padding: .symmetric(horizontal: 9, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: MyColors.black3,
+                          border: .all(color: MyColors.line2),
+                        ),
+                        child: Row(
+                          mainAxisSize: .min,
+                          spacing: 6,
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: statusColor,
+                                shape: BoxShape.circle,
+                              ),
                             ),
-                          ),
-                          MyText(
-                            text: isSoldOut
-                                ? "HABIS"
-                                : isLimited
-                                ? "STOK TERBATAS"
-                                : "READY",
-                            fontFamily: MyFonts.archivoNarrow,
-                            fontSize: 11,
-                            fontWeight: .w600,
-                            letterSpacing: 11 * 0.14,
-                            color: statusColor,
-                          ),
-                        ],
+                            MyText(
+                              text: isSoldOut
+                                  ? "HABIS"
+                                  : isLimited
+                                  ? "STOK TERBATAS"
+                                  : "READY",
+                              fontFamily: MyFonts.archivoNarrow,
+                              fontSize: 11,
+                              fontWeight: .w600,
+                              letterSpacing: 11 * 0.14,
+                              color: statusColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
