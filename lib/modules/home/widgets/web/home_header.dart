@@ -90,6 +90,21 @@ class HomeHeader extends StatelessWidget {
         ),
         Container(decoration: BoxDecoration(gradient: MyLinears.linear1)),
         Container(color: MyColors.black.withValues(alpha: 0.2)),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: .topCenter,
+              end: .bottomCenter,
+              stops: [0.55, 0.75, 0.9, 1],
+              colors: [
+                MyColors.black3.withValues(alpha: 0),
+                MyColors.black3.withValues(alpha: 0.35),
+                MyColors.black3.withValues(alpha: 0.8),
+                MyColors.black3,
+              ],
+            ),
+          ),
+        ),
         MyMaxWidth(
           child: Column(
             mainAxisAlignment: .center,

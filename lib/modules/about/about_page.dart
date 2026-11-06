@@ -7,13 +7,19 @@ import '../main_layout/widgets/footer/m_footer.dart';
 import '../main_layout/widgets/footer/t_footer.dart';
 import 'about_controller.dart';
 import 'widgets/mobile/m_about_craft.dart';
+import 'widgets/mobile/m_about_cta.dart';
 import 'widgets/mobile/m_about_header.dart';
+import 'widgets/mobile/m_about_story.dart';
 import 'widgets/mobile/m_about_target.dart';
 import 'widgets/tab/t_about_craft.dart';
+import 'widgets/tab/t_about_cta.dart';
 import 'widgets/tab/t_about_header.dart';
+import 'widgets/tab/t_about_story.dart';
 import 'widgets/tab/t_about_target.dart';
 import 'widgets/web/about_craft.dart';
+import 'widgets/web/about_cta.dart';
 import 'widgets/web/about_header.dart';
+import 'widgets/web/about_story.dart';
 import 'widgets/web/about_target.dart';
 
 class AboutPage extends GetView<AboutController> {
@@ -29,10 +35,31 @@ class AboutPage extends GetView<AboutController> {
 
           return ListView(
             children: isDesktop
-                ? [AboutHeader(), AboutTarget(), AboutCraft(), Footer()]
+                ? [
+                    AboutHeader(),
+                    AboutStory(),
+                    AboutTarget(),
+                    AboutCraft(),
+                    AboutCta(),
+                    Footer(),
+                  ]
                 : isTab
-                ? [TAboutHeader(), TAboutTarget(), TAboutCraft(), TFooter()]
-                : [MAboutHeader(), MAboutTarget(), MAboutCraft(), MFooter()],
+                ? [
+                    TAboutHeader(),
+                    TAboutStory(),
+                    TAboutTarget(),
+                    TAboutCraft(),
+                    TAboutCta(),
+                    TFooter(),
+                  ]
+                : [
+                    MAboutHeader(),
+                    MAboutStory(),
+                    MAboutTarget(),
+                    MAboutCraft(),
+                    MAboutCta(),
+                    MFooter(),
+                  ],
           );
         },
       ),
