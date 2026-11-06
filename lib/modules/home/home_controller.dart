@@ -165,7 +165,13 @@ class HomeController extends BaseController {
 
   void buildFeatured(List products) {
     final items = products.where((e) => e["is_featured"] == true).toList()
-      ..sort((a, b) => "${a["name"]}".compareTo("${b["name"]}"));
+      ..sort((a, b) {
+        final byOrder = ((a["featured_sort_order"] ?? 99) as int).compareTo(
+          (b["featured_sort_order"] ?? 99) as int,
+        );
+        if (byOrder != 0) return byOrder;
+        return "${a["name"]}".compareTo("${b["name"]}");
+      });
 
     resFeatured.value = items.map((e) {
       final colors = (e["colors"] as List).map((c) {
