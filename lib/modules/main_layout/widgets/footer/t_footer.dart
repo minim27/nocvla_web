@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../app/routes/my_routes.dart';
-import '../../../../app/services/my_config.dart';
 import '../../../../shared/utils/my_colors.dart';
 import '../../../../shared/utils/my_fonts.dart';
 import '../../../../shared/utils/my_images.dart';
-import '../../../../shared/utils/my_utility.dart';
 import '../../../../shared/widgets/my_button.dart';
 import '../../../../shared/widgets/my_divider.dart';
 import '../../../../shared/widgets/my_grid.dart';
@@ -174,14 +172,17 @@ class TFooter extends StatelessWidget {
   }
 
   Widget companyMenu(MainLayoutController controller) {
-    return footerMenu(
-      title: "NOCVLA",
-      items: {
-        "Tentang kami": () => Get.toNamed(MyRoutes.about),
-        "Atlet": () => Get.toNamed(MyRoutes.athlete),
-        "Kontak & cara order": () => Get.toNamed(MyRoutes.contact),
-        "nocvla.apparel@gmail.com": controller.openEmail,
-      },
+    return Obx(
+      () => footerMenu(
+        title: "NOCVLA",
+        items: {
+          "Tentang kami": () => Get.toNamed(MyRoutes.about),
+          "Atlet": () => Get.toNamed(MyRoutes.athlete),
+          "Kontak & cara order": () => Get.toNamed(MyRoutes.contact),
+          if (controller.resSocial["CONTACT_EMAIL"] != null)
+            controller.resSocial["CONTACT_EMAIL"]!: controller.openEmail,
+        },
+      ),
     );
   }
 
@@ -190,15 +191,19 @@ class TFooter extends StatelessWidget {
       crossAxisAlignment: .start,
       spacing: 16,
       children: [
-        footerMenu(
-          title: "IKUTI",
-          items: {
-            "Instagram @${MyConfig.instagramUsername}": () =>
-                execUri("https://instagram.com/${MyConfig.instagramUsername}"),
-            "TikTok @${MyConfig.tiktokUsername}": () =>
-                execUri("https://www.tiktok.com/@${MyConfig.tiktokUsername}"),
-            "Discord NOCVLA": controller.openDiscordLink,
-          },
+        Obx(
+          () => footerMenu(
+            title: "IKUTI",
+            items: {
+              if (controller.resSocial["INSTAGRAM"] != null)
+                "Instagram @${controller.resSocial["INSTAGRAM"]}":
+                    controller.openInstagram,
+              if (controller.resSocial["TIKTOK"] != null)
+                "TikTok @${controller.resSocial["TIKTOK"]}":
+                    controller.openTiktok,
+              "Discord NOCVLA": controller.openDiscordLink,
+            },
+          ),
         ),
         Obx(() {
           if (controller.resMarketplace.isEmpty) return SizedBox();

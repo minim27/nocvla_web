@@ -12,6 +12,7 @@ class MainLayoutController extends BaseController {
   final resType = <ProductTypeModel>[].obs;
   final resMarketplace = <String, dynamic>{}.obs;
   final resShopType = <String>[].obs;
+  final resSocial = <String, String>{}.obs;
 
   @override
   void onInit() {
@@ -20,6 +21,7 @@ class MainLayoutController extends BaseController {
     fetchApiType();
     fetchApiMarketplace();
     fetchApiShopType();
+    fetchApiSocial();
   }
 
   void fetchDiscordLink() async {
@@ -85,7 +87,34 @@ class MainLayoutController extends BaseController {
     if (url != null) execUri(url);
   }
 
-  void openEmail() => execUri("mailto:nocvla.apparel@gmail.com");
+  void fetchApiSocial() async {
+    final req = await configRepo.listConfigs([
+      "INSTAGRAM",
+      "TIKTOK",
+      "CONTACT_EMAIL",
+    ]);
+    await req.responseHandler(
+      res: (res) {
+        resSocial.value = {
+          for (final e in (res as List))
+            if ("${e["value"] ?? ""}".trim().isNotEmpty)
+              "${e["name"]}": "${e["value"]}".trim().replaceFirst(
+                RegExp(r"^@"),
+                "",
+              ),
+        };
+      },
+      err: (err) {},
+    );
+  }
+
+  void openEmail() => execUri("mailto:${resSocial["CONTACT_EMAIL"]}");
+
+  void openInstagram() =>
+      execUri("https://instagram.com/${resSocial["INSTAGRAM"]}");
+
+  void openTiktok() =>
+      execUri("https://www.tiktok.com/@${resSocial["TIKTOK"]}");
 
   void updateTitle() {
     final path = Uri.parse(Get.currentRoute).path;

@@ -18,6 +18,7 @@ class CheckoutController extends BaseController {
   final appliedCode = RxnString();
   final discountProductIds = <String>[].obs;
   final isPlacingOrder = false.obs;
+  final resWa = <String, String>{}.obs;
 
   final txtName = TextEditingController();
   final txtPhone = TextEditingController();
@@ -30,6 +31,7 @@ class CheckoutController extends BaseController {
   void onInit() {
     super.onInit();
     loadCart();
+    fetchApiWa();
   }
 
   void loadCart() {
@@ -43,6 +45,22 @@ class CheckoutController extends BaseController {
       data?["discountProductIds"] ?? [],
     );
   }
+
+  void fetchApiWa() async {
+    final req = await configRepo.listConfigs(["WA_NUMBER", "WA_TEMPLATE"]);
+    await req.responseHandler(
+      res: (res) {
+        resWa.value = {
+          for (final e in (res as List))
+            if ("${e["value"] ?? ""}".trim().isNotEmpty)
+              "${e["name"]}": "${e["value"]}".trim(),
+        };
+      },
+      err: (err) {},
+    );
+  }
+
+  String get waNumber => resWa["WA_NUMBER"] ?? MyConfig.whatsappNumber;
 
   int get subTotal => resItems.fold(
     0,
@@ -134,9 +152,7 @@ class CheckoutController extends BaseController {
     clearCart();
 
     launchUrl(
-      .parse(
-        "https://wa.me/${MyConfig.whatsappNumber}?text=${Uri.encodeComponent(message)}",
-      ),
+      .parse("https://wa.me/$waNumber?text=${Uri.encodeComponent(message)}"),
       webOnlyWindowName: "_self",
     );
   }
@@ -167,6 +183,61 @@ class CheckoutController extends BaseController {
       placeOrderViaDm("https://www.tiktok.com/@${MyConfig.tiktokUsername}");
 
   String buildMessage() {
+    final template = resWa["WA_TEMPLATE"];
+    if (template == null) return buildDefaultMessage();
+
+    final values = {
+      "nama penerima": txtName.text.trim(),
+      "wa penerima": txtPhone.text.trim(),
+      "alamat penerima": txtAddress.text.trim(),
+      "notes": txtNotes.text.trim(),
+      "kode": appliedCode.value ?? "",
+      "subtotal": parsingCurrency(subTotal),
+      "diskon": appliedCode.value == null
+          ? ""
+          : parsingCurrency(discountAmount),
+      "total": parsingCurrency(total),
+    };
+    const itemKeys = {"item", "warna", "ukuran", "qty", "harga"};
+    final placeholder = RegExp(r"\{([^}]+)\}");
+
+    String fill(String line, Map<String, String> data) => line.replaceAllMapped(
+      placeholder,
+      (m) => data[m.group(1)!.trim().toLowerCase()] ?? m.group(0)!,
+    );
+
+    final lines = <String>[];
+    for (final line in template.split("\n")) {
+      final keys = placeholder
+          .allMatches(line)
+          .map((m) => m.group(1)!.trim().toLowerCase())
+          .toList();
+
+      if (keys.any(itemKeys.contains)) {
+        for (final item in resItems) {
+          lines.add(
+            fill(line, {
+              ...values,
+              "item": "${item.name}",
+              "warna": "${item.color}",
+              "ukuran": "${item.size}",
+              "qty": "${item.qty.value}",
+              "harga": parsingCurrency((item.price as int) * item.qty.value),
+            }),
+          );
+        }
+        continue;
+      }
+
+      if (keys.any((key) => values[key]?.isEmpty ?? false)) continue;
+
+      lines.add(fill(line, values));
+    }
+
+    return lines.join("\n").trim();
+  }
+
+  String buildDefaultMessage() {
     final buffer = StringBuffer()
       ..writeln("Halo, saya mau order:")
       ..writeln();
